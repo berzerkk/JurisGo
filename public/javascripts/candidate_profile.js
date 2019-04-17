@@ -1,13 +1,60 @@
 $(document).on('ready', function () {
+        // checkIfAlreadyConnected();
         submitCandidateProfile();
         DownloadPicture();
+        getLocation();
 
 });
+
+function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                }
+        }
+        return "";
+}
+
+function checkIfAlreadyConnected() {
+        if (getCookie("user_token") !== "")
+                window.location.pathname = '/home';
+}
+
+function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getLocation() {
+        $("#candidate_profile_button_location").on("click", (e) => {
+                e.preventDefault();
+                $("#candidate_profile_button_location").addClass("fa-spin");
+                navigator.geolocation.getCurrentPosition( (position)=> {
+                        $.ajax({
+                                type: 'GET',
+                                url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&zoom=18&addressdetails=1`,
+                                success: function (result) {
+                                        console.log(result.display_name)
+                                        $("#candidate_profile_location").val(result.display_name);
+                                        $("#candidate_profile_button_location").removeClass("fa-spin");
+                                }
+                        });
+                }, () => {$("#candidate_profile_button_location").removeClass("fa-spin");});
+        });
+}
 
 function DownloadPicture() {
         $('#candidate_profile_image_download').change((e) => {
                 e.preventDefault();
-                console.log("abc");
 
                 var oFReader = new FileReader();
                 oFReader.readAsDataURL(document.getElementById("candidate_profile_image_download").files[0]);

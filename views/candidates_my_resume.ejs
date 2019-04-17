@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Jobhunt</title>
@@ -16,24 +17,147 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/responsive.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/chosen.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/colors/colors.css" />
-<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/stylesheets/font-awesome.min.css" />
-	
+	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
+
 </head>
+
 <body>
 
-<div class="page-loading">
-	<img src="images/loader.gif" alt="" />
-	<span>Skip Loader</span>
-</div>
+	<div class="page-loading">
+		<img src="images/loader.gif" alt="" />
+		<span>Skip Loader</span>
+	</div>
 
-<div class="theme-layout" id="scrollup">
-	
 	<%- include header.ejs -%>
-	
+	<div class="account-popup-area" id="overlay-add-education">
+		<div class="account-popup">
+			<span class="close-popup candidate_resume_close_panel" id="candidate_resume_close_education"><i
+					id="candidate_resume_close_education" class="la la-close"></i></span>
+			<h3>Etudes</h3>
+			<div class="resumeadd-form">
+				<div class="row">
+					<div class="col-lg-12">
+						<span class="df-title">Nom</span>
+						<div class="pf-field">
+							<input placeholder="Tooms.." type="text">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<span class="df-title">De</span>
+						<div class="pf-field">
+							<input placeholder="06.11.2007" type="text" class="datepicker">
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<span class="df-title">À</span>
+						<div class="pf-field">
+							<input placeholder="06.11.2012" type="text" class="datepicker">
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<span class="df-title">Institut</span>
+						<div class="pf-field">
+							<input type="text">
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<span class="df-title">Description</span>
+						<div class="pf-field">
+							<textarea rows="4"></textarea>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<button type="submit">Ajouter</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="account-popup-area" id="overlay-add-experiences">
+		<div class="account-popup">
+			<span class="close-popup candidate_resume_close_panel" id="candidate_resume_close_experiences"><i
+					id="candidate_resume_close_experiences" class="la la-close"></i></span>
+			<h3>Experiences</h3>
+			<div class="resumeadd-form">
+				<div class="row">
+					<div class="col-lg-12">
+						<span class="df-title">Nom</span>
+						<div class="pf-field">
+							<input placeholder="Tooms.." type="text">
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<span class="df-title">De</span>
+						<div class="pf-field">
+							<input placeholder="06.11.2007" type="text" class="datepicker">
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<span class="df-title">À</span>
+						<div class="pf-field">
+							<input placeholder="06.11.2012" type="text" class="datepicker">
+						</div>
+					</div>
+					<div class="col-lg-2">
+						<p class="remember-label">
+							<input type="checkbox" name="cb" id="fgfg"><label for="fgfg">Aujourd'hui</label>
+						</p>
+					</div>
+					<div class="col-lg-12">
+						<span class="pf-title">Entreprise</span>
+						<div class="pf-field">
+							<input type="text">
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<span class="pf-title">Description</span>
+						<div class="pf-field">
+							<textarea></textarea>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<button type="submit">Ajouter</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="account-popup-area" id="overlay-add-competencies">
+			<div class="account-popup">
+				<span class="close-popup candidate_resume_close_panel" id="candidate_resume_close_competencies"><i
+						id="candidate_resume_close_competencies" class="la la-close"></i></span>
+				<h3>Compétences</h3>
+				<div class="resumeadd-form">
+						<div class="row align-items-end">
+							<div class="col-lg-8">
+								<span class="df-title">Compétence</span>
+								<div class="pf-field">
+									<input placeholder="" type="text">
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<span class="df-title">Pourcentage</span>
+								<div class="pf-field">
+									<input placeholder="" type="text">
+								</div>
+							</div>
+							<div class="col-lg-12">
+								 <button type="submit">Save</button>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+
+
+
 	<section class="overlape">
 		<div class="block no-padding">
-			<div data-velocity="-.1" style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;" class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
+			<div data-velocity="-.1"
+				style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;"
+				class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
 			<div class="container fluid">
 				<div class="row">
 					<div class="col-lg-12">
@@ -49,157 +173,159 @@
 	<section>
 		<div class="block remove-top">
 			<div class="container">
-				 <div class="row no-gape">
-				 	<div class="col-lg-12 column">
-				 		<div class="padding-left">
-					 		<div class="manage-jobs-sec">
-					 			<div class="border-title"><h3>Etudes</h3><a href="#" title=""><i class="la la-plus"></i> Add Education</a></div>
-						 		<div class="edu-history-sec">
-		 							<div class="edu-history">
-		 								<i class="la la-graduation-cap"></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>University</h3>
-		 									<i>2008 - 2012</i>
-		 									<span>Middle East Technical University <i>Computer Science</i></span>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 							<div class="edu-history">
-		 								<i class="la la-graduation-cap"></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>High School</h3>
-		 									<i>2008 - 2012</i>
-		 									<span>Tomms College <i>Bachlors in Fine Arts</i></span>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 						</div>
-		 						<div class="border-title"><h3>Experiences</h3><a href="#" title=""><i class="la la-plus"></i> Add Experience</a></div>
-						 		<div class="edu-history-sec">
-		 							<div class="edu-history style2">
-		 								<i></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>Web Designer <span>Inwave Studio</span></h3>
-		 									<i>2008 - 2012</i>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 							<div class="edu-history style2">
-		 								<i></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>CEO Founder <span>Inwave Studio</span></h3>
-		 									<i>2008 - 2012</i>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 						</div>
-		 						<div class="border-title"><h3>Compétences</h3><a href="#" title=""><i class="la la-plus"></i> Add Skills</a></div>
-		 						<div class="progress-sec">
-		 							<div class="progress-sec with-edit">
-		 								<span>Adobe Photoshop</span>
-		 								<div class="progressbar"> <div class="progress" style="width: 80%;"><span>80%</span></div> </div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 							<div class="progress-sec with-edit">
-		 								<span>Production In Html</span>
-		 								<div class="progressbar"> <div class="progress" style="width: 60%;"><span>60%</span></div> </div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 							<div class="progress-sec with-edit">
-		 								<span>Graphic Design</span>
-		 								<div class="progressbar"> <div class="progress" style="width: 75%;"><span>75%</span></div> </div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 						</div>
-		 						<div class="border-title"><h3>Professional Skills</h3><a href="#" title=""><i class="la la-plus"></i> Add Skills</a></div>
-		 						<div class="edu-history-sec">
-		 							<div class="edu-history style2">
-		 								<i></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>Perfect Attendance Programs</h3>
-		 									<i>2008 - 2012</i>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 							<div class="edu-history style2">
-		 								<i></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>Top Performer Recognition</h3>
-		 									<i>2008 - 2012</i>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 							<div class="edu-history style2">
-		 								<i></i>
-		 								<div class="edu-hisinfo">
-		 									<h3>King LLC</h3>
-		 									<i>2008 - 2012</i>
-		 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
-		 								</div>
-		 								<ul class="action_job">
-				 							<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a></li>
-				 							<li><span>Delete</span><a href="#" title=""><i class="la la-trash-o"></i></a></li>
-				 						</ul>
-		 							</div>
-		 						</div>
-					 		</div>
-					 	</div>
+				<div class="row no-gape">
+					<div class="col-lg-12 column">
+						<div class="padding-left">
+							<div class="manage-jobs-sec">
+								<div class="border-title">
+									<h3>Etudes</h3><a id="candidate_resume_add_education"
+										class="candidate_resume_open_panel"><i id="candidate_resume_add_education"
+											class="la la-plus"></i> Ajouter une période d'études</a>
+								</div>
+								<div class="edu-history-sec">
+									<div class="edu-history">
+										<i class="la la-graduation-cap"></i>
+										<div class="edu-hisinfo">
+											<h3>University</h3>
+											<i>2008 - 2012</i>
+											<span>Middle East Technical University <i>Computer Science</i></span>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
+												tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+											</p>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+									<div class="edu-history">
+										<i class="la la-graduation-cap"></i>
+										<div class="edu-hisinfo">
+											<h3>High School</h3>
+											<i>2008 - 2012</i>
+											<span>Tomms College <i>Bachlors in Fine Arts</i></span>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
+												tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+											</p>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="border-title">
+									<h3>Experiences professionnelles</h3><a id="candidate_resume_add_experiences"
+										class="candidate_resume_open_panel"><i id="candidate_resume_add_experiences"
+											class="la la-plus"></i> Ajouter une expérience professionnelle</a>
+								</div>
+								<div class="edu-history-sec">
+									<div class="edu-history style2">
+										<i></i>
+										<div class="edu-hisinfo">
+											<h3>Web Designer <span>Inwave Studio</span></h3>
+											<i>2008 - 2012</i>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
+												tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+											</p>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+									<div class="edu-history style2">
+										<i></i>
+										<div class="edu-hisinfo">
+											<h3>CEO Founder <span>Inwave Studio</span></h3>
+											<i>2008 - 2012</i>
+											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a ipsum
+												tellus. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+											</p>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="border-title">
+									<h3>Compétences</h3><a id="candidate_resume_add_competencies"
+										class="candidate_resume_open_panel"><i id="candidate_resume_add_competencies"
+											class="la la-plus"></i> Ajouter une compétence</a>
+								</div>
+								<div class="progress-sec">
+									<div class="progress-sec with-edit">
+										<span>Adobe Photoshop</span>
+										<div class="progressbar">
+											<div class="progress" style="width: 80%;"><span>80%</span></div>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+									<div class="progress-sec with-edit">
+										<span>Production In Html</span>
+										<div class="progressbar">
+											<div class="progress" style="width: 60%;"><span>60%</span></div>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+									<div class="progress-sec with-edit">
+										<span>Graphic Design</span>
+										<div class="progressbar">
+											<div class="progress" style="width: 75%;"><span>75%</span></div>
+										</div>
+										<ul class="action_job">
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>
+											</li>
+											<li><span>Delete</span><a href="#" title=""><i
+														class="la la-trash-o"></i></a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				 </div>
+				</div>
 			</div>
 		</div>
 	</section>
 
 	<%- include bottom_footer.ejs -%>
 
-</div>
+	</div>
 
-<%- include sidebar.ejs -%>
+	<%- include sidebar.ejs -%>
 
-<script src="javascripts/jquery.min.js" type="text/javascript"></script>
-<script src="javascripts/modernizr.js" type="text/javascript"></script>
-<script src="javascripts/script.js" type="text/javascript"></script>
-<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
-<script src="javascripts/wow.min.js" type="text/javascript"></script>
-<script src="javascripts/slick.min.js" type="text/javascript"></script>
-<script src="javascripts/parallax.js" type="text/javascript"></script>
-<script src="javascripts/select-chosen.js" type="text/javascript"></script>
-<!-- <script src="javascripts/jquery.scrollbar.min.js" type="text/javascript"></script> -->
-<script src="javascripts/circle-progress.min.js" type="text/javascript"></script>
+	<script src="javascripts/jquery.min.js" type="text/javascript"></script>
+	<script src="javascripts/modernizr.js" type="text/javascript"></script>
+	<script src="javascripts/script.js" type="text/javascript"></script>
+	<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+	<script src="javascripts/wow.min.js" type="text/javascript"></script>
+	<script src="javascripts/slick.min.js" type="text/javascript"></script>
+	<script src="javascripts/parallax.js" type="text/javascript"></script>
+	<script src="javascripts/select-chosen.js" type="text/javascript"></script>
+	<script src="javascripts/circle-progress.min.js" type="text/javascript"></script>
+	<script src="javascripts/candidate_resume.js" type="text/javascript"></script>
+
 
 </body>
-</html>
 
+</html>
