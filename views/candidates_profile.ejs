@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Jobhunt</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="CreativeLayers">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap-grid.css" />
+	<link rel="stylesheet" href="stylesheets/icons.css">
+	<link rel="stylesheet" href="stylesheets/animate.min.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/responsive.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/chosen.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/colors/colors.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/stylesheets/font-awesome.min.css" />
+
+</head>
+
+<body>
+
+	<div class="page-loading">
+		<img src="images/loader.gif" alt="" />
+		<span>Skip Loader</span>
+	</div>
+
+	<div class="theme-layout" id="scrollup">
+
+		<%- include header.ejs -%>
+
+		<section class="overlape">
+			<div class="block no-padding">
+				<div data-velocity="-.1" style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;"
+				 class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
+				<div class="container fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="inner-header">
+								<h3>Welcome ALI TUFAN</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="block no-padding">
+				<div class="container">
+					<div class="row no-gape">
+						<div class="col-lg-12 column">
+							<div class="profile-title">
+								<h3>My Profile</h3>
+								<div class="upload-img-bar">
+									<span class="round"><img id="candidate_profile_picture" src="http://placehold.it/140x140" alt="" /><i>x</i></span>
+									<div class="upload-info">
+										<label for="candidate_profile_image_download">
+											<a>Browse</a>
+											<input id="candidate_profile_image_download" type="file" accept="image/png, image/jpg" style="display:none">
+										</label>
+										<span>Max file size is 1MB, Minimum dimension: 270x210 And Suitable files are .jpg & .png</span>
+									</div>
+								</div>
+							</div>
+							<div class="profile-form-edit">
+								<form>
+									<div class="row">
+										<div class="col-lg-6">
+											<span class="pf-title">Prénom</span>
+											<span id="error_candidate_profile_firstname" class="pf-error">Prénom invalide</span>
+											<div class="pf-field">
+												<input id="candidate_profile_firstname" type="text" placeholder="" />
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<span class="pf-title">Nom</span>
+											<span id="error_candidate_profile_lastname" class="pf-error">Nom invalide</span>
+											<div class="pf-field">
+												<input id="candidate_profile_lastname"type="text" placeholder="" />
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<span class="pf-title">Email</span>
+											<span id="error_candidate_profile_email" class="pf-error">Email invalide</span>
+
+											<div class="pf-field">
+												<input id="candidate_profile_email"type="email" placeholder="exemple@exemple.com" />
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<span class="pf-title">Téléphone</span>
+											<span id="error_candidate_profile_phone" class="pf-error">Téléphone invalide</span>
+											<div class="pf-field">
+												<input id="candidate_profile_phone"type="number" placeholder="" />
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<span class="pf-title">Disponibilité</span>
+											<span id="error_candidate_profile_freedom" class="pf-error">Disponibilité invalide</span>
+											<div class="pf-field">
+												<select id="candidate_profile_freedom" data-placeholder="Disponibilité" class="chosen">
+													<option>Oui</option>
+													<option>Non</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-lg-6">
+											<span class="pf-title">Date de naissance</span>
+											<span id="error_candidate_profile_birthdate" class="pf-error">Date de naissance invalide</span>
+
+											<div class="pf-field">
+												<input id="candidate_profile_birthdate" type="date" />
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<span class="pf-title">Adresse</span>
+											<span id="error_candidate_profile_location" class="pf-error">Adresse invalide</span>
+											<div class="pf-field">
+												<input id="candidate_profile_location"type="text" placeholder="RAJOUTER UN ADRESSEPICKER" />
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<span class="pf-title">Categories</span>
+											<span id="error_candidate_profile_tags" class="pf-error">Categories invalide</span>
+											<div class="pf-field no-margin">
+												<ul class="tags">
+													<li class="addedTag">Photoshop<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
+														 type="hidden" name="tags[]" value="Photoshop"></li>
+													<li class="addedTag">Digital & Creative<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
+														 type="hidden" name="tags[]" value="Digital"></li>
+													<li class="addedTag">Agency<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
+														 type="hidden" name="tags[]" value="Agency"></li>
+													<li class="tagAdd taglist">
+														<input type="text" id="search-field">
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div class="col-lg-12">
+											<button id="candidate_profile_button" type="submit">Update</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<%- include bottom_footer.ejs -%>
+
+	</div>
+
+	<%- include sidebar.ejs -%>
+
+	<script src="javascripts/jquery.min.js" type="text/javascript"></script>
+	<script src="javascripts/modernizr.js" type="text/javascript"></script>
+	<script src="javascripts/script.js" type="text/javascript"></script>
+	<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+	<script src="javascripts/wow.min.js" type="text/javascript"></script>
+	<script src="javascripts/slick.min.js" type="text/javascript"></script>
+	<script src="javascripts/parallax.js" type="text/javascript"></script>
+	<script src="javascripts/select-chosen.js" type="text/javascript"></script>
+	<script src="javascripts/circle-progress.min.js" type="text/javascript"></script>
+	<script src="javascripts/tag.js" type="text/javascript"></script>
+	<script src="javascripts/candidate_profile.js" type="text/javascript"></script>
+
+
+</body>
+
+</html>

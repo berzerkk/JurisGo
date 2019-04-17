@@ -15,7 +15,37 @@ router.get('/login', function(req, res, next) {
 });
 
 router.get('/home', function(req, res, next) {
-  res.render('candidates_dashboard')
-})
+  res.render('candidates_dashboard');
+});
+
+// router.get('/candidates_resume_add', function(req, res, next) {
+//   res.render('candidates_my_resume_add_new');
+// });
+
+router.get('/candidate_resume', function(req, res, next) {
+  res.render('candidates_my_resume');
+});
+
+router.get('/candidate_profile', function(req, res, next) {
+  res.render('candidates_profile');
+});
+
+
+
+// router.get('/jobs_add', function(req, res, next) {
+//   res.render('employer_post_new')
+// });
+
+// router.get('/matching', function(req, res, next) {
+//   res.render('candidates_list2');
+// });
+
+// router.get('/order', function(req, res, next) {
+//   res.render('employer_transactions');
+// });
+
+// router.get('/order_pack', function(req, res, next) {
+//   res.render('pricing');
+// });
 
 module.exports = router;

@@ -1,6 +1,19 @@
 $(document).on('ready', function () {
         checkIfAlreadyConnected();
         $('#error_connexion').hide();
+        submitButtonRegister();
+        sumbitButtonConnexion();
+        $("#button_connexion_to_register").on("click", (e) => {
+                e.preventDefault();
+                window.location.pathname = '/register';
+        });
+        $("#button_register_to_connexion").on("click", (e) => {
+                e.preventDefault();
+                window.location.pathname = '/login';
+        });
+});
+
+function submitButtonRegister() {
         $("#button_create_account").on("click", (e) => {
                 e.preventDefault();
                 var data = {
@@ -10,21 +23,30 @@ $(document).on('ready', function () {
                         email: $("#mail_create_account").val(),
                         password: $("#password_create_account").val(),
                         genre: $("#genre_create_account").val(),
-                        type: $("#type_create_account").val()
+                        type: $("#candidates_create_account").hasClass("active") ? "candidate"
+                                : $("#employer_create_account").hasClass("active") ? "employer" : ""
                 }
-                //todo parse
+                if (data.type === "") {
+                        $("#error_connexion").show();
+                        return;
+                }
                 $.ajax({
                         type: 'POST',
                         url: 'http://jurisgo.petitesaffiches.fr/user/add',
                         data: { datas: data },
                         dataType: 'json',
                         success: function (result) {
-                                console.log(result);
-                                // check si true -> go login sinon add message d'erreur
+                                if (res.status) {
+                                        window.location.pathname = '/login'
+                                } else {
+                                        $('#error_connexion').show();
+                                }
                         }
                 });
-        })
+        });
+}
 
+function sumbitButtonConnexion() {
         $("#button_connexion").on("click", (e) => {
                 e.preventDefault();
                 var data = {
@@ -41,25 +63,14 @@ $(document).on('ready', function () {
                         success: function (res) {
                                 if (res.status) {
                                         setCookie("user_token", res.token, 250);
+                                        window.location.pathname = '/home'
                                 } else {
                                         $('#error_connexion').show();
                                 }
                         }
                 });
         });
-
-        $("#button_connexion_to_register").on("click", (e) => {
-                e.preventDefault();
-                window.location.pathname = '/register';
-        });
-        $("#button_register_to_connexion").on("click", (e) => {
-                e.preventDefault();
-                window.location.pathname = '/login';
-        });
-});
-
-
-
+}
 
 function getCookie(cname) {
         var name = cname + "=";
@@ -79,7 +90,8 @@ function getCookie(cname) {
 
 function checkIfAlreadyConnected() {
         if (getCookie("user_token") !== "")
-                window.location.pathname = '/home';}
+                window.location.pathname = '/home';
+}
 
 function setCookie(cname, cvalue, exdays) {
         var d = new Date();

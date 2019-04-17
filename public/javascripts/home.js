@@ -4,12 +4,13 @@ $(document).on('ready', function () {
 });
 
 function getUser() {
-
+        
 }
 
 function checkIfAlreadyConnected() {
         if (getCookie("user_token") === "")
-                window.location.pathname = '/login';}
+                window.location.pathname = '/login';
+}
 
 function setCookie(cname, cvalue, exdays) {
         var d = new Date();
