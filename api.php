@@ -730,17 +730,26 @@
 		}
 		
 		private function candidate_skill_update(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "UPDATE candidates_skills SET comment='".$this->db->real_escape_string($datas["comment"])."' WHERE id='".$_GET["id"]."' AND candidate='".$_GET["candidate"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "UPDATE candidates_skills SET name='".$datas["name"]."', percentage='".$datas["percentage"]."' WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			if($result){
+				$data["sql"] = $sql;
 				$data["status"] = true;
 				$this->response($this->json($data),200);
-			}
-			else{
+			} else{
+				$data["sql"] = $sql;
 				$data["status"] = false;
 				$this->response($this->json($data),200);
 			}
@@ -760,6 +769,111 @@
 			}
 			$user_id = $this->check_token($datas);
 			$sql = "DELETE FROM candidates_skills WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
+			$result = $this->db->query($sql);
+			if($result){
+				$data["status"] = true;
+				$this->response($this->json($data),200);
+			}
+			else{
+				$data["status"] = false;
+				$this->response($this->json($data),200);
+			}
+		}
+
+		// CANDIDAT STUDIES
+		
+		private function candidate_studies(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates_studies WHERE candidate='".$user_id."'";
+			$result = $this->db->query($sql);
+			$i = 0;
+			while($row = $result->fetch_assoc()){
+     			$json[$i] = $row;
+				$json[$i] = array_map('utf8_encode', $json[$i]);
+     			$i++;
+			}
+			$data["datas"] = $json;
+			$data["status"] = true;
+			$data["sql"] = $sql;
+			$data["count"] = $result->num_rows;
+			$this->response($this->json($data),200);
+		}
+		
+		private function candidate_studie_add(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "INSERT INTO candidates_studies (date_start,date_end,comment,school,diploma,branch,candidate)
+			VALUES ('".$datas["date_start"]."','".$datas["date_end"]."','".$datas["comment"]."','".$datas["school"]."','".$datas["diploma"]."',
+			'".$datas["branch"]."','".$user_id."')";
+			$result = $this->db->query($sql);
+			$data["status"] = $result;
+			$data["sql"] = $sql;
+			$this->response($this->json($data),200);
+		}
+		
+		private function candidate_studie_update(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "UPDATE candidates_studies SET diploma='".$datas["diploma"]."', date_start='".$datas["date_start"]."', date_end='".$datas["date_end"]."'
+			, school='".$datas["school"]."', branch='".$datas["branch"]."', comment='".$datas["comment"]."'
+			 WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
+			$result = $this->db->query($sql);
+			if($result){
+				$data["sql"] = $sql;
+				$data["status"] = true;
+				$this->response($this->json($data),200);
+			} else{
+				$data["sql"] = $sql;
+				$data["status"] = false;
+				$this->response($this->json($data),200);
+			}
+		}
+		
+		private function candidate_studie_delete(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "DELETE FROM candidates_studies WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			if($result){
 				$data["status"] = true;
