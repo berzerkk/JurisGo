@@ -3,8 +3,29 @@ $(document).on('ready', function () {
         getUser();
 });
 
+function addUserView(user) {
+        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#home-welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' +capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+
+}
+
+function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
 function getUser() {
-        
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/user',
+                data: { datas: {"user_token": getCookie("user_token")} },
+                dataType: 'json',
+                success: function (result) {
+                        console.log(result);
+                        addUserView(result.user);
+                }
+        });
 }
 
 function checkIfAlreadyConnected() {

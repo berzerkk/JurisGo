@@ -1,28 +1,122 @@
 $(document).on('ready', function () {
     checkIfAlreadyConnected();
+    getUser();
     openPanel();
     closePanel();
+    addSkill();
+    getSkills();
 });
+
+function addUserView(user) {
+    $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#home-welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+
+}
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+function getUser() {
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/user',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (result) {
+            addUserView(result.user);
+        }
+    });
+}
 
 function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
     for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-            }
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
 }
 
+function getSkills() {
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/candidate/skills',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (result) {
+            $("#candidate-resume-percentage").html("");
+            for (elem in result.datas) {                
+                $("#candidate-resume-percentage").append('<div class="progress-sec with-edit">\
+										<span>' + result.datas[elem].name + '</span>\
+										<div class="progressbar">\
+											<div class="progress" style="width:' + result.datas[elem].percentage + '%;"><span>' + result.datas[elem].percentage + '</span></div>\
+										</div>\
+										<ul class="action_job">\
+											<li><span>Edit</span><a href="#" title=""><i class="la la-pencil"></i></a>\
+											</li>\
+											<li><span>Delete</span><a class="resume-delete-competencies" id="' + result.datas[elem].id + '" ><i\
+														class="la la-trash-o"></i></a></li>\
+										</ul>\
+									</div>');
+            }
+        }
+    });
+}
+
+function remvoeSkills() {
+    $(".resume-delete-competencies").on("click", (e) => {
+        e.preventDefault();
+        var data = {
+            user_token: getCookie("user_token"),
+            id: e.target.id
+        };
+        $.ajax({
+            type: 'POST',
+            url: 'http://jurisgo.petitesaffiches.fr/candidate/skill/add',
+            data: { datas: data },
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+                
+                getSkills();
+            }
+        });
+    });
+}
+
+function addSkill() {
+    $("#popup-add-competencies").on("click", (e) => {
+        var data = {
+            user_token: getCookie("user_token"),
+            percentage: $("#popup-input-percentage-competencies").val(),
+            name: $("#popup-input-name-competencies").val()
+        };
+        console.log(data);
+        $.ajax({
+            type: 'POST',
+            url: 'http://jurisgo.petitesaffiches.fr/candidate/skill/add',
+            data: { datas: data },
+            dataType: 'json',
+            success: function (result) {
+                getSkills();
+            }
+        });
+    });
+}
+
 function checkIfAlreadyConnected() {
-    if (getCookie("user_token") !== "")
-            window.location.pathname = '/home';
+    if (getCookie("user_token") === "")
+        window.location.pathname = '/login';
 }
 
 function setCookie(cname, cvalue, exdays) {

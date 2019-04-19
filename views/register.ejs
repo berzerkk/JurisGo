@@ -35,7 +35,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12">
-							<div class="account-popup-area signup-popup-box static">
+							<div id="account-popup-area" class="account-popup-area signup-popup-box static">
 								<div class="account-popup">
 									<h3>Sign Up</h3>
 									<span>Lorem ipsum dolor sit amet consectetur adipiscing elit odio duis risus at lobortis ullamcorper</span>
@@ -44,35 +44,6 @@
 										<span id="candidate_create_account">Candidate</span>
 										<span id="employer_create_account">Employer</span>
 									</div>
-									<!-- <form>
-									<div class="cfield">
-										<input type="text" placeholder="Username" />
-										<i class="la la-user"></i>
-									</div>
-									<div class="cfield">
-										<input type="password" placeholder="********" />
-										<i class="la la-key"></i>
-									</div>
-									<div class="cfield">
-										<input type="text" placeholder="Email" />
-										<i class="la la-envelope-o"></i>
-									</div>
-									<div class="dropdown-field">
-										<select data-placeholder="Please Select Specialism" class="chosen">
-											<option>Web Development</option>
-											<option>Web Designing</option>
-											<option>Art & Culture</option>
-											<option>Reading & Writing</option>
-										</select>
-									</div>
-									<div class="cfield">
-										<input type="text" placeholder="Phone Number" />
-										<i class="la la-phone"></i>
-									</div>
-									<button type="submit">Créer votre compte</button>
-									<button id="button_register_to_connexion" type="submit">Connectez-vous</button>
-
-								</form> -->
 									<form>
 										<div class="cfield">
 											<input id="firstname_create_account" type="text" placeholder="Prénom" />
@@ -115,42 +86,14 @@
 										</div>
 									</div>
 								</div>
-							</div><!-- SIGNUP POPUP -->
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 
-		<footer>
-			<div class="block">
-				<div class="container">
-					<div class="row">
-						<div class="col-lg-3 column">
-							<div class="widget">
-								<div class="about_widget">
-									<div class="logo">
-										<a href="#" title=""><img src="http://placehold.it/178x40" alt="" /></a>
-									</div>
-									<span>Collin Street West, Victor 8007, Australia.</span>
-									<span>+1 246-345-0695</span>
-									<span>info@jobhunt.com</span>
-									<div class="social">
-										<a href="#" title=""><i class="fa fa-facebook"></i></a>
-										<a href="#" title=""><i class="fa fa-twitter"></i></a>
-										<a href="#" title=""><i class="fa fa-linkedin"></i></a>
-										<a href="#" title=""><i class="fa fa-pinterest"></i></a>
-										<a href="#" title=""><i class="fa fa-behance"></i></a>
-									</div>
-								</div><!-- About Widget -->
-							</div>
-						</div>
-
-						<div class="bottom-line">
-							<span>© 2018 Jobhunt All rights reserved. Design by Creative Layers</span>
-						</div>
-		</footer>
-
+		<%- include bottom_footer.ejs -%>
 	</div>
 
 

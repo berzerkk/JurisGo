@@ -1,10 +1,49 @@
 $(document).on('ready', function () {
-        // checkIfAlreadyConnected();
+        checkIfAlreadyConnected();
         submitCandidateProfile();
         DownloadPicture();
         getLocation();
-
+        getUser();
+        getCandidate();
 });
+
+function addUserView(user) {
+        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#home-welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' +capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        
+}
+
+function capitalize(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+function getUser() {
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/user',
+                data: { datas: {"user_token": getCookie("user_token")} },
+                dataType: 'json',
+                success: function (result) {
+                        addUserView(result.user);
+                }
+        });
+}
+
+function getCandidate() {
+                $.ajax({
+                        type: 'POST',
+                        url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                        data: { datas: {"user_token": getCookie("user_token")} },
+                        dataType: 'json',
+                        success: function (result) {
+                                console.log(result);
+                                
+                        }
+                });        
+}
+
 
 function getCookie(cname) {
         var name = cname + "=";
@@ -23,10 +62,9 @@ function getCookie(cname) {
 }
 
 function checkIfAlreadyConnected() {
-        if (getCookie("user_token") !== "")
-                window.location.pathname = '/home';
+        if (getCookie("user_token") === "")
+                window.location.pathname = '/login';
 }
-
 function setCookie(cname, cvalue, exdays) {
         var d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

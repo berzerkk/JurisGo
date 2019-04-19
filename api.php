@@ -106,7 +106,7 @@
 			return $token;
 		}
 		
-		private function check_token(){
+		private function check_token($datas){
 			if($this->get_request_method() != "POST"){ 
 				$data["status"]= false;
 				$this->response($this->json($data),400); 
@@ -120,38 +120,37 @@
 				$this->response($this->json($data),403);
 			}
 			*/
-			$sql = "SELECT * FROM users_token WHERE token='".$datas["token"]."' AND player_id='".$datas["player_id"]."'";
+			$sql = "SELECT * FROM users_token WHERE token='".$datas["user_token"]."'";
 			$result = $this->db->query($sql);
-			$nb = $result->num_rows;
-			if($nb>0){
-				$user = $result->fetch_assoc();
-				$data["status"] = true;
-				$data["datas"] = $user;
-				if($user["role"] == "customer"){
-					$sql = "SELECT id, payment_choice, stripe_token FROM customer WHERE user='".$user["id"]."'";
-					$result = $this->db->query($sql);
-					$customer = $result->fetch_assoc();
-					$data["datas"]["customer"] = $customer["id"];
-					$data["datas"]["payment_choice"] = $customer["payment_choice"];
-					$data["datas"]["stripe_token"] = $customer["stripe_token"];
-				}
-				if($user["role"] == "messenger"){
-					$sql = "SELECT id FROM messenger WHERE user='".$user["id"]."'";
-					$result = $this->db->query($sql);
-					$messenger = $result->fetch_assoc();
-					$data["datas"]["messenger"] = $messenger["id"];
-				}
-				$sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','".$user["id"]."','token ".$datas["token"]." est valide')";
-				$this->db->query($sql_log);
-			}
-			else{
-				$data["status"] = false;
-				$data["message"] = "invalid token";
-				$sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','','token est invalide')";
-				$this->db->query($sql_log);
-				//$this->response('',401);
-			}
-			return $data;
+			$user = $result->fetch_assoc();
+			// if ($result->num_rows > 0) {
+			// 	$user = $result->fetch_assoc();
+			// 	$data["status"] = true;
+			// 	$data["datas"] = $user;
+			// 	if($user["type"] == "recruiter"){
+			// 		$sql = "SELECT id FROM customer WHERE user='".$user["id"]."'";
+			// 		$result = $this->db->query($sql);
+			// 		$customer = $result->fetch_assoc();
+			// 		$data["datas"]["id"] = $customer["id"];
+			// 		$data["datas"]["type"] = "recruiter";
+			// 	}
+			// 	if($user["type"] == "candidate"){
+			// 		$sql = "SELECT id FROM messenger WHERE user='".$user["id"]."'";
+			// 		$result = $this->db->query($sql);
+			// 		$messenger = $result->fetch_assoc();
+			// 		$data["datas"]["id"] = $messenger["id"];
+			// 		$data["datas"]["type"] = $messenger["candidate"];
+			// 	}
+			// 	// $sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','".$user["id"]."','token ".$datas["token"]." est valide')";
+			// 	// $this->db->query($sql_log);
+			// } else{
+			// 	$data["status"] = false;
+			// 	$data["message"] = "invalid token";
+			// 	$sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','','token est invalide')";
+			// 	$this->db->query($sql_log);
+			// 	//$this->response('',401);
+			// }
+			return $user["user"];
 		}
 		
 		private function player_add(){
@@ -267,21 +266,29 @@
 			$this->response($this->json($data),200);
 		}
 		
-		private function user(){
-			$token = $this->check_token();
-			
-			$sql = "SELECT * FROM users WHERE id='".$_GET['id']."'";
-			$result = $this->db->query($sql);
-			$i = 0;
-			while($row = $result->fetch_assoc()){
-     			$json[$i] = $row;
-				$json[$i] = array_map('utf8_encode', $json[$i]);
-     			$i++;
+		/* POST user {user_token} */ 
+		private function user() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
 			}
-			$data["datas"] = $json;
-			$data["status"] = true;
-			$data["sql"] = $sql;
-			$this->response($this->json($data),200);
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			if (empty($user_id)) {
+				$data["status"] = false;
+			    $data["message"] = "unknown token";
+			    $this->response($this->json($data),400);
+			}
+			$sql = "SELECT * FROM users WHERE id='".$user_id."'";
+			$result = $this->db->query($sql);
+			$data["user"] = $result->fetch_assoc();
+			$this->response($this->json($data), 200);
 		}
 		
 		private function user_add(){
@@ -330,10 +337,12 @@
 			$result = $this->db->query($sql);
 			if ($result) {
 				$id = $this->db->insert_id;
-				$_POST["id"] = $id;
 				// On ajoute aussi le candidat ou recruiteur
-				if($type == 'candidate'){
-					$this->candidate_add($datas);
+				if($type == "candidate"){
+					$sql = "INSERT INTO candidates (user,email_alias,status)
+					VALUES ('".$id."','".$email."','inactive')";
+					$result = $this->db->query($sql);
+					$data["candidate"] = $result;
 				}
 				if($type == 'recruiter'){
 					$this->recruiter_add($datas);
@@ -535,28 +544,23 @@
 		}
 		
 		private function candidate(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			
-			if(empty($datas["id"])){
-				$data["status"]= false;
-				$data["message"]= "id empty";
-				$this->response($this->json($data),400);
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
 			}
-			$sql = "SELECT * FROM candidates WHERE id='".$datas["id"]."'";
+			$user_id = $this->check_token($datas);
+			$data["kek"] = $user_id;
+			$sql = "SELECT * FROM candidates WHERE id='".$user_id."'";
 			$result = $this->db->query($sql);
-			$i = 0;
-			while($row = $result->fetch_assoc()){
-     			$json[$i] = $row;
-				$json[$i] = array_map('utf8_encode', $json[$i]);
-     			$i++;
-			}
-			$data["datas"] = $json;
+			$data["data"] = $result->fetch_assoc();
 			$data["status"] = true;
-			$data["sql"] = $sql;
-			$data["count"] = $result->num_rows;
 			$this->response($this->json($data),200);
 		}
 		
@@ -580,41 +584,55 @@
 			}
 		}
 		
-		private function candidate_add(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
-				$this->response($this->json($data),400); 
-			}
-			$user = $datas["id"];
-			$disponibility = 1;
-			$email_alias = generate_email_alias($datas["email"]);
-			$status = 'active';
-			$longitude = $datas["longitude"];
-			$latitude = $datas["latitude"];
-			$birthday = $datas["birthday"];
-			$age = (time() - strtotime($birthday)) / 3600 / 24 / 365;
-			switch($datas["genre"]){
-				case 'male':
-				if($age<30){$photo = AVATAR_YOUNG_MALE;}
-				if($age>29){$photo = AVATAR_MALE;}
-				if($age>60){$photo = AVATAR_OLD_MALE;}
-				break;
-				case 'female':
-				if($age<30){$photo = AVATAR_YOUNG_FEMALE;}
-				if($age>29){$photo = AVATAR_FEMALE;}
-				if($age>60){$photo = AVATAR_OLD_FEMALE;}
-				break;
-				default:
-				$photo = AVATAR_NEUTRE;
-			}
-			//$photo = $datas["photo"];
-			$address = $datas["address"];
-			$city = $datas["city"];
-			$sql = "INSERT INTO candidates (user,photo,disponibility,email_alias,status,longitude,latitude,birthday,address,city)
-			VALUES ('".$user."','".$photo."','".$disponibility."','".$email_alias."','active','".$longitude."','".$latitude."','".$birthday."','".$address."','".$city."')";
-			$result = $this->db->query($sql);
-			return $result;
-		}
+		// private function candidate_add($datas, $id){
+		// 	if($this->get_request_method() != "POST"){ 
+		// 		$data["status"]= false;
+		// 		$this->response($this->json($data),400); 
+		// 	}
+		// 	$user = $id;
+		// 	$email = $datas["email"];
+		// 	$birthday = $datas["birthday"];
+		// 	$sql = "INSERT INTO candidates (user,email_alias,status,birthday)
+		// 	VALUES ('".$user."','".$email."','inactive','".$birthday."')";
+		// 	$result = $this->db->query($sql);
+		// 	return $result;
+		// }
+
+		// private function candidate_add($datas){
+		// 	if($this->get_request_method() != "POST"){ 
+		// 		$data["status"]= false;
+		// 		$this->response($this->json($data),400); 
+		// 	}
+		// 	$user = $datas["id"];
+		// 	$disponibility = 1;
+		// 	$email_alias = generate_email_alias($datas["email"]);
+		// 	$status = 'active';
+		// 	$longitude = $datas["longitude"];
+		// 	$latitude = $datas["latitude"];
+		// 	$birthday = $datas["birthday"];
+		// 	// $age = (time() - strtotime($birthday)) / 3600 / 24 / 365;
+		// 	// switch($datas["genre"]){
+		// 	// 	case 'male':
+		// 	// 	if($age<30){$photo = AVATAR_YOUNG_MALE;}
+		// 	// 	if($age>29){$photo = AVATAR_MALE;}
+		// 	// 	if($age>60){$photo = AVATAR_OLD_MALE;}
+		// 	// 	break;
+		// 	// 	case 'female':
+		// 	// 	if($age<30){$photo = AVATAR_YOUNG_FEMALE;}
+		// 	// 	if($age>29){$photo = AVATAR_FEMALE;}
+		// 	// 	if($age>60){$photo = AVATAR_OLD_FEMALE;}
+		// 	// 	break;
+		// 	// 	default:
+		// 	// 	$photo = AVATAR_NEUTRE;
+		// 	// }
+		// 	//$photo = $datas["photo"];
+		// 	$address = $datas["address"];
+		// 	$city = $datas["city"];
+		// 	$sql = "INSERT INTO candidates (user,photo,disponibility,email_alias,status,longitude,latitude,birthday,address,city)
+		// 	VALUES ('".$user."','".$photo."','".$disponibility."','".$email_alias."','active','".$longitude."','".$latitude."','".$birthday."','".$address."','".$city."')";
+		// 	$result = $this->db->query($sql);
+		// 	return $result;
+		// }
 		
 		private function candidate_edit(){
 			if($this->get_request_method() != "POST"){ 
@@ -664,11 +682,19 @@
 		}
 		
 		private function candidate_skills(){
-			if($this->get_request_method() != "GET"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "SELECT comment FROM candidates_skills WHERE candidate='".$_GET["candidate"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates_skills WHERE candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			$i = 0;
 			while($row = $result->fetch_assoc()){
@@ -681,14 +707,26 @@
 			$data["sql"] = $sql;
 			$data["count"] = $result->num_rows;
 			$this->response($this->json($data),200);
-			
 		}
 		
 		private function candidate_skill_add(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "INSERT INTO candidates_skills (name,percentage,candidate)
+			VALUES ('".$datas["name"]."','".$datas["percentage"]."','".$user_id."')";
+			$result = $this->db->query($sql);
+			$data["status"] = true;		
+			$this->response($this->json($data),200);
 		}
 		
 		private function candidate_skill_update(){
@@ -709,11 +747,19 @@
 		}
 		
 		private function candidate_skill_delete(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "DELETE FROM candidates_skills WHERE id='".$_GET["id"]."' AND candidate='".$_GET["candidate"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "DELETE FROM candidates_skills WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			if($result){
 				$data["status"] = true;

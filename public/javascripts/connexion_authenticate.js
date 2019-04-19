@@ -1,5 +1,6 @@
 $(document).on('ready', function () {
         checkIfAlreadyConnected();
+        $('#account-popup-area').css('visibility', 'visible');
         $('#error_connexion').hide();
         submitButtonRegister();
         sumbitButtonConnexion();
@@ -23,10 +24,12 @@ function submitButtonRegister() {
                         email: $("#mail_create_account").val(),
                         password: $("#password_create_account").val(),
                         genre: $("#genre_create_account").val(),
-                        type: $("#candidates_create_account").hasClass("active") ? "candidate"
-                                : $("#employer_create_account").hasClass("active") ? "employer" : ""
+                        type: $("#candidate_create_account").hasClass("active") ? "candidate"
+                                : $("#employer_create_account").hasClass("active") ? "recruiter" : ""
                 }
-                if (data.type === "") {
+                console.log(data);
+                
+                if (data.type === "") { // ajouter les autres
                         $("#error_connexion").show();
                         return;
                 }
@@ -36,8 +39,9 @@ function submitButtonRegister() {
                         data: { datas: data },
                         dataType: 'json',
                         success: function (result) {
-                                if (res.status) {
-                                        window.location.pathname = '/login'
+                                console.log(result);
+                                if (result.status) {
+                                        // window.location.pathname = '/login'
                                 } else {
                                         $('#error_connexion').show();
                                 }
@@ -45,6 +49,8 @@ function submitButtonRegister() {
                 });
         });
 }
+
+
 
 function sumbitButtonConnexion() {
         $("#button_connexion").on("click", (e) => {
