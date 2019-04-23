@@ -7,11 +7,23 @@ $(document).on('ready', function () {
     getSkills();
     addStudies();
     getStudies();
+    addExperience();
+    getExperience();
 });
+
+jQuery.fn.justtext = function() {
+  
+	return $(this)	.clone()
+			.children()
+			.remove()
+			.end()
+			.text();
+
+};
 
 function addUserView(user) {
     $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-    $("#home-welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
 
@@ -49,6 +61,116 @@ function getCookie(cname) {
     return "";
 }
 
+
+
+
+
+function getExperience() {
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/candidate/experiences',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (result) {
+            $("#candidate-resume-experience").html("");
+            for (elem in result.datas) {
+                $("#candidate-resume-experience").append('<div id="experience-element-' + result.datas[elem].id + '" class="edu-history style2">\
+                <i></i>\
+                <div class="edu-hisinfo">\
+                    <h3 id="resume-experience-company-value-' + result.datas[elem].id + '">' + result.datas[elem].company + '<span id="resume-experience-function-value-' + result.datas[elem].id + '">' +  result.datas[elem].function + '</span></h3>\
+                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                    <p id="resume-experience-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
+                </div>\
+                <ul class="action_job">\
+                <li><span>Edit</span><a><i class="la la-pencil" onclick="updateExperience(this.id)" id="' + result.datas[elem].id + '"></i></a>\
+                </li>\
+                <li><span>Delete</span><a><i\
+                            class="la la-trash-o" onclick="removeExperience(this.id)" id="' + result.datas[elem].id + '"></i></a></li>\
+                </ul>\
+                </div>');
+                }
+            }
+        });
+}
+
+function addExperience() {
+    $("#popup-add-experience").on("click", (e) => {
+        var data = {
+            user_token: getCookie("user_token"),
+            date_end: $("#popup-input-dateend-experience").val(),
+            date_start: $("#popup-input-datestart-experience").val(),
+            comment: $("#popup-input-comment-experience").val(),
+            function: $("#popup-input-function-experience").val(),
+            company: $("#popup-input-company-experience").val(),
+        };
+        console.log(data);
+        
+        $.ajax({
+            type: 'POST',
+            url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/add',
+            data: { datas: data },
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+                getExperience();
+            }
+        });
+    });
+}
+
+function updateExperience(elem_id) {
+    $("#popup-update-experience").css("visibility", "visible");
+    $("#popup-add-experience").css("visibility", "hidden");
+    $("#overlay-add-experiences").css("visibility", "visible");
+     $("#popup-input-function-experience").val($("#resume-experience-function-value-" + elem_id).text());
+     $("#popup-input-datestart-experience").val($("#resume-experience-date-value-" + elem_id).text().split("-").reverse().join("/")); // TODO FIX
+     $("#popup-input-dateend-experience").val($("#resume-experience-date-value-" + elem_id).text().split("-").reverse().join("/"));
+     $("#popup-input-company-experience").val($("#resume-experience-company-value-" + elem_id).justtext());
+     $("#popup-input-comment-experience").val($("#resume-experience-comment-value-" + elem_id).text());
+     $("#popup-update-experience").unbind().on("click", (e) => {
+        var data = {
+            user_token: getCookie("user_token"),
+            date_end: $("#popup-input-dateend-experience").val(),
+            date_start: $("#popup-input-datestart-experience").val(),
+            comment: $("#popup-input-comment-experience").val(),
+            function: $("#popup-input-function-experience").val(),
+            company: $("#popup-input-company-experience").val(),
+            id: elem_id
+        };
+         console.log(data);
+              $.ajax({
+                  type: 'POST',
+                  url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/update',
+                  data: { datas: data },
+                  dataType: 'json',
+                  success: function (result) {
+                      console.log(result);
+                      $("#resume-experience-company-value-" + elem_id)[0].firstChild.data = data.company;
+                      $("#resume-experience-function-value-" + elem_id).text(data.function);
+                      $("#resume-experience-comment-value-" + elem_id).text(data.comment);
+                      $("#resume-experience-date-value-" + elem_id).text(data.date_start + " - " + data.date_end);
+                  }
+              });
+     });
+}
+
+function removeExperience(elem_id) {
+    var data = {
+        user_token: getCookie("user_token"),
+        id: elem_id
+    };
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/delete',
+        data: { datas: data },
+        dataType: 'json',
+        success: function (result) {
+            $("#experience-element-" + elem_id).remove();
+        }
+    });
+}
+
+
 function getStudies() {
     $.ajax({
         type: 'POST',
@@ -57,8 +179,6 @@ function getStudies() {
         dataType: 'json',
         success: function (result) {
             $("#candidate-resume-studies").html("");
-            console.log(result);
-
             for (elem in result.datas) {
                 $("#candidate-resume-studies").append('<div id="studie-element-' + result.datas[elem].id + '" class="edu-history">\
                 <i class="la la-graduation-cap"></i>\
@@ -105,8 +225,6 @@ function addStudies() {
 }
 
 function removeStudies(elem_id) {
-    console.log("test");
-
     var data = {
         user_token: getCookie("user_token"),
         id: elem_id

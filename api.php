@@ -556,8 +556,7 @@
 			    $this->response($this->json($data),400);
 			}
 			$user_id = $this->check_token($datas);
-			$data["kek"] = $user_id;
-			$sql = "SELECT * FROM candidates WHERE id='".$user_id."'";
+			$sql = "SELECT * FROM candidates WHERE user='".$user_id."'";
 			$result = $this->db->query($sql);
 			$data["data"] = $result->fetch_assoc();
 			$data["status"] = true;
@@ -635,50 +634,33 @@
 		// }
 		
 		private function candidate_edit(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$user = $datas["id"];
-			$disponibility = 1;
-			$email_alias = generate_email_alias($datas["email"]);
-			$status = 'active';
-			$longitude = $datas["longitude"];
-			$latitude = $datas["latitude"];
-			$birthday = $datas["birthday"];
-			$age = (time() - strtotime($birthday)) / 3600 / 24 / 365;
-			$photo = $datas["photo"];
-			if(empty($photo)){
-				switch($datas["genre"]){
-					case 'male':
-					if($age<30){$photo = AVATAR_YOUNG_MALE;}
-					if($age>29){$photo = AVATAR_MALE;}
-					if($age>60){$photo = AVATAR_OLD_MALE;}
-					break;
-					case 'female':
-					if($age<30){$photo = AVATAR_YOUNG_FEMALE;}
-					if($age>29){$photo = AVATAR_FEMALE;}
-					if($age>60){$photo = AVATAR_OLD_FEMALE;}
-					break;
-					default:
-					$photo = AVATAR_NEUTRE;
-				}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
 			}
-			$address = $datas["address"];
-			$city = $datas["city"];
+			$user_id = $this->check_token($datas);
 			$sql = "UPDATE candidates
-			SET user='".$user."',
-			photo='".$photo."',
-			disponibility='".$disponibility."',
-			email_alias='".$email_alias."',
-			status='".$status."',
-			longitude='".$longitude."',
-			latitude='".$latitude."',
-			birthday='".$birthday."',
-			city='".$city."',
-			address='".$address."'
-			WHERE id='".$datas["id"]."'";
+			SET photo='".$datas["photo"]."',
+			disponibility='".$datas["disponibility"]."',
+			email_alias='".$datas["email"]."',
+			status='".$datas["status"]."',
+			longitude='".$datas["longitude"]."',
+			latitude='".$datas["latitude"]."',
+			birthday='".$datas["birthday"]."',
+			city='".$datas["city"]."',
+			address='".$datas["address"]."'
+			WHERE user='".$user_id."'";
 			$result = $this->db->query($sql);
+			$data["status"] = $result;
+			$data["sql"] = $sql;
+			$this->response($this->json($data),200);
 		}
 		
 		private function candidate_skills(){
@@ -886,11 +868,19 @@
 		}
 		
 		private function candidate_experiences(){
-			if($this->get_request_method() != "GET"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "SELECT date_start,date_end,comment,company FROM candidates_experiences WHERE candidate='".$_GET["candidate"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates_experiences WHERE candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			$i = 0;
 			while($row = $result->fetch_assoc()){
@@ -903,72 +893,68 @@
 			$data["sql"] = $sql;
 			$data["count"] = $result->num_rows;
 			$this->response($this->json($data),200);
-			
 		}
 		
 		private function candidate_experience_add(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$date_start = $datas["date_start"];
-			$date_end = $datas["date_end"];
-			$datetime1 = new DateTime($date_start);
-    		$datetime2 = new DateTime($date_end);
-    		$interval = $datetime1->diff($datetime2);
-    		$duration= $interval->format('%m'); //Retourne le nombre de mois
-			$comment = $datas["comment"];
-			$company = $datas["company"];
-			$sql = "INSERT INTO candidates_experiences (date_start,date_end,duration,comment,company,candidate)
-			VALUES ('".$date_start."','".$date_end."','".$duration."','".$comment."','".$company."','".$datas["candidate"]."')";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "INSERT INTO candidates_experiences (date_start,date_end,comment,company,function,candidate)
+			VALUES ('".$datas["date_start"]."','".$datas["date_end"]."','".$datas["comment"]."','".$datas["company"]."','".$datas["function"]."','".$user_id."')";
 			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$this->response($this->json($data),200);
-			}
-			else{
-				$data["status"] = false;
-				$this->response($this->json($data),200);
-			}
+			$data["status"] = $result;
+			$this->response($this->json($data),200);
 		}
 		
 		private function candidate_experience_update(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$date_start = $datas["date_start"];
-			$date_end = $datas["date_end"];
-			$datetime1 = new DateTime($date_start);
-    		$datetime2 = new DateTime($date_end);
-    		$interval = $datetime1->diff($datetime2);
-    		$duration= $interval->format('%m'); //Retourne le nombre de mois
-			$comment = $datas["comment"];
-			$company = $datas["company"];
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
 			$sql = "UPDATE candidates_experiences 
 			SET comment='".$this->db->real_escape_string($datas["comment"])."',
-			date_start='".$date_start."',
-			date_end='".$date_end."',
-			duration='".$duration."',
-			company='".$company."'
-			WHERE id='".$_GET["id"]."' AND candidate='".$_GET["candidate"]."'";
+			date_start='".$datas["date_start"]."',
+			date_end='".$datas["date_end"]."',
+			company='".$datas["company"]."',
+			function='".$datas["function"]."'
+			WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
 			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$this->response($this->json($data),200);
-			}
-			else{
-				$data["status"] = false;
-				$this->response($this->json($data),200);
-			}
+			$data["sql"] = $sql;
+			$data["status"] = $result;
+			$this->response($this->json($data),200);
 		}
 		
 		private function candidate_experience_delete(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "DELETE FROM candidates_experiences WHERE id='".$datas["id"]."' AND candidate='".$datas["candidate"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "DELETE FROM candidates_experiences WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			if($result){
 				$data["status"] = true;

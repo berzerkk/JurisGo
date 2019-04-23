@@ -7,11 +7,12 @@ $(document).on('ready', function () {
         getCandidate();
 });
 
-function addUserView(user) {
+function addUserView(user, candidate) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#home-welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' +capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#image-user-sidebar").attr('src', candidate.photo);
+        $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' +capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         
 }
 
@@ -26,7 +27,15 @@ function getUser() {
                 data: { datas: {"user_token": getCookie("user_token")} },
                 dataType: 'json',
                 success: function (result) {
-                        addUserView(result.user);
+                        $.ajax({
+                                type: 'POST',
+                                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                                data: { datas: {"user_token": getCookie("user_token")} },
+                                dataType: 'json',
+                                success: function (result2) {
+                                        addUserView(result.user, result2.data);
+                                }
+                        });
                 }
         });
 }
@@ -37,9 +46,12 @@ function getCandidate() {
                         url: 'http://jurisgo.petitesaffiches.fr/candidate',
                         data: { datas: {"user_token": getCookie("user_token")} },
                         dataType: 'json',
-                        success: function (result) {
+                        success: function (result) { 
                                 console.log(result);
-                                
+                                $("#candidate_profile_picture").attr('src', result.data.photo);
+                                $("#candidate_profile_email").val(result.data.email_alias);
+                                $("#candidate_profile_phone").val(result.data.phone);
+                                $("#candidate_profile_location").val(result.data.address);
                         }
                 });        
 }
@@ -77,12 +89,14 @@ function getLocation() {
                 e.preventDefault();
                 $("#candidate_profile_button_location").addClass("fa-spin");
                 navigator.geolocation.getCurrentPosition( (position)=> {
+                        $("#longitude").text(position.coords.longitude);
+                        $("#latitude").text(position.coords.latitude);
+
                         $.ajax({
                                 type: 'GET',
                                 url: `https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}&zoom=18&addressdetails=1`,
                                 success: function (result) {
-                                        console.log(result.display_name)
-                                        $("#candidate_profile_location").val(result.display_name);
+                                        $("#candidate_profile_location").val(result.address.house_number + " " + result.address.road + " " + result.address.suburb + " " + result.address.city + " " + result.address.postcode);
                                         $("#candidate_profile_button_location").removeClass("fa-spin");
                                 }
                         });
@@ -106,15 +120,19 @@ function submitCandidateProfile() {
         $("#candidate_profile_button").on("click", (e) => {
                 e.preventDefault();
                 var data = {
-                        firstname: $("#candidate_profile_firstname").val(),
+                        user_token: getCookie("user_token"),
+                        photo: $("#candidate_profile_picture").attr('src'),
+                        firstname: $("#candidate_profile_firstname").val(), // TODO ADD CHAMP ON USER DB
                         lastname: $("#candidate_profile_lastname").val(),
                         email: $("#candidate_profile_email").val(),
                         phone: $("#candidate_profile_phone").val(),
-                        freedom: $("#candidate_profile_freedom").val(),
-                        birthdate: $("#candidate_profile_birthdate").val(),
-                        location: $("#candidate_profile_location").val() // ADD tags
+                        disponibility: $("#candidate_profile_freedom").val(),
+                        birthdate: $("#candidate_profile_birthdate").val().split("-").reverse().join("/"),
+                        address: $("#candidate_profile_location").val(), // ADD tags
+                        status: "active",
+                        longitude: $("#longitude").text(),
+                        latitude: $("#latitude").text(),
                 };
-                console.log(data);
                 if (data.firstname === "")
                         $("#error_candidate_profile_firstname").css("visibility", "visible");
                 if (data.lastname === "")
@@ -123,15 +141,21 @@ function submitCandidateProfile() {
                         $("#error_candidate_profile_email").css("visibility", "visible");
                 if (data.phone === "")
                         $("#error_candidate_profile_phone").css("visibility", "visible");
-                if (data.freedom === "")
+                if (data.disponibility === "")
                         $("#error_candidate_profile_freedom").css("visibility", "visible");
                 if (data.birthdate === "")
                         $("#error_candidate_profile_birthdate").css("visibility", "visible");
-                if (data.location === "")
+                if (data.address === "")
                         $("#error_candidate_profile_location").css("visibility", "visible");
-                // if (data.tags === "")
-                //         $("#error_candidate_profile_tags").css("visibility", "visible");
-
-
+                console.log(data);
+                $.ajax({
+                        type: 'POST',
+                        url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
+                        data: { datas: data },
+                        dataType: 'json',
+                        success: function (result) {
+                                console.log(result);
+                        }
+                });        
         });
 }
