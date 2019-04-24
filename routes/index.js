@@ -30,22 +30,12 @@ router.get('/candidate_profile', function(req, res, next) {
   res.render('candidates_profile');
 });
 
+router.get('/recruiter_profile', function(req, res, next) {
+  res.render('recruiters_profile');
+});
 
-
-// router.get('/jobs_add', function(req, res, next) {
-//   res.render('employer_post_new')
-// });
-
-// router.get('/matching', function(req, res, next) {
-//   res.render('candidates_list2');
-// });
-
-// router.get('/order', function(req, res, next) {
-//   res.render('employer_transactions');
-// });
-
-// router.get('/order_pack', function(req, res, next) {
-//   res.render('pricing');
-// });
+router.get('/recruiter_jobs', function(req, res, next) {
+  res.render('recruiters_jobs');
+});
 
 module.exports = router;

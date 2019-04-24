@@ -9,7 +9,16 @@ $(document).on('ready', function () {
     getStudies();
     addExperience();
     getExperience();
+    logOut();
 });
+
+function logOut() {
+    $("#sidebar-logout").on("click", (e) => {
+            e.preventDefault();
+            setCookie("user_token", "", 0)                
+            document.location.reload(true);
+        });
+}
 
 jQuery.fn.justtext = function() {
   
@@ -21,11 +30,12 @@ jQuery.fn.justtext = function() {
 
 };
 
-function addUserView(user) {
+function addUserView(user, candidate) {
     $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#image-user-sidebar").attr('src', candidate.photo);
     $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-    $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-    $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+    $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
 
 }
 
@@ -35,13 +45,21 @@ function capitalize(string) {
 
 function getUser() {
     $.ajax({
-        type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/user',
-        data: { datas: { "user_token": getCookie("user_token") } },
-        dataType: 'json',
-        success: function (result) {
-            addUserView(result.user);
-        }
+            type: 'POST',
+            url: 'http://jurisgo.petitesaffiches.fr/user',
+            data: { datas: { "user_token": getCookie("user_token") } },
+            dataType: 'json',
+            success: function (result) {
+                    $.ajax({
+                            type: 'POST',
+                            url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                            data: { datas: { "user_token": getCookie("user_token") } },
+                            dataType: 'json',
+                            success: function (result2) {
+                                    addUserView(result.user, result2.data);
+                            }
+                    });
+            }
     });
 }
 
@@ -61,10 +79,6 @@ function getCookie(cname) {
     return "";
 }
 
-
-
-
-
 function getExperience() {
     $.ajax({
         type: 'POST',
@@ -78,7 +92,7 @@ function getExperience() {
                 <i></i>\
                 <div class="edu-hisinfo">\
                     <h3 id="resume-experience-company-value-' + result.datas[elem].id + '">' + result.datas[elem].company + '<span id="resume-experience-function-value-' + result.datas[elem].id + '">' +  result.datas[elem].function + '</span></h3>\
-                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start.split("-").reverse().join("/") + ' - ' + result.datas[elem].date_end.split("-").reverse().join("/") + '</i>\
                     <p id="resume-experience-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
                 </div>\
                 <ul class="action_job">\
@@ -123,8 +137,8 @@ function updateExperience(elem_id) {
     $("#popup-add-experience").css("visibility", "hidden");
     $("#overlay-add-experiences").css("visibility", "visible");
      $("#popup-input-function-experience").val($("#resume-experience-function-value-" + elem_id).text());
-     $("#popup-input-datestart-experience").val($("#resume-experience-date-value-" + elem_id).text().split("-").reverse().join("/")); // TODO FIX
-     $("#popup-input-dateend-experience").val($("#resume-experience-date-value-" + elem_id).text().split("-").reverse().join("/"));
+     $("#popup-input-datestart-experience").val($("#resume-experience-date-value-" + elem_id).text().split(" ")[0]);
+     $("#popup-input-dateend-experience").val($("#resume-experience-date-value-" + elem_id).text().split(" ")[2]);
      $("#popup-input-company-experience").val($("#resume-experience-company-value-" + elem_id).justtext());
      $("#popup-input-comment-experience").val($("#resume-experience-comment-value-" + elem_id).text());
      $("#popup-update-experience").unbind().on("click", (e) => {
@@ -184,7 +198,7 @@ function getStudies() {
                 <i class="la la-graduation-cap"></i>\
                 <div class="edu-hisinfo">\
                     <h3 id="resume-studies-diploma-value-' + result.datas[elem].id + '">' + result.datas[elem].diploma + '</h3>\
-                    <i id="resume-studies-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                    <i id="resume-studies-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start.split("-").reverse().join("/") + ' - ' + result.datas[elem].date_end.split("-").reverse().join("/") + '</i>\
                     <span id="resume-studies-school-value-' + result.datas[elem].id + '">' + result.datas[elem].school + '<i id="resume-studies-branch-value-' + result.datas[elem].id + '">' + result.datas[elem].branch + '</i></span>\
                     <p id="resume-studies-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
                 </div>\
@@ -246,8 +260,8 @@ function updateStudies(elem_id) {
     $("#popup-add-studies").css("visibility", "hidden");
     $("#overlay-add-education").css("visibility", "visible");
     $("#popup-input-diploma-studies").val($("#resume-studies-diploma-value-" + elem_id).text());
-    $("#popup-input-datestart-studies").val($("#resume-studies-date-value-" + elem_id).text().split("-").reverse().join("/")); // TODO FIX
-    $("#popup-input-dateend-studies").val($("#resume-studies-date-value-" + elem_id).text().split("-").reverse().join("/"));
+    console.log($("#resume-studies-date-value-" + elem_id).text().split(" ")[0]);
+w
     $("#popup-input-school-studies").val($("#resume-studies-school-value-" + elem_id).text());
     $("#popup-input-branch-studies").val($("#resume-studies-branch-value-" + elem_id).text());
     $("#popup-input-comment-studies").val($("#resume-studies-comment-value-" + elem_id).text());
@@ -262,14 +276,12 @@ function updateStudies(elem_id) {
             branch: $("#popup-input-branch-studies").val(),
             id: elem_id
         };
-        console.log(data);
              $.ajax({
                  type: 'POST',
                  url: 'http://jurisgo.petitesaffiches.fr/candidate/studie/update',
                  data: { datas: data },
                  dataType: 'json',
                  success: function (result) {
-                     console.log(result);
                      $("#resume-studies-diploma-value-" + elem_id).text(data.diploma);
                      $("#resume-studies-branch-value-" + elem_id).text(data.branch);
                      $("#resume-studies-school-value-" + elem_id).text(data.school);

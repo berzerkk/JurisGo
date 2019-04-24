@@ -29,7 +29,7 @@ function submitButtonRegister() {
                 }
                 console.log(data);
                 
-                if (data.type === "") { // ajouter les autres
+                if (data.type === "") {
                         $("#error_connexion").show();
                         return;
                 }

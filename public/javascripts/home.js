@@ -1,29 +1,72 @@
 $(document).on('ready', function () {
         checkIfAlreadyConnected();
-        getUser();
+        getTypeUser();
+        logOut();
 });
 
-function addUserView(user) {
-        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#home-welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' +capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="http://placehold.it/50x50" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+function logOut() {
+        $("#sidebar-logout").on("click", (e) => {
+                e.preventDefault();
+                setCookie("user_token", "", 0)                
+                document.location.reload(true);
+            });
+}
 
+function addUserView(user, candidate) {
+        
+        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+        if (candidate.photo)
+                $("#image-user-sidebar").attr('src', candidate.photo);
+        $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+
+}
+
+function getTypeUser() {
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                data: { datas: { "user_token": getCookie("user_token") } },
+                dataType: 'json',
+                success: function (result) {
+                        if (result.type === "candidate")
+                                getCandidate();
+                        else if (result.type === "recruiter")
+                                getRecruiter();
+                }
+        });
+}
+
+function getRecruiter() {
+        // $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+        // if (candidate.photo)
+        //         $("#image-user-sidebar").attr('src', candidate.photo);
+        // $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + '" alt="" /><i class="la la-bars"></i>');
+        $("#header-user-name-responsive").html('<img src="' + '" alt="" /><i class="la la-bars"></i>');
 }
 
 function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
 
-function getUser() {
+function getCandidate() {
         $.ajax({
                 type: 'POST',
                 url: 'http://jurisgo.petitesaffiches.fr/user',
-                data: { datas: {"user_token": getCookie("user_token")} },
+                data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
-                        console.log(result);
-                        addUserView(result.user);
+                        $.ajax({
+                                type: 'POST',
+                                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                                data: { datas: { "user_token": getCookie("user_token") } },
+                                dataType: 'json',
+                                success: function (result2) {
+                                        addUserView(result.user, result2.data);
+                                }
+                        });
                 }
         });
 }

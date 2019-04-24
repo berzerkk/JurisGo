@@ -240,6 +240,40 @@
 			$email_alias = $email;
 			return $email_alias;
 		}
+
+		private function user_type() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates WHERE user='".$user_id."'";
+			$result = $this->db->query($sql);
+			if ($result->num_rows >= 1) {
+				$data["type"] = "candidate";
+				$data["status"] = true;
+				$this->response($this->json($data),200);
+				return;
+			}
+			$sql = "SELECT * FROM recruiters WHERE user='".$user_id."'";
+			$result = $this->db->query($sql);
+			if ($result->num_rows >= 1) {
+				$data["type"] = "recruiter";
+				$data["status"] = true;
+				$this->response($this->json($data),200);
+				return;
+			}
+			$data["type"] = "";
+			$data["status"] = false;
+			$this->response($this->json($data),200);
+		}
 		
 		private function users(){
 			$token = $this->check_token();
@@ -342,12 +376,12 @@
 					$sql = "INSERT INTO candidates (user,email_alias,status)
 					VALUES ('".$id."','".$email."','inactive')";
 					$result = $this->db->query($sql);
-					$data["candidate"] = $result;
+				} else if($type == 'recruiter'){
+					$sql = "INSERT INTO recruiters (user,email,status)
+					VALUES ('".$id."','".$email."','inactive')";
+					$result = $this->db->query($sql);
 				}
-				if($type == 'recruiter'){
-					$this->recruiter_add($datas);
-				}
-				//$this->player_add($datas);
+				$data["sql"] = $sql;
 				$data["status"]= true;
 				$data["id"]= $id;
 				$this->response($this->json($data),200);
@@ -413,28 +447,60 @@
 		}
 		
 		private function recruiter(){
-			if($this->get_request_method() != "GET"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			
-			if(empty($datas["id"])){
-				$data["status"]= false;
-				$data["message"]= "id empty";
-				$this->response($this->json($data),400);
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
 			}
-			$sql = "SELECT * FROM recruiters WHERE id='".$_GET["id"]."'";
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM recruiters WHERE user='".$user_id."'";
 			$result = $this->db->query($sql);
-			$i = 0;
-			while($row = $result->fetch_assoc()){
-     			$json[$i] = $row;
-				$json[$i] = array_map('utf8_encode', $json[$i]);
-     			$i++;
-			}
-			$data["datas"] = $json;
+			$data["data"] = $result->fetch_assoc();
 			$data["status"] = true;
+			$this->response($this->json($data),200);
+		}
+
+				
+		private function recruiter_edit(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "UPDATE recruiters
+			SET photo='".$datas["photo"]."',
+			company='".$datas["company"]."',
+			since='".$datas["since"]."',
+			size='".$datas["size"]."',
+			comment='".$datas["comment"]."',
+			facebook='".$datas["facebook"]."',
+			linkedin='".$datas["linkedin"]."',
+			twitter='".$datas["twitter"]."',
+			google_plus='".$datas["google_plus"]."',
+			phone='".$datas["phone"]."',
+			email='".$datas["email"]."',
+			website='".$datas["website"]."',
+			address='".$datas["address"]."',
+			status='".$datas["status"]."',
+			longitude='".$datas["longitude"]."',
+			latitude='".$datas["latitude"]."'
+			WHERE user='".$user_id."'";
+			$result = $this->db->query($sql);
+			$data["status"] = $result;
 			$data["sql"] = $sql;
-			$data["count"] = $result->num_rows;
 			$this->response($this->json($data),200);
 		}
 		
