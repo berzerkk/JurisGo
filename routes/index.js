@@ -38,4 +38,8 @@ router.get('/recruiter_jobs', function(req, res, next) {
   res.render('recruiters_jobs');
 });
 
+router.get('/recruiter_jobs_add', function(req, res, next) {
+  res.render('recruiters_jobs_add');
+});
+
 module.exports = router;

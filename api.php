@@ -1304,11 +1304,19 @@
 		}
 		
 		private function job(){
-			if($this->get_request_method() != "GET"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "SELECT * FROM jobs WHERE id='".$_GET["id"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM jobs WHERE recruiter='".$user_id."'";
 			$result = $this->db->query($sql);
 			$i = 0;
 			while($row = $result->fetch_assoc()){
@@ -1325,53 +1333,24 @@
 		}
 		
 		private function job_add(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
-				$this->response($this->json($data),400); 
-			}
-			$title = $datas["title"];
-			$sector = $datas["sector"];
-			$contract = $datas["contract"];
-			$recruiter = $datas["recruiter"];
-			$date_start = $datas["date_start"];
-			if(empty($title)){
-				$data["status"]= false;
-				$data["message"]= "title empty";
-				$this->response($this->json($data),400);
-			}
-			if(empty($sector)){
-				$data["status"]= false;
-				$data["message"]= "sector empty";
-				$this->response($this->json($data),400);
-			}
-			if(empty($contract)){
-				$data["status"]= false;
-				$data["message"]= "contract empty";
-				$this->response($this->json($data),400);
-			}
-			if(empty($recruiter)){
-				$data["status"]= false;
-				$data["message"]= "recruiter empty";
-				$this->response($this->json($data),400);
-			}
-			if(empty($date_start)){
-				$date_start = date("Y-m-d H:i:s");
-			}
-			$sql = "INSERT INTO jobs 
-			(title,date_created,date_start,contract,sector,recruiter,status)
-			VALUES('".$title."','".date("Y-m-d H:i:s")."','".$date_start."','".$contract."','".$sector."','".$recruiter."','draft')
-			";
-			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$data["id"] = $this->db->insert_id;
+				if ($this->get_request_method() != "POST") {
+					$data["status"] = false;
+					$this->response($this->json($data),400); 
+				}
+				$datas = $_POST["datas"];
+				$token = $datas['user_token'];
+				if(empty($token)){
+					$data["status"] = false;
+					$data["message"] = "token empty";
+					$this->response($this->json($data),400);
+				}
+				$user_id = $this->check_token($datas);
+				$sql = "INSERT INTO jobs (title,description,date_created,date_start,contract,sector,recruiter,status,latitude,longitude,experience,skills,salary,departement,city)
+				VALUE ('".$data["title"]."','".$data["description"]."','".$data["date_created"]."','".$data["date_start"]."','".$data["contract"]."','".$data["sector"]."','".$data["recruiter"]."','".$data["status"]."','".$data["latitude"]."','".$data["longitude"]."','".$data["experience"]."','".$data["skills"]."','".$data["salary"]."','".$data["departement"]."','".$data["city"]."')";
+				$result = $this->db->query($sql);
+				$datas["sql"] = $sql;
+				$datas["status"] = $result;
 				$this->response($this->json($data),200);
-			}
-			else{
-				$data["status"]= false;
-				$data["message"] = $this->db->error();
-				$this->response($this->json($data),200);
-			}
 		}
 		
 		private function job_update(){
@@ -1429,21 +1408,22 @@
 		}
 		
 		private function job_delete(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "DELETE FROM jobs  WHERE id='".$datas["id"]."'";
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "DELETE FROM jobs WHERE id='".$datas["id"]."' AND recruiter='".$user_id."'";
 			$result = $this->db->query($sql);
-			if($result){
-				$data["status"]= true;
-				$this->response($this->json($data),200);
-			}
-			else{
-				$data["status"]= false;
-				$data["message"] = $this->db->error();
-				$this->response($this->json($data),200);
-			}
+			$data["status"] = $result;
+			$this->response($this->json($data),200);
 		}
 		
 		private function job_candidate_matching(){
