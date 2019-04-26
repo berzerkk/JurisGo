@@ -6793,7 +6793,7 @@ aside .widget.border:first-child {
     padding: 30px 30px;
 }
 
-.profile-form-edit > form button {
+.profile-form-edit > .test button {
     float: right;
     background: #ffffff;
     border: 2px solid #fb236a;
@@ -7757,6 +7757,19 @@ table.alrt-table tbody td > span {
     line-height: 33px;
     font-size: 13px;
 }
+.ui-helper-hidden-accessible{
+    display:none !important;
+}
+ul.ui-autocomplete
+{
+    position: absolute;
+    background: #ffffff!important;
+    width: 1220px!important;
+    z-index: 50!important;
+    border:2px solid #e8ecec;
+    padding: 14px 1px 14px 15px;
+}
+
 header.gradient{
     background: rgb(139,145,221);
     background: -moz-linear-gradient(45deg,  rgba(139,145,221,1) 0%, rgba(16,25,93,1) 71%, rgba(16,25,93,1) 100%);

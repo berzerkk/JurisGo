@@ -111,45 +111,9 @@
 				$data["status"]= false;
 				$this->response($this->json($data),400); 
 			}
-			/*
-			if(empty($datas["token"])){
-				$data["status"]= false;
-				$data["message"] = "token empty";
-				$sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','','token est vide')";
-				$this->db->query($sql_log);
-				$this->response($this->json($data),403);
-			}
-			*/
 			$sql = "SELECT * FROM users_token WHERE token='".$datas["user_token"]."'";
 			$result = $this->db->query($sql);
 			$user = $result->fetch_assoc();
-			// if ($result->num_rows > 0) {
-			// 	$user = $result->fetch_assoc();
-			// 	$data["status"] = true;
-			// 	$data["datas"] = $user;
-			// 	if($user["type"] == "recruiter"){
-			// 		$sql = "SELECT id FROM customer WHERE user='".$user["id"]."'";
-			// 		$result = $this->db->query($sql);
-			// 		$customer = $result->fetch_assoc();
-			// 		$data["datas"]["id"] = $customer["id"];
-			// 		$data["datas"]["type"] = "recruiter";
-			// 	}
-			// 	if($user["type"] == "candidate"){
-			// 		$sql = "SELECT id FROM messenger WHERE user='".$user["id"]."'";
-			// 		$result = $this->db->query($sql);
-			// 		$messenger = $result->fetch_assoc();
-			// 		$data["datas"]["id"] = $messenger["id"];
-			// 		$data["datas"]["type"] = $messenger["candidate"];
-			// 	}
-			// 	// $sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','".$user["id"]."','token ".$datas["token"]." est valide')";
-			// 	// $this->db->query($sql_log);
-			// } else{
-			// 	$data["status"] = false;
-			// 	$data["message"] = "invalid token";
-			// 	$sql_log = "INSERT INTO log (date,module,user,information) VALUES ('".date("Y-m-d H:i:s")."','token','','token est invalide')";
-			// 	$this->db->query($sql_log);
-			// 	//$this->response('',401);
-			// }
 			return $user["user"];
 		}
 		
@@ -1329,7 +1293,6 @@
 			$data["sql"] = $sql;
 			$data["count"] = $result->num_rows;
 			$this->response($this->json($data),200);
-		
 		}
 		
 		private function job_add(){
@@ -1346,12 +1309,12 @@
 				}
 				$user_id = $this->check_token($datas);
 				$sql = "INSERT INTO jobs (title,description,date_created,date_start,contract,sector,recruiter,status,latitude,longitude,experience,skills,salary,departement,city)
-				VALUE ('".$data["title"]."','".$data["description"]."','".$data["date_created"]."','".$data["date_start"]."','".$data["contract"]."','".$data["sector"]."','".$data["recruiter"]."','".$data["status"]."','".$data["latitude"]."','".$data["longitude"]."','".$data["experience"]."','".$data["skills"]."','".$data["salary"]."','".$data["departement"]."','".$data["city"]."')";
+				VALUE ('".$datas["title"]."','".$datas["description"]."','".$datas["date_created"]."','".$datas["date_start"]."','".$datas["contract"]."','".$datas["sector"]."','".$user_id."','".$datas["status"]."','".$datas["latitude"]."','".$datas["longitude"]."','".$datas["experience"]."','".$datas["skills"]."','".$datas["salary"]."','".$datas["department"]."','".$datas["city"]."')";
 				$result = $this->db->query($sql);
-				$datas["sql"] = $sql;
-				$datas["status"] = $result;
+				$data["sql"] = $sql;
+				$data["status"] = $result;
 				$this->response($this->json($data),200);
-		}
+			}
 		
 		private function job_update(){
 			if($this->get_request_method() != "POST"){ 

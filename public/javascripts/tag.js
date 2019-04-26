@@ -4,6 +4,7 @@ $.expr[":"].contains = $.expr.createPseudo(function(arg) {
     };
 });
 $(document).on('ready',function(){
+    var numberSkillInput = 1;
     $('#addTagBtn').on('click', function(){
         $('#tags option:selected').each(function() {
             $(this).appendTo($('#selectedTags'));
@@ -16,6 +17,7 @@ $(document).on('ready',function(){
     });
     $('.tagRemove').on('click', function(event){
         event.preventDefault();
+        numberSkillInput--;
         $(this).parent().remove();
     });
     $('ul.tags').on('click', function(){
@@ -24,12 +26,15 @@ $(document).on('ready',function(){
     $('#search-field').keypress(function(event) {
         if (event.which == '13') {
             if (($(this).val() != '') && ($(".tags .addedTag:contains('" + $(this).val() + "') ").length == 0 ))  {
-
-
-
-                    $('<li class="addedTag">' + $(this).val() + '<span class="tagRemove" onclick="$(this).parent().remove();">x</span><input type="hidden" value="' + $(this).val() + '" name="tags[]"></li>').insertBefore('.tags .tagAdd');
+                    $('<li class="addedTag">' + $(this).val() + '<span class="tagRemove">x</span><input type="hidden" value="' + $(this).val() + '" name="tags[]" id="skill-add-input-' +numberSkillInput + '"></li>').insertBefore('.tags .tagAdd');
                     $(this).val('');
-
+                    $('.tagRemove').unbind().on('click', function(event){
+                        event.preventDefault();
+                        numberSkillInput--; 
+                        $(this).parent().remove();
+                    });                    
+                    numberSkillInput++;
+                    
             } else {
                 $(this).val('');
 
