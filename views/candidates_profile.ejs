@@ -18,7 +18,8 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/chosen.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/colors/colors.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+	 crossorigin="anonymous">
 </head>
 
 <body>
@@ -67,86 +68,67 @@
 									</div>
 								</div>
 							</div>
-							<div class="profile-form-edit">
-								<form>
-									<div class="row">
-										<div class="col-lg-6">
-											<span class="pf-title">Prénom</span>
-											<span id="error_candidate_profile_firstname" class="pf-error">Prénom invalide</span>
-											<div class="pf-field">
-												<input id="candidate_profile_firstname" type="text" placeholder="" />
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<span class="pf-title">Nom</span>
-											<span id="error_candidate_profile_lastname" class="pf-error">Nom invalide</span>
-											<div class="pf-field">
-												<input id="candidate_profile_lastname"type="text" placeholder="" />
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<span class="pf-title">Email</span>
-											<span id="error_candidate_profile_email" class="pf-error">Email invalide</span>
-
-											<div class="pf-field">
-												<input id="candidate_profile_email"type="email" placeholder="exemple@exemple.com" />
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<span class="pf-title">Téléphone</span>
-											<span id="error_candidate_profile_phone" class="pf-error">Téléphone invalide</span>
-											<div class="pf-field">
-												<input id="candidate_profile_phone" type="text" placeholder="" />
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<span class="pf-title">Disponibilité</span>
-											<span id="error_candidate_profile_freedom" class="pf-error">Disponibilité invalide</span>
-											<div class="pf-field">
-												<select id="candidate_profile_freedom" data-placeholder="Disponibilité" class="chosen">
-													<option>Oui</option>
-													<option>Non</option>
-												</select>
-											</div>
-										</div>
-										<div class="col-lg-6">
-											<span class="pf-title">Date de naissance</span>
-											<span id="error_candidate_profile_birthdate" class="pf-error">Date de naissance invalide</span>
-
-											<div class="pf-field">
-												<input id="candidate_profile_birthdate" type="date" />
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<span class="pf-title">Adresse</span>
-											<span id="error_candidate_profile_location" class="pf-error">Adresse invalide</span>
-											<div class="pf-field">
-												<input id="candidate_profile_location"type="text" placeholder="Adresse" />
-											<i class="fa fa-map-marker-alt" id="candidate_profile_button_location"></i>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<span class="pf-title">Categories</span>
-											<span id="error_candidate_profile_tags" class="pf-error">Categories invalide</span>
-											<div class="pf-field no-margin">
-												<ul class="tags">
-													<li class="addedTag">Photoshop<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
-														 type="hidden" name="tags[]" value="Photoshop"></li>
-													<li class="addedTag">Digital & Creative<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
-														 type="hidden" name="tags[]" value="Digital"></li>
-													<li class="addedTag">Agency<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
-														 type="hidden" name="tags[]" value="Agency"></li>
-													<li class="tagAdd taglist">
-														<input type="text" id="search-field">
-													</li>
-												</ul>
-											</div>
-										</div>
-										<div class="col-lg-12">
-											<button id="candidate_profile_button" type="submit">Mettre à jour</button>
+							<div class="contact-edit">
+								<div class="row">
+									<div class="col-lg-6">
+										<span class="pf-title">Prénom</span>
+										<span id="error_candidate_profile_firstname" class="pf-error">Prénom invalide</span>
+										<div class="pf-field">
+											<input id="candidate_profile_firstname" type="text" placeholder="" />
 										</div>
 									</div>
-								</form>
+									<div class="col-lg-6">
+										<span class="pf-title">Nom</span>
+										<span id="error_candidate_profile_lastname" class="pf-error">Nom invalide</span>
+										<div class="pf-field">
+											<input id="candidate_profile_lastname" type="text" placeholder="" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<span class="pf-title">Email</span>
+										<span id="error_candidate_profile_email" class="pf-error">Email invalide</span>
+
+										<div class="pf-field">
+											<input id="candidate_profile_email" type="email" placeholder="exemple@exemple.com" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<span class="pf-title">Téléphone</span>
+										<span id="error_candidate_profile_phone" class="pf-error">Téléphone invalide</span>
+										<div class="pf-field">
+											<input id="candidate_profile_phone" type="text" placeholder="" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<span class="pf-title">Disponibilité</span>
+										<span id="error_candidate_profile_freedom" class="pf-error">Disponibilité invalide</span>
+										<div class="pf-field">
+											<select id="candidate_profile_freedom" data-placeholder="Disponibilité" class="chosen">
+												<option>Oui</option>
+												<option>Non</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<span class="pf-title">Date de naissance</span>
+										<span id="error_candidate_profile_birthdate" class="pf-error">Date de naissance invalide</span>
+
+										<div class="pf-field">
+											<input id="candidate_profile_birthdate" type="date" />
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<span class="pf-title">Adresse</span>
+										<span id="error_candidate_profile_location" class="pf-error">Adresse invalide</span>
+										<div class="pf-field">
+											<input id="candidate_profile_location" type="text" placeholder="Adresse" />
+											<i class="fa fa-map-marker-alt" id="candidate_profile_button_location"></i>
+										</div>
+									</div>
+									<div class="col-lg-12">
+										<button id="candidate_profile_button" type="submit">Mettre à jour</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

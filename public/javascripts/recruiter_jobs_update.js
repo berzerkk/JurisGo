@@ -1,4 +1,43 @@
 $(document).on('ready', function () {
+        getJob((skillNumber) => {
+                var numberSkillInput = parseInt(skillNumber) + 1;
+                $('#addTagBtn').on('click', function () {
+                        $('#tags option:selected').each(function () {
+                                $(this).appendTo($('#selectedTags'));
+                        });
+                });
+                $('#removeTagBtn').on('click', function () {
+                        $('#selectedTags option:selected').each(function (el) {
+                                $(this).appendTo($('#tags'));
+                        });
+                });
+                $('.tagRemove').on('click', function (event) {
+                        event.preventDefault();
+                        numberSkillInput--;
+                        $(this).parent().remove();
+                });
+                $('ul.tags').on('click', function () {
+                        $('#search-field').focus();
+                });
+                $('#search-field').keypress(function (event) {
+                        if (event.which == '13') {
+                                if (($(this).val() != '') && ($(".tags .addedTag:contains('" + $(this).val() + "') ").length == 0)) {
+                                        $('<li class="addedTag">' + $(this).val() + '<span class="tagRemove">x</span><input type="hidden" value="' + $(this).val() + '" name="tags[]" id="skill-add-input-' + numberSkillInput + '"></li>').insertBefore('.tags .tagAdd');
+                                        $(this).val('');
+                                        $('.tagRemove').unbind().on('click', function (event) {
+                                                event.preventDefault();
+                                                numberSkillInput--;
+                                                $(this).parent().remove();
+                                        });
+                                        numberSkillInput++;
+
+                                } else {
+                                        $(this).val('');
+
+                                }
+                        }
+                });
+        });
         checkIfAlreadyConnected();
         getTypeUser();
         logOut();
@@ -58,6 +97,34 @@ function getTypeUser() {
         });
 }
 
+function getJob(next) {
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/job',
+                data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
+                dataType: 'json',
+                success: function (result) {
+                        $("#job-add-title").val(result.datas.title);
+                        $("#job-add-comment").val(result.datas.description);
+                        $("#job-add-date-start").val(result.datas.date_start);
+                        $("#job-add-contract").val(result.datas.contract);
+                        $("#job-add-sector").val(result.datas.sector);
+                        $("#job-add-experience").val(result.datas.experience);
+                        $("#job-add-adress").val(result.datas.address);
+                        var skills = result.datas.skills.split("///");
+                        for (i in skills) {
+                                $("#job-add-skills").append('<li class="addedTag">' + skills[i] + '<span class="tagRemove">x</span><input\
+                                type="hidden" name="tags[]" id="skill-add-input-'+ i + '" value="' + skills[i] + '"></li>');
+                        }
+                        $("#job-add-skills").append('<li class="tagAdd taglist">\
+                        <input type="text" id="search-field">\
+                </li>');
+                        $("#job-add-salary").val(result.datas.salary);
+                        next(i);
+                }
+        });
+}
+
 function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
@@ -84,24 +151,24 @@ function getRecruiter() {
 
 function formatDate(date) {
         var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-    
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
-    
+
         return [year, month, day].join('-');
-    }
+}
 
 function postJob() {
         $(".job-add-button").on("click", (e) => {
                 e.preventDefault();
                 var data = {
+                        id: new URL(window.location).searchParams.get("id"),
                         user_token: getCookie("user_token"),
                         title: $("#job-add-title").val(),
                         description: $("#job-add-comment").val(),
-                        date_created: formatDate(new Date()),
                         date_start: $("#job-add-date-start").val().split("/").reverse().join("-"),
                         contract: $("#job-add-contract").val(),
                         sector: $("#job-add-sector").val(),
@@ -120,10 +187,14 @@ function postJob() {
                 var i = 0
                 var stringSkills = ""
                 $(".addedTag").each((e) => {
+                        console.log(i, $("#skill-add-input-" + i).val());
                         stringSkills += (stringSkills === "" ? $("#skill-add-input-" + i).val() : "///" + $("#skill-add-input-" + i).val());
                         i++;
+
                 });
                 data.skills = stringSkills;
+                console.log(stringSkills);
+
                 $.ajax({
                         type: 'GET',
                         url: "https://api-adresse.data.gouv.fr/search/?q=" + $("#job-add-adress").val(),
@@ -135,16 +206,16 @@ function postJob() {
                                 console.log(data);
                                 $.ajax({
                                         type: 'POST',
-                                        url: 'http://jurisgo.petitesaffiches.fr/job/add',
+                                        url: 'http://jurisgo.petitesaffiches.fr/job/update',
                                         data: { datas: data },
                                         dataType: 'json',
                                         success: function (res) {
                                                 window.location.pathname = '/recruiter_jobs';
                                         },
-                                        error: function(err) {
-                                                console.log(err); 
+                                        error: function (err) {
+                                                console.log(err);
                                         }
-                                    });
+                                });
                         }
                 });
         });

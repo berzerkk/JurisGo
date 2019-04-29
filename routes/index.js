@@ -42,4 +42,12 @@ router.get('/recruiter_jobs_add', function(req, res, next) {
   res.render('recruiters_jobs_add');
 });
 
+router.get('/recruiter_jobs_update', function(req, res, next) {
+  res.render('recruiters_jobs_update');
+});
+
+router.get('/recruiter_jobs_view', function(req, res, next) {
+  res.render('recruiters_jobs_view');
+});
+
 module.exports = router;

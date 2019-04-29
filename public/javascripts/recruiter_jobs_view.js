@@ -2,9 +2,100 @@ $(document).on('ready', function () {
         checkIfAlreadyConnected();
         getTypeUser();
         logOut();
-        autocomplete();
-        postJob();
+        map();
+        getMatching();
 });
+
+function map() {
+        map = new OpenLayers.Map("mapdiv");
+        map.addLayer(new OpenLayers.Layer.OSM());
+
+        var lonLat = new OpenLayers.LonLat(3.45, 51.5)
+                .transform(
+                        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                        map.getProjectionObject() // to Spherical Mercator Projection
+                );
+
+        var zoom = 13;
+
+        var markers = new OpenLayers.Layer.Markers("Markers");
+        map.addLayer(markers);
+
+        markers.addMarker(new OpenLayers.Marker(lonLat));
+
+        map.setCenter(lonLat, zoom);
+}
+
+function getMatching() {
+        console.log("kek");
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/job/candidate/matching',
+                data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
+                dataType: 'json',
+                success: function (result) {
+                        console.log(result);
+                }
+        });
+}
+
+function getJobs() {
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/jobs',
+                data: { datas: { "user_token": getCookie("user_token") } },
+                dataType: 'json',
+                success: function (result) {
+                        data = result.datas
+                        for (i in result.datas) {
+                                $("#recruiters-jobs-list").append('<tr id="recruiter-job-' + data[i].id + '">\
+                        <td>\
+                                <div class="table-list-title">\
+                                        <h3><a>'+ data[i].title + '</a></h3>\
+                                        <span><i class="la la-map-marker"></i>'+ data[i].city + ', ' + data[i].departement + '</span>\
+                                </div>\
+                        </td>\
+                        <td>\
+                                <span>'+ data[i].date_created + '</span><br />\
+                                <span>'+ data[i].date_start + '</span>\
+                        </td>\
+                        <td>\
+                                <span class="status active">'+ data[i].status + '</span>\
+                        </td>\
+                        <td>\
+                                <ul class="action_job">\
+                                        <li><span>View Job</span><a><i class="la la-eye" onclick="viewJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
+                                        <li><span>Edit</span><a><i class="la la-pencil" onclick="updateJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
+                                        <li><span>Delete</span><a><i class="la la-trash-o" onclick="removeJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
+                                </ul>\
+                        </td>\
+                </tr>\
+                        ');
+                        }
+                }
+        });
+}
+
+function viewJob(job_id) {
+        window.location.href = '/recruiter_jobs_view?id=' + job_id;
+}
+
+function updateJob(job_id) {
+        window.location.href = '/recruiter_jobs_update?id=' + job_id;
+}
+
+function removeJob(job_id) {
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/job/delete',
+                data: { datas: { "user_token": getCookie("user_token"), id: job_id } },
+                dataType: 'json',
+                success: function (result) {
+                        if (result.status)
+                                $("#recruiter-job-" + job_id).remove();
+                }
+        });
+}
 
 function logOut() {
         $("#sidebar-logout").on("click", (e) => {
@@ -84,15 +175,15 @@ function getRecruiter() {
 
 function formatDate(date) {
         var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-    
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+
         if (month.length < 2) month = '0' + month;
         if (day.length < 2) day = '0' + day;
-    
+
         return [year, month, day].join('-');
-    }
+}
 
 function postJob() {
         $(".job-add-button").on("click", (e) => {
@@ -111,9 +202,8 @@ function postJob() {
                         experience: $("#job-add-experience").val(),
                         skills: "",
                         salary: $("#job-add-salary").val(),
-                        address: $("#job-add-adress").val(),
                         city: "",
-                        departement: "",
+                        department: "",
                 };
                 if ($("#job-add-adress").val() === "")
                         return;
@@ -131,7 +221,7 @@ function postJob() {
                                 data.longitude = result.features[0].geometry.coordinates[0];
                                 data.latitude = result.features[0].geometry.coordinates[1];
                                 data.city = result.features[0].properties.city;
-                                data.departement = result.features[0].properties.postcode
+                                data.department = result.features[0].properties.postcode
                                 console.log(data);
                                 $.ajax({
                                         type: 'POST',
@@ -139,12 +229,13 @@ function postJob() {
                                         data: { datas: data },
                                         dataType: 'json',
                                         success: function (res) {
-                                                window.location.pathname = '/recruiter_jobs';
+                                                console.log(res);
                                         },
-                                        error: function(err) {
-                                                console.log(err); 
+                                        error: function (err) {
+                                                console.log(err);
+
                                         }
-                                    });
+                                });
                         }
                 });
         });

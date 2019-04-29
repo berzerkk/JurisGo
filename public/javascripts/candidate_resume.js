@@ -36,7 +36,8 @@ function addUserView(user, candidate) {
     $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-
+    $("#sidebar-button-jobs-add").remove();
+    $("#sidebar-button-jobs").remove();
 }
 
 function capitalize(string) {
@@ -233,6 +234,7 @@ function addStudies() {
             success: function (result) {
                 console.log(result);
                 getStudies();
+                $("#overlay-add-education").css("visibility", "hidden");
             }
         });
     });
@@ -260,8 +262,7 @@ function updateStudies(elem_id) {
     $("#popup-add-studies").css("visibility", "hidden");
     $("#overlay-add-education").css("visibility", "visible");
     $("#popup-input-diploma-studies").val($("#resume-studies-diploma-value-" + elem_id).text());
-    console.log($("#resume-studies-date-value-" + elem_id).text().split(" ")[0]);
-w
+    console.log($("#resume-studies-date-value-" + elem_id).text().split(" ")[0]); // TODO
     $("#popup-input-school-studies").val($("#resume-studies-school-value-" + elem_id).text());
     $("#popup-input-branch-studies").val($("#resume-studies-branch-value-" + elem_id).text());
     $("#popup-input-comment-studies").val($("#resume-studies-comment-value-" + elem_id).text());
@@ -287,6 +288,9 @@ w
                      $("#resume-studies-school-value-" + elem_id).text(data.school);
                      $("#resume-studies-comment-value-" + elem_id).text(data.comment);
                      $("#resume-studies-date-value-" + elem_id).text(data.date_start + " - " + data.date_end);
+                     $("#popup-update-studies").css("visibility", "hidden");
+                     $("#overlay-add-education").css("visibility", "hidden");
+
                  }
              });
     });
@@ -401,6 +405,10 @@ function openPanel() {
         switch (e.target.id) {
             case "candidate_resume_add_education":
                 $("#overlay-add-education").css("visibility", "visible");
+                $("#popup-input-diploma-studies").val("");
+                $("#popup-input-school-studies").val("");
+                $("#popup-input-branch-studies").val("");
+                $("#popup-input-comment-studies").val("");
                 break;
             case "candidate_resume_add_experiences":
                 $("#overlay-add-experiences").css("visibility", "visible");

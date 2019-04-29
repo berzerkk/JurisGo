@@ -832,8 +832,9 @@ label::after {
     background: rgba(20,31,114,0.6);
     opacity: 1;
     z-index: 99;
-    overflow-Y: scroll;
+    overflow-Y: hidden;
     visibility: hidden;
+
 }
 .account-popup {
     position: relative;
@@ -850,7 +851,7 @@ label::after {
 
     left: 50%;
     margin-left: -230px;
-    margin-top: 140px;
+    margin-top: 50px;
     margin-bottom: 60px;
     text-align: center;
     padding: 40px 60px;
@@ -6746,7 +6747,6 @@ aside .widget.border:first-child {
 .df-title {
     float: left;
     width: 100%;
-    margin-top: 30px;
     font-family: Open Sans;
     font-size: 15px;
     color: #202020;
@@ -6918,6 +6918,25 @@ aside .widget.border:first-child {
 
     margin-top: 10px;
 }
+
+.contact-edit > .row button {
+    float: right;
+    background: #ffffff;
+    border: 2px solid #fb236a;
+    color: #202020;
+    font-family: Open Sans;
+    font-size: 15px;
+    padding: 11px 40px;
+    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+
+    margin-top: 10px;
+}
+
 .manage-jobs-sec > h3 {
     float: left;
     width: 100%;
@@ -9276,7 +9295,6 @@ header.gradient{
 }
 .resumeadd-form .remember-label {
     float: right;
-    margin-top: 70px;
 }
 input[type="file"] {
     

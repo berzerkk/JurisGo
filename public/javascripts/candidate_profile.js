@@ -40,7 +40,8 @@ function addUserView(user, candidate) {
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-
+        $("#sidebar-button-jobs-add").remove();
+        $("#sidebar-button-jobs").remove();
 }
 
 function capitalize(string) {
@@ -164,7 +165,7 @@ function submitCandidateProfile() {
                         email: $("#candidate_profile_email").val(),
                         phone: $("#candidate_profile_phone").val(),
                         disponibility: $("#candidate_profile_freedom").val(),
-                        birthdate: $("#candidate_profile_birthdate").val().split("-").reverse().join("/"),
+                        birthday: $("#candidate_profile_birthdate").val(),
                         address: $("#candidate_profile_location").val(), // ADD tags
                         status: "active",
                         longitude: $("#longitude").text(),
@@ -190,7 +191,7 @@ function submitCandidateProfile() {
                         $("#error_candidate_profile_freedom").css("visibility", "visible");
                         return;
                 }
-                if (data.birthdate === "") {
+                if (data.birthday === "") {
                         $("#error_candidate_profile_birthdate").css("visibility", "visible");
                         return;
                 }
@@ -198,6 +199,8 @@ function submitCandidateProfile() {
                         $("#error_candidate_profile_location").css("visibility", "visible");
                         return;
                 }
+                console.log(data);
+                
                 $.ajax({
                         type: 'POST',
                         url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
