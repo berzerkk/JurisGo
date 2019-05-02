@@ -938,8 +938,8 @@
 			    $this->response($this->json($data),400);
 			}
 			$user_id = $this->check_token($datas);
-			$sql = "INSERT INTO candidates_experiences (date_start,date_end,comment,company,function,candidate)
-			VALUES ('".$datas["date_start"]."','".$datas["date_end"]."','".$datas["comment"]."','".$datas["company"]."','".$datas["function"]."','".$user_id."')";
+			$sql = "INSERT INTO candidates_experiences (date_start,date_end,comment,company,function,duration,candidate)
+			VALUES ('".$datas["date_start"]."','".$datas["date_end"]."','".$datas["comment"]."','".$datas["company"]."','".$datas["function"]."','".$datas["duration"]."','".$user_id."')";
 			$result = $this->db->query($sql);
 			$data["status"] = $result;
 			$this->response($this->json($data),200);
@@ -963,7 +963,8 @@
 			date_start='".$datas["date_start"]."',
 			date_end='".$datas["date_end"]."',
 			company='".$datas["company"]."',
-			function='".$datas["function"]."'
+			function='".$datas["function"]."',
+			duration='".$datas["duration"]."'
 			WHERE id='".$datas["id"]."' AND candidate='".$user_id."'";
 			$result = $this->db->query($sql);
 			$data["sql"] = $sql;
@@ -1369,93 +1370,82 @@
 			$sql_job = "SELECT * FROM jobs WHERE id='".$datas["id"]."'";
 			$result = $this->db->query($sql_job);
 			$job = $result->fetch_assoc();
-
- 			
+			$job["skills"] = explode("///", $job["skills"]);
 			// Liste des candidats
-			$sql_candidate = "SELECT C.id, U.lastname, U.firstname, C.email_alias, C.photo, C.disponibility, C.city FROM candidates C 
+			$sql_candidate = "SELECT C.user, U.lastname, U.firstname, C.email_alias, C.photo, C.disponibility, C.city, C.departement, C.longitude, C.latitude FROM candidates C 
 			LEFT JOIN users U ON U.id=C.user WHERE status='active'";
 			$result = $this->db->query($sql_candidate);
-			$data["status"] = $result;
-			$data["sql"] = $sql_candidate;
-			$this->response($this->json($data),200);
+			//$this->response($this->json($data),200);
 			$i = 0;
 			while($candidate = $result->fetch_assoc()){
 				$matching = 0;
 				$matching_disponibility = 0;
-				// Comparaison géographique
+				// Comparaison géographique + TODO gestion latitude/longitude
 				$matching_geo += $candidate["departement"] == $job["departement"] ? 50 : 0;
 				$matching_geo += $candidate["city"] == $job["city"] ? 50 : 0;
 			// 	// Comparaison des compétences
-			// 	$job["skills"] = explode(",", $job["skills"]);
-			// 	$nb_job_skills = count($job["skills"]);
-			// 	$sql_skills = "SELECT comment FROM candidates_skills WHERE candidate='".$candidate["id"]."'";
-			// 	$result_skills = $this->db->query($sql_skills);
-			// 	$nb_candidate_skills = $result_skills->num_rows;
-			// 	$skill_matching = 0;
-			// 	$skill_not_matching = 0;
-			// 	while($skills = $result->fetch_assoc()){
-			// 		if (in_array($skills["comment"], $job["skills"])) {
-    			// 		$skill_matching++;
-			// 		}
-			// 		else{
-			// 			$skill_not_matching++;
-			// 		}
-			// 	}
-			// 	$matching_skills = 100 * ($skill_matching/$nb_job_skills) - 50 * ($skill_not_matching/$nb_candidate_skills); 
+
+			 	$nb_job_skills = count($job["skills"]);
+			 	$sql_skills = "SELECT * FROM candidates_skills WHERE candidate='".$candidate["user"]."'";
+			 	$result_skills = $this->db->query($sql_skills);
+			 	$nb_candidate_skills = $result_skills->num_rows;
+			 	$skill_matching = 0;
+			 	$skill_not_matching = 0;
+			 	while($skills = $result_skills->fetch_assoc()){ // TODO
+			 		if (in_array($skills["name"], $job["skills"])) {
+    			 		$skill_matching++;
+			 		}
+			 		else{
+						$skill_not_matching++;
+			 		}
+				}
+		 		$matching_skills = 100 * ($skill_matching/$nb_job_skills) - 50 * ($skill_not_matching/$nb_candidate_skills); 
+
+			 	// Comparaison des expériences
+			 	$sql_experiences = "SELECT SUM(duration) FROM candidates_experiences WHERE candidate='".$candidate["user"]."'";
+			 	$result_experiences = $this->db->query($sql_experiences);
+				$experiences = $result_experiences->fetch_assoc()["SUM(duration)"] / 12;
+				$matching_experiences = $experiences >= $job["experience"] ? 100 : $experiences >= round($job["experience"]/2) ? 50 : 0;
+
+			 	 // On va regarder les évaluations du candidat
+
 				
-			// 	// Comparaison des expériences
-			// 	$sql_experiences = "SELECT SUM(duration) FROM candidates_experiences WHERE candidate='".$candidate["id"]."'";
-			// 	$result_experiences = $this->db->query($sql_experiences);
-			// 	$experiences = $result_experiences->fetch_assoc();
-			// 	if($experiences >= $job["experience"]){
-			// 		$matching_experiences = 100;
-			// 	}
-			// 	elseif($experiences >= round($job["experience"]/2)){
-			// 		$matching_experiences = 50;
-			// 	}
-			// 	else{
-			// 		$matching_experiences = 0;
-			// 	}
-				
-			// 	// On va regarder les évaluations du candidat
-			// 	$sql_skills = "SELECT comment FROM candidates_skills WHERE candidate='".$candidate["id"]."'";
-			// 	$result_skills = $this->db->query($sql_skills);
-				
-			// 	// On va regarder aussi la disponibility
-			// 	switch($candidate["disponibility"]){
-			// 		case 'immediately':$matching_disponibility = 100;break;
-			// 		case 'one_month':$matching_disponibility = 60;break;
-			// 		case 'more_months':$matching_disponibility = 30;break;
-			// 		case 'unknow':$matching_disponibility = 0;break;
-			// 	}
-			// 	// On calcule le matching total
-			// 	$matching = round($matching_disponibility + $matching_experiences + $matching_skills + $matching_geo)/4;
+			 	// On va regarder aussi la disponibility
+			 	switch($candidate["disponibility"]){
+			 		case 'immediately':$matching_disponibility = 100;break;
+ 					case 'one_month':$matching_disponibility = 60;break;
+			 		case 'more_months':$matching_disponibility = 30;break;
+			 		case 'unknow':$matching_disponibility = 0;break;
+				 }
+				 
+				// On calcule le matching total
+			 	$matching = round($matching_disponibility + $matching_experiences + $matching_skills + $matching_geo)/4;
 			
-			// 	// On affecte enfin les variables au tableau
-			// 	$candidate["matching"] = $matching;		
-			// 	// Si le recruteur n'a pas débloqué le profil je cache son nom
-			// 	// et je cache son email
-			// 	$candidate_is_view = job_candidate_is_view($candidate["id"]);
-			// 	if($candidate_is_view){
-			// 		$lastname = $candidate["lastname"];
-			// 		$len_lastname = strlen($lastname)-1;
-			// 		$lastname = substr($lastname, 0, 1);
-			// 		$candidate["lastname"] = $lastname.$this->generate_string_star($len_lastname);
-			// 		$len_email_alias = strlen($candidate["email_alias"]);
-			// 		$candidate["email_alias"] = $this->generate_string_star($len_email_alias);
-			// 		$candidate["age"] = (time() - strtotime($candidate["birthday"])) / 3600 / 24 / 365;
-			// 	}	
-     			// $candidates[$i] = $candidate;
-			// 	$candidates[$i] = array_map('utf8_encode', $candidates[$i]);
-     			// $i++;
-			// }
-			// // On trie le tableau par critères $matching avant de le renvoyer
+			 	// On affecte enfin les variables au tableau
+			 	$candidate["matching"] = $matching;		
+			 	// Si le recruteur n'a pas débloqué le profil je cache son nom
+			 	// et je cache son email
+			 	// $candidate_is_view = job_candidate_is_view($candidate["id"]);
+			 	// if($candidate_is_view){
+			 	// 	$lastname = $candidate["lastname"];
+			 	// 	$len_lastname = strlen($lastname)-1;
+			 	// 	$lastname = substr($lastname, 0, 1);
+			 	// 	$candidate["lastname"] = $lastname.$this->generate_string_star($len_lastname);
+			 	// 	$len_email_alias = strlen($candidate["email_alias"]);
+ 				// 	$candidate["email_alias"] = $this->generate_string_star($len_email_alias);
+			 	// 	$candidate["age"] = (time() - strtotime($candidate["birthday"])) / 3600 / 24 / 365;
+			 	// }	
+     			 $candidates[$i] = $candidate;
+			 	$candidates[$i] = array_map('utf8_encode', $candidates[$i]);
+     			 $i++;
+			 }
+			 // On trie le tableau par critères $matching avant de le renvoyer
 			
-			// // On renvoie le résultat
-			// $data["datas"] = $candidates;
-			// $data["status"] = true;
-			// $data["count"] = count($candidates);
-			// $this->response($this->json($data),200);
+			 // On renvoie le résultat
+			 $data["datas"] = $candidates;
+			 $data["status"] = true;
+			 $data["count"] = count($candidates);
+			 $this->response($this->json($data),200);
 		}
 		
 		private function job_candidate_distance(){

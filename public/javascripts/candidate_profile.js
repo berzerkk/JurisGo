@@ -200,7 +200,6 @@ function submitCandidateProfile() {
                         return;
                 }
                 console.log(data);
-                
                 $.ajax({
                         type: 'POST',
                         url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',

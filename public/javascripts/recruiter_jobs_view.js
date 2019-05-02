@@ -2,39 +2,57 @@ $(document).on('ready', function () {
         checkIfAlreadyConnected();
         getTypeUser();
         logOut();
-        map();
         getMatching();
 });
 
-function map() {
+function getMatching() {
         map = new OpenLayers.Map("mapdiv");
         map.addLayer(new OpenLayers.Layer.OSM());
-
-        var lonLat = new OpenLayers.LonLat(3.45, 51.5)
-                .transform(
-                        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
-                        map.getProjectionObject() // to Spherical Mercator Projection
-                );
-
         var zoom = 13;
 
-        var markers = new OpenLayers.Layer.Markers("Markers");
-        map.addLayer(markers);
-
-        markers.addMarker(new OpenLayers.Marker(lonLat));
-
-        map.setCenter(lonLat, zoom);
-}
-
-function getMatching() {
-        console.log("kek");
         $.ajax({
                 type: 'POST',
                 url: 'http://jurisgo.petitesaffiches.fr/job/candidate/matching',
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
+                        var data = result.datas;
+                        for (i in result.datas) {
+                                $("#jobs-view-list").append('<div class="emply-resume-list round">\
+                        <div class="emply-resume-thumb">\
+                                <img src="'+ data[i].photo + '" alt="" />\
+                        </div>\
+                        <div class="emply-resume-info">\
+                                <h3><a href="#" title="">'+ data[i].firstname + ' ' + data[i].lastname + '</a></h3>\
+                                <p><i class="la la-map-marker"></i>Istanbul / Turkey</p>\
+                        </div>\
+                        <div class="shortlists">\
+                                <a href="#" title="">Favori <i class="la la-plus"></i></a>\
+                        </div>\
+                </div>');
+                                var lonLat = new OpenLayers.LonLat(data[i].longitude, data[i].latitude).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+                                var markers = new OpenLayers.Layer.Markers("Markers");
+                                map.addLayer(markers);
+                                markers.addMarker(new OpenLayers.Marker(lonLat));
+                        }
+                        $("#jobs-view-list").append('<div class="pagination">\
+                        <ul>\
+                                <li class="prev"><a href=""><i class="la la-long-arrow-left"></i> Prev</a>\
+                                </li>\
+                                <li><a href="">1</a></li>\
+                                <li class="active"><a href="">2</a></li>\
+                                <li><a href="">3</a></li>\
+                                <li><span class="delimeter">...</span></li>\
+                                <li><a href="">14</a></li>\
+                                <li class="next"><a href="">Next <i class="la la-long-arrow-right"></i></a>\
+                                </li>\
+                        </ul>\
+                </div>')
                         console.log(result);
+                        map.setCenter(lonLat, 13);
+                },
+                error: function (err) {
+                        console.log(err);
                 }
         });
 }

@@ -93,7 +93,7 @@ function getExperience() {
                 <i></i>\
                 <div class="edu-hisinfo">\
                     <h3 id="resume-experience-company-value-' + result.datas[elem].id + '">' + result.datas[elem].company + '<span id="resume-experience-function-value-' + result.datas[elem].id + '">' +  result.datas[elem].function + '</span></h3>\
-                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start.split("-").reverse().join("/") + ' - ' + result.datas[elem].date_end.split("-").reverse().join("/") + '</i>\
+                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
                     <p id="resume-experience-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
                 </div>\
                 <ul class="action_job">\
@@ -108,6 +108,10 @@ function getExperience() {
         });
 }
 
+function monthDiff(dateFrom, dateTo) {
+    return dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
+   }
+
 function addExperience() {
     $("#popup-add-experience").on("click", (e) => {
         var data = {
@@ -115,11 +119,11 @@ function addExperience() {
             date_end: $("#popup-input-dateend-experience").val(),
             date_start: $("#popup-input-datestart-experience").val(),
             comment: $("#popup-input-comment-experience").val(),
+            duration: "",
             function: $("#popup-input-function-experience").val(),
             company: $("#popup-input-company-experience").val(),
         };
-        console.log(data);
-        
+        data.duration = monthDiff(new Date(data.date_start), new Date(data.date_end));
         $.ajax({
             type: 'POST',
             url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/add',
@@ -150,8 +154,11 @@ function updateExperience(elem_id) {
             comment: $("#popup-input-comment-experience").val(),
             function: $("#popup-input-function-experience").val(),
             company: $("#popup-input-company-experience").val(),
+            duration: "",
             id: elem_id
         };
+        data.duration = monthDiff(new Date(data.date_start), new Date(data.date_end));
+
          console.log(data);
               $.ajax({
                   type: 'POST',
@@ -199,7 +206,7 @@ function getStudies() {
                 <i class="la la-graduation-cap"></i>\
                 <div class="edu-hisinfo">\
                     <h3 id="resume-studies-diploma-value-' + result.datas[elem].id + '">' + result.datas[elem].diploma + '</h3>\
-                    <i id="resume-studies-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start.split("-").reverse().join("/") + ' - ' + result.datas[elem].date_end.split("-").reverse().join("/") + '</i>\
+                    <i id="resume-studies-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
                     <span id="resume-studies-school-value-' + result.datas[elem].id + '">' + result.datas[elem].school + '<i id="resume-studies-branch-value-' + result.datas[elem].id + '">' + result.datas[elem].branch + '</i></span>\
                     <p id="resume-studies-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
                 </div>\
