@@ -1344,6 +1344,11 @@ label::after {
     z-index: 1;
     position: relative;
 }
+
+#heading-offers {
+    padding-top: 80px;
+}
+
 .p-category > a {
     float: left;
     width: 100%;

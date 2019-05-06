@@ -475,6 +475,10 @@ select {
 .error-sec > p {
     display: none;
 }
+
+#heading-offers {
+    padding-top: 120px;
+}
 .error-sec > span {
     font-size: 13px;
     margin-bottom: 14px;

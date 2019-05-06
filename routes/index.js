@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var stripe = require('stripe')('sk_test_...');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -48,6 +49,37 @@ router.get('/recruiter_jobs_update', function(req, res, next) {
 
 router.get('/recruiter_jobs_view', function(req, res, next) {
   res.render('recruiters_jobs_view');
+});
+
+router.get('/recruiter_jobs_view_candidate', function(req, res, next) {
+  res.render('recruiters_jobs_view_candidate');
+});
+
+router.get('/recruiter_jobs_pricing', function(req, res, next) {
+  res.render('recruiters_jobs_pricing');
+});
+
+router.post("/charge", (req, res) => {
+  let amount = 500;
+  console.log(req.body);
+  
+
+  stripe.customers.create({
+    email: req.body.email,
+    card: req.body.id
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: "Sample Charge",
+      currency: "usd",
+      customer: customer.id
+    }))
+  .then(charge => res.send(charge))
+  .catch(err => {
+    console.log("Error:", err);
+    res.status(500).send({error: "Purchase Failed"});
+  });
 });
 
 module.exports = router;

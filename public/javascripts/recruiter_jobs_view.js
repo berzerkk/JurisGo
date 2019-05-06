@@ -8,7 +8,7 @@ $(document).on('ready', function () {
 var map;
 
 function detailsCandidate(id) {
-        console.log(id);
+        window.location.href = '/recruiter_jobs_view_candidate?id=' + id;
 }
 
 function getMatching() {
