@@ -7746,6 +7746,7 @@ table.alrt-table tbody td > span {
     margin-bottom: 80px;
 }
 .shortlists {
+    float: right;
     display: table-cell;
     vertical-align: middle;
 }
@@ -7961,7 +7962,8 @@ header.gradient{
     margin-bottom: 1px;
 }
 .emply-resume-list.round .emply-resume-thumb img {
-    
+    width: 90px;
+    height: 114px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;

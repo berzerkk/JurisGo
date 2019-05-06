@@ -5,37 +5,72 @@ $(document).on('ready', function () {
         getMatching();
 });
 
-function getMatching() {
-        map = new OpenLayers.Map("mapdiv");
-        map.addLayer(new OpenLayers.Layer.OSM());
-        var zoom = 13;
+var map;
 
-        $.ajax({
-                type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/job/candidate/matching',
-                data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
-                dataType: 'json',
-                success: function (result) {
-                        var data = result.datas;
-                        for (i in result.datas) {
-                                $("#jobs-view-list").append('<div class="emply-resume-list round">\
+function detailsCandidate(id) {
+        console.log(id);
+}
+
+function getMatching() {
+        navigator.geolocation.getCurrentPosition((position) => {
+                map = new ol.Map({
+                        target: 'mapdiv',
+                        layers: [
+                                new ol.layer.Tile({
+                                        source: new ol.source.OSM(),
+                                        crossOrigin: 'anonymous'
+                                })
+                        ],
+                        view: new ol.View({
+                                projection: "EPSG:4326",
+                                center: [position.coords.longitude, position.coords.latitude],
+                                zoom: 15
+                        })
+                });
+                $.ajax({
+                        type: 'POST',
+                        url: 'http://jurisgo.petitesaffiches.fr/job/candidate/matching',
+                        data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
+                        dataType: 'json',
+                        success: function (result) {
+                                var data = result.datas;                                
+                                for (i in result.datas) {
+                                        var container = document.createElement('div');
+                                        $("#jobs-view-list").append('<div class="emply-resume-list round">\
                         <div class="emply-resume-thumb">\
                                 <img src="'+ data[i].photo + '" alt="" />\
                         </div>\
                         <div class="emply-resume-info">\
-                                <h3><a href="#" title="">'+ data[i].firstname + ' ' + data[i].lastname + '</a></h3>\
-                                <p><i class="la la-map-marker"></i>Istanbul / Turkey</p>\
+                                <h3><a onclick="focusOnMap(' + data[i].longitude + ',' + data[i].latitude + ',\'' + data[i].firstname + '\',\'' + data[i].lastname + '\')">' + data[i].firstname + ' ' + data[i].lastname + '</a></h3>\
+                                <p><i class="la la-map-marker"></i>' + data[i].city + ' / ' + data[i].departement + '</p>\
                         </div>\
                         <div class="shortlists">\
-                                <a href="#" title="">Favori <i class="la la-plus"></i></a>\
+                                <a id="' + data[i].user + '" onclick="detailsCandidate(this.id)">Details <i class="la la-plus"></i></a>\
                         </div>\
                 </div>');
-                                var lonLat = new OpenLayers.LonLat(data[i].longitude, data[i].latitude).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
-                                var markers = new OpenLayers.Layer.Markers("Markers");
-                                map.addLayer(markers);
-                                markers.addMarker(new OpenLayers.Marker(lonLat));
-                        }
-                        $("#jobs-view-list").append('<div class="pagination">\
+                                        var popup = new ol.Overlay({
+                                                element: container,
+                                                autoPan: true,
+                                                autoPanAnimation: {
+                                                        duration: 250
+                                                }
+                                        });
+                                        var element = document.createElement('div');
+                                        element.innerHTML = '<img src="https://cdn.mapmarker.io/api/v1/fa/stack?size=50&color=DC4C3F&icon=fa-microchip&hoffset=1" />'
+                                        var marker = new ol.Overlay({
+                                                position: [data[i].longitude, data[i].latitude],
+                                                positioning: 'top',
+                                                element: element,
+                                                stopEvent: false,
+                                        });
+                                        $(element).on('click', function (evt) {
+                                                $(container).append('<p style="background-color: white;">' + data[i].firstname + ' ' + data[i].lastname + '</p>');
+                                                popup.setPosition([data[i].longitude, data[i].latitude]);
+                                                map.addOverlay(popup);
+                                        });
+                                        map.addOverlay(marker);
+                                }
+                                $("#jobs-view-list").append('<div class="pagination">\
                         <ul>\
                                 <li class="prev"><a href=""><i class="la la-long-arrow-left"></i> Prev</a>\
                                 </li>\
@@ -48,14 +83,34 @@ function getMatching() {
                                 </li>\
                         </ul>\
                 </div>')
-                        console.log(result);
-                        map.setCenter(lonLat, 13);
-                },
-                error: function (err) {
-                        console.log(err);
-                }
+                        },
+                        error: function (err) {
+                                console.log(err);
+                        }
+                });
         });
 }
+
+function focusOnMap(lon, lat, firstname, lastname) {
+        map.setView(new ol.View({
+                projection: "EPSG:4326",
+                center: [lon, lat],
+                zoom: 15
+        }));
+        var container = document.createElement('div');
+        var popup = new ol.Overlay({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                        duration: 250
+                }
+        });
+        $(container).append('<p style="background-color: white;">' + firstname + ' ' + lastname + '</p>');
+        popup.setPosition([lon, lat]);
+        map.addOverlay(popup);
+        window.scrollTo(0, 0);
+}
+
 
 function getJobs() {
         $.ajax({

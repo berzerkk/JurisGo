@@ -41,7 +41,7 @@ function submitButtonRegister() {
                         success: function (result) {
                                 console.log(result);
                                 if (result.status) {
-                                        // window.location.pathname = '/login'
+                                        window.location.pathname = '/login'
                                 } else {
                                         $('#error_connexion').show();
                                 }
