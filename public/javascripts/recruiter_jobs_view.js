@@ -8,7 +8,7 @@ $(document).on('ready', function () {
 var map;
 
 function detailsCandidate(id) {
-        window.location.href = '/recruiter_jobs_view_candidate?id=' + id;
+        window.location.href = '/recruiter_jobs_view_candidate?id=' + id + "&" + "job=" + new URL(window.location).searchParams.get("id");
 }
 
 function getMatching() {
@@ -204,7 +204,7 @@ function addUserView(user, recruiter) {
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-
+        $("#sidebar-button-resume").remove();
 }
 
 function getTypeUser() {

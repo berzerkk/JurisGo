@@ -6,12 +6,23 @@ $(document).on('ready', function () {
 });
 
 
+// function checkIfStripeToken(next) {
+//     $.ajax({
+//         type: 'POST',
+//         url: 'http://jurisgo.petitesaffiches.fr/user/type',
+//         data: { datas: { "user_token": getCookie("user_token") } },
+//         dataType: 'json',
+//         success: function (result) {
+//         }
+//     });
+// }
+
 function stripe() {
     var checkoutHandler = StripeCheckout.configure({
         key: "pk_test_TYooMQauvdEDq54NiTphI7jx",
         locale: "auto"
     });
-   $("#pricing-button-one-offer").on("click", function (e) {
+    $("#pricing-button-one-offer").on("click", function (e) {
         checkoutHandler.open({
             name: "05 profils",
             description: "Example",
@@ -43,15 +54,15 @@ function stripe() {
 
 function handleToken(token) {
     fetch("/charge", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(token)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(token)
     })
-    .then(output => {
-      if (output.status === "succeeded")
-        document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
-    })
-  }
+        .then(output => {
+            if (output.status === "succeeded")
+                document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
+        })
+}
 
 function logOut() {
     $("#sidebar-logout").on("click", (e) => {
@@ -70,7 +81,7 @@ function addUserView(user, recruiter) {
     $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-
+    $("#sidebar-button-resume").remove();
 }
 
 function getTypeUser() {

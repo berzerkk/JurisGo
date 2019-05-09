@@ -1,11 +1,10 @@
 $(document).on('ready', function () {
-        // checkIfAlreadyConnected();
-        // getTypeUser();
+        getTypeUser();
         submitRecruiterProfile();
         DownloadPicture();
         getLocation();
-        // getUser();
         getRecruiter();
+        getUser();
         logOut();
 });
 
@@ -33,12 +32,14 @@ function getTypeUser() {
 }
 
 
-function addUserView(user, candidate) {
+function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#image-user-sidebar").attr('src', candidate.photo);
+        if (recruiter.photo)
+                $("#image-user-sidebar").attr('src', recruiter.photo);
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#sidebar-button-resume").remove();
 
 }
 
@@ -55,7 +56,7 @@ function getUser() {
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {

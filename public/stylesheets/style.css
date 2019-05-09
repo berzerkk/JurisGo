@@ -8088,12 +8088,12 @@ header.gradient{
 
     width: 175px;
     height: 175px;
-    padding: 17px;
 }
 .cst img {
     float: left;
-    width: 100%;
-    
+    width: 170px;
+    height: 170px;
+
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
