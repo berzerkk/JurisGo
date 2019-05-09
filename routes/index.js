@@ -60,6 +60,11 @@ router.get('/recruiter_jobs_pricing', function (req, res, next) {
   res.render('recruiters_jobs_pricing');
 });
 
+router.get('/recruiter_favorite', function (req, res, next) {
+  res.render('recruiters_favorite');
+});
+
+
 router.post("/charge", (req, res) => {
   let amount = 500;
   console.log(req.body);
@@ -112,7 +117,14 @@ let Mail = {
 router.post('/contact', (req, res, next) => {
   let data = req.body;
   Mail.sendMail(data.to, data.subject, data.text, (info) => {
-    res.status(200).send(req.body);
+    res.status(200).send("ok");
+  });
+});
+
+router.post('/account', (req, res, next) => {
+  let data = req.body;
+  Mail.sendMail(data.to, "Jurisgo, your account", "", (info) => {
+    res.status(200).send("ok")
   });
 });
 

@@ -7,19 +7,32 @@ $(document).on('ready', function () {
 function logOut() {
         $("#sidebar-logout").on("click", (e) => {
                 e.preventDefault();
-                setCookie("user_token", "", 0)                
+                setCookie("user_token", "", 0)
                 document.location.reload(true);
-            });
+        });
 }
 
-function addUserView(user, candidate) {
+function addUserViewCandidate(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#image-user-sidebar").attr('src', candidate.photo);
+        if (recruiter.photo)
+                $("#image-user-sidebar").attr('src', recruiter.photo);
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#sidebar-button-jobs-add").remove();
+        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-jobs").remove();
+        $("#sidebar-button-jobs-add").remove();
+        $("#sidebar-button-favorite").remove();
+        $("#sidebar-button-jobs-pricing").remove();
+}
+
+function addUserViewRecruiter(user, recruiter) {
+        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
+        if (recruiter.photo)
+                $("#image-user-sidebar").attr('src', recruiter.photo);
+        $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#sidebar-button-resume").remove();
 }
 
 function getTypeUser() {
@@ -38,12 +51,23 @@ function getTypeUser() {
 }
 
 function getRecruiter() {
-        // $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        // if (candidate.photo)
-        //         $("#image-user-sidebar").attr('src', candidate.photo);
-        // $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + '" alt="" /><i class="la la-bars"></i>');
-        $("#header-user-name-responsive").html('<img src="' + '" alt="" /><i class="la la-bars"></i>');
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/user',
+                data: { datas: { "user_token": getCookie("user_token") } },
+                dataType: 'json',
+                success: function (result) {
+                        $.ajax({
+                                type: 'POST',
+                                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                                data: { datas: { "user_token": getCookie("user_token") } },
+                                dataType: 'json',
+                                success: function (result2) {
+                                        addUserViewRecruiter(result.user, result2.data);
+                                }
+                        });
+                }
+        });
 }
 
 function capitalize(string) {
@@ -63,7 +87,7 @@ function getCandidate() {
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {
-                                        addUserView(result.user, result2.data);
+                                        addUserViewCandidate(result.user, result2.data);
                                 }
                         });
                 }

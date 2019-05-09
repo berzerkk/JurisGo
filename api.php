@@ -1126,21 +1126,32 @@
 			}
 		}
 		
-		private function job_candidate_favorite(){
-			if($this->get_request_method() != "GET"){ 
-				$data["status"]= false;
+		private function recruiter_favorite(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "SELECT * FROM candidates_favorites WHERE job='".$_GET["job"]."'";
-			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$this->response($this->json($data),200);
-			}
-			else{
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
 				$data["status"] = false;
-				$this->response($this->json($data),200);
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
 			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates_favorites WHERE recruiter='".$user_id."'";
+			$result = $this->db->query($sql);
+			$i = 0;
+			while($row = $result->fetch_assoc()){
+     			$json[$i] = $row;
+				$json[$i] = array_map('utf8_encode', $json[$i]);
+     			$i++;
+			}
+			$data["datas"] = $json;
+			$data["status"] = true;
+			$data["sql"] = $sql;
+			$data["count"] = $result->num_rows;
+			$this->response($this->json($data),200);
 		}
 		
 		private function favorite_is(){

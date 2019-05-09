@@ -2,69 +2,9 @@ $(document).on('ready', function () {
     checkIfAlreadyConnected();
     getTypeUser();
     logOut();
-    stripe();
+    getFavorite();
 });
 
-
-// function checkIfStripeToken(next) {
-//     $.ajax({
-//         type: 'POST',
-//         url: 'http://jurisgo.petitesaffiches.fr/user/type',
-//         data: { datas: { "user_token": getCookie("user_token") } },
-//         dataType: 'json',
-//         success: function (result) {
-//         }
-//     });
-// }
-
-function stripe() {
-    var checkoutHandler = StripeCheckout.configure({
-        key: "pk_test_TYooMQauvdEDq54NiTphI7jx",
-        locale: "auto"
-    });
-    $("#pricing-button-one-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "05 profils",
-            description: "Example",
-            token: handleToken
-        });
-    });
-    $("#pricing-button-two-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "10 profils",
-            description: "Example",
-            token: handleToken
-        });
-    });
-    $("#pricing-button-three-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "20 profils",
-            description: "Example",
-            token: handleToken
-        });
-    });
-    $("#pricing-button-four-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "Profils illimités",
-            description: "Example",
-            token: handleToken
-        });
-    });
-}
-
-function handleToken(token) {
-    console.log(token);
-    
-    fetch("/charge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(token)
-    })
-        .then(output => {
-            if (output.status === "succeeded")
-                document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
-        })
-}
 
 function logOut() {
     $("#sidebar-logout").on("click", (e) => {
@@ -74,9 +14,62 @@ function logOut() {
     });
 }
 
+function getFavorite() {
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/recruiter/favorite',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (favorite) {
+            favorite.datas.forEach((elem) => {
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://jurisgo.petitesaffiches.fr/candidate/id',
+                    data: { datas: { "user_token": getCookie("user_token"), id: elem.candidate } },
+                    dataType: 'json',
+                    success: function (candidate) {
+                        $.ajax({
+                            type: 'POST',
+                            url: 'http://jurisgo.petitesaffiches.fr/user/id',
+                            data: { datas: { "user_token": getCookie("user_token"), id: candidate.data.user } },
+                            dataType: 'json',
+                            success: function (user) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'http://jurisgo.petitesaffiches.fr/job',
+                                    data: { datas: { "user_token": getCookie("user_token"), id: elem.job } },
+                                    dataType: 'json',
+                                    success: function (job) {                                        
+                                        $("#recruiter-favorite-list").append('<div class="emply-resume-list">\
+                <div class="emply-resume-thumb">\
+                    <img src="'+ candidate.data.photo + '" alt="" />\
+                </div>\
+                <div class="emply-resume-info">\
+                    <h3><a>'+ user.user.firstname + ' ' + user.user.lastname + '</a></h3>\
+                    <p>'+ job.datas.title + '</p>\
+                    <p><i class="la la-map-marker"></i>'+ candidate.data.city + ' / ' + candidate.data.departement + '</p>\
+                </div>\
+                <div class="shortlists">\
+                    <a onclick="goDetail('+ elem.candidate + ', ' + elem.job + ')">Détails<i class="la la-plus"></i></a>\
+                </div>\
+            </div>');
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    });
+}
+
+function goDetail(id, job) {
+    window.location.href = '/recruiter_jobs_view_candidate?id=' + id + '&' + 'job=' + job;
+
+}
 
 function addUserView(user, recruiter) {
-
     $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
     if (recruiter.photo)
         $("#image-user-sidebar").attr('src', recruiter.photo);
@@ -136,7 +129,6 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
-
 
 function checkIfAlreadyConnected() {
     if (getCookie("user_token") === "")
