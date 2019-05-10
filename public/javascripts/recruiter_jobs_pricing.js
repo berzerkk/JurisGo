@@ -6,64 +6,223 @@ $(document).on('ready', function () {
 });
 
 
-// function checkIfStripeToken(next) {
-//     $.ajax({
-//         type: 'POST',
-//         url: 'http://jurisgo.petitesaffiches.fr/user/type',
-//         data: { datas: { "user_token": getCookie("user_token") } },
-//         dataType: 'json',
-//         success: function (result) {
-//         }
-//     });
-// }
-
-function stripe() {
-    var checkoutHandler = StripeCheckout.configure({
-        key: "pk_test_TYooMQauvdEDq54NiTphI7jx",
-        locale: "auto"
-    });
-    $("#pricing-button-one-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "05 profils",
-            description: "Example",
-            token: handleToken
-        });
-    });
-    $("#pricing-button-two-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "10 profils",
-            description: "Example",
-            token: handleToken
-        });
-    });
-    $("#pricing-button-three-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "20 profils",
-            description: "Example",
-            token: handleToken
-        });
-    });
-    $("#pricing-button-four-offer").on("click", function (e) {
-        checkoutHandler.open({
-            name: "Profils illimités",
-            description: "Example",
-            token: handleToken
-        });
+function saveToken(token, next) {
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/recruiter/stripe/add',
+        data: { datas: { "user_token": getCookie("user_token"), token: token } },
+        dataType: 'json',
+        success: function (res) {
+            next(res);
+        }
     });
 }
 
-function handleToken(token) {
-    console.log(token);
-    
-    fetch("/charge", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(token)
-    })
-        .then(output => {
-            if (output.status === "succeeded")
-                document.getElementById("shop").innerHTML = "<p>Purchase complete!</p>";
-        })
+function getStripe(next) {
+    $.ajax({
+        type: 'POST',
+        url: 'http://jurisgo.petitesaffiches.fr/recruiter/stripe',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (res) {
+            next(res)
+        }
+    });
+}
+
+function stripe() {
+    var checkoutHandler = StripeCheckout.configure({
+        key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
+        locale: "auto"
+    });
+    $("#pricing-button-one-offer").on("click", function (e) {
+        getStripe((recruiterStripe) => {
+            if (recruiterStripe.count >= 1) {
+                let token = {
+                    customer: recruiterStripe.data.token,
+                    amount: 100,
+                    description: "05 profils"
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/charge',
+                    data: token,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === "succeeded") {
+                            saveToken(res.customer, (result) => {
+                                // VIEW DE BRAVO 
+                            });
+                        }
+                    }
+                });
+            } else {
+                checkoutHandler.open({
+                    name: "05 profils",
+                    description: "Example",
+                    token: (token) => {
+                        token.amount = 100;
+                        token.description = "05 profils";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/charge_new',
+                            data: token,
+                            dataType: 'json',
+                            success: function (res) {
+                                console.log(res);
+                                if (res.status === "succeeded") {
+                                    saveToken(res.customer, (result) => {
+                                        console.log(result);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    $("#pricing-button-two-offer").on("click", function (e) {
+        getStripe((recruiterStripe) => {
+            if (recruiterStripe.count >= 1) {
+                let token = {
+                    customer: recruiterStripe.data.token,
+                    amount: 200,
+                    description: "10 profils"
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/charge',
+                    data: token,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === "succeeded") {
+                            saveToken(res.customer, (result) => {
+                                // VIEW DE BRAVO 
+                            });
+                        }
+                    }
+                });
+            } else {
+                checkoutHandler.open({
+                    name: "10 profils",
+                    description: "Example",
+                    token: (token) => {
+                        token.amount = 100;
+                        token.description = "10 profils";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/charge_new',
+                            data: token,
+                            dataType: 'json',
+                            success: function (res) {
+                                console.log(res);
+                                if (res.status === "succeeded") {
+                                    saveToken(res.customer, (result) => {
+                                        console.log(result);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    $("#pricing-button-three-offer").on("click", function (e) {
+        getStripe((recruiterStripe) => {
+            if (recruiterStripe.count >= 1) {
+                let token = {
+                    customer: recruiterStripe.data.token,
+                    amount: 400,
+                    description: "20 profils"
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/charge',
+                    data: token,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === "succeeded") {
+                            saveToken(res.customer, (result) => {
+                                // VIEW DE BRAVO 
+                            });
+                        }
+                    }
+                });
+            } else {
+                checkoutHandler.open({
+                    name: "20 profils",
+                    description: "Example",
+                    token: (token) => {
+                        token.amount = 400;
+                        token.description = "20 profils";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/charge_new',
+                            data: token,
+                            dataType: 'json',
+                            success: function (res) {
+                                console.log(res);
+                                if (res.status === "succeeded") {
+                                    saveToken(res.customer, (result) => {
+                                        console.log(result);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    $("#pricing-button-four-offer").on("click", function (e) {
+        getStripe((recruiterStripe) => {
+            if (recruiterStripe.count >= 1) {
+                let token = {
+                    customer: recruiterStripe.data.token,
+                    amount: 1000,
+                    description: "Profils illimités"
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/charge',
+                    data: token,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.status === "succeeded") {
+                            saveToken(res.customer, (result) => {
+                                // VIEW DE BRAVO 
+                            });
+                        }
+                    }
+                });
+            } else {
+                checkoutHandler.open({
+                    name: "Profils illimités",
+                    description: "Example",
+                    token: (token) => {
+                        token.amount = 1000;
+                        token.description = "Profils illimités";
+                        $.ajax({
+                            type: 'POST',
+                            url: '/charge_new',
+                            data: token,
+                            dataType: 'json',
+                            success: function (res) {
+                                console.log(res);
+                                if (res.status === "succeeded") {
+                                    saveToken(res.customer, (result) => {
+                                        console.log(result);
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
 }
 
 function logOut() {

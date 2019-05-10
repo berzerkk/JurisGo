@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var stripe = require('stripe')('sk_test_...');
+var stripe = require('stripe')('sk_test_o4FCQrr4N0Wts0Al7nTvWyej000rH70DsM');
 const nodemailer = require("nodemailer");
+var request = require('request');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -65,27 +66,43 @@ router.get('/recruiter_favorite', function (req, res, next) {
 });
 
 
-router.post("/charge", (req, res) => {
-  let amount = 500;
-  console.log(req.body);
-
-
+router.post("/charge_new", (req, res) => {
   stripe.customers.create({
     email: req.body.email,
     card: req.body.id
   })
-    .then(customer =>
+    .then(customer => {
       stripe.charges.create({
-        amount,
-        description: "Sample Charge",
+        amount: req.body.amount,
+        description: req.body.description,
         currency: "usd",
         customer: customer.id
-      }))
-    .then(charge => res.send(charge))
+      })
+        .then(charge => {
+          res.send(charge);
+        })
+        .catch(err => {
+          console.log("Error:", err);
+          res.status(500).send({ error: "Purchase Failed" });
+        })
+    })
+});
+
+
+router.post("/charge", (req, res) => {
+  stripe.charges.create({
+    amount: req.body.amount,
+    description: req.body.description,
+    currency: "usd",
+    customer: req.body.customer
+  })
+    .then(charge => {
+      res.send(charge);
+    })
     .catch(err => {
       console.log("Error:", err);
       res.status(500).send({ error: "Purchase Failed" });
-    });
+    })
 });
 
 let Mail = {
@@ -121,11 +138,11 @@ router.post('/contact', (req, res, next) => {
   });
 });
 
-router.post('/account', (req, res, next) => {
-  let data = req.body;
-  Mail.sendMail(data.to, "Jurisgo, your account", "", (info) => {
-    res.status(200).send("ok")
-  });
-});
+// router.post('/account', (req, res, next) => {
+//   let data = req.body;
+//   Mail.sendMail(data.to, "Jurisgo, your account", "", (info) => {
+//     res.status(200).send("ok")
+//   });
+// });
 
 module.exports = router;

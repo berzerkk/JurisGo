@@ -1672,7 +1672,45 @@
 			$data["sql"] = $sql;
 			$data["count"] = $result->num_rows;
 			$this->response($this->json($data),200);
-		
+		}
+
+		private function recruiter_stripe_add(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "INSERT INTO recruiters_stripe (token,recruiter) VALUES ('".$datas["token"]."','".$user_id."')";
+			$result = $this->db->query($sql);
+			$data["status"] = $result ? true: false;
+			$this->response($this->json($data), 200);
+		}
+
+		private function recruiter_stripe(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM recruiters_stripe WHERE recruiter='".$user_id."'";
+			$result = $this->db->query($sql);
+			$data["data"] = $result->fetch_assoc();
+			$data["count"] = $result->num_rows;
+			$this->response($this->json($data), 200);
 		}
 		
 		private function packs(){
