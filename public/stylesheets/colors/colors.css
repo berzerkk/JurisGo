@@ -7,7 +7,7 @@ Background Color
 .pricetable > a,
 .pricetable.active,
 .bottom-line.style2{
-    background-color: #141f72 ;
+    background-color: #951B3F ;
 }
 
 /*------------------------------------------------------------------
@@ -16,7 +16,7 @@ Text Color
 .text-color,
 .pricetable-head h2,
 .pricetable.active > a{
-    color: #141f72;
+    color: #951B3F;
 }
 
 /*------------------------------------------------------------------
@@ -61,7 +61,7 @@ Text Color
 .job-title-sec span,
 .blog-metas a,
 .blog-details > a{
-    color: #fb236a ;
+    color: #951B3F ;
 }
 
 /*------------------------------------------------------------------

@@ -140,12 +140,13 @@ header {
     margin-bottom: 10PX;
 }
 
-
-
-
 }
 
 @media (max-width:980px){
+
+.bottom-footer {
+    display: none;
+}
 
 .block{padding: 15px 0px;}    
 .column {
@@ -163,9 +164,23 @@ header {
 .container.fluid {
     padding: 0;
 }
-.manage-jobs-sec > table {
-    width: 1000px;
+/* .manage-jobs-sec > table {
+} */
+.manage-jobs-sec > table thead tr td {
+    padding-left: 20px;
 }
+.manage-jobs-sec > table tbody td {
+    padding-left: 20px;
+}
+
+.table-list-title > span i {
+    display: none;
+}
+
+.table-list-title > span {
+    line-height: 20px;    
+}
+
 .manage-jobs-sec.addscroll {
     overflow-x: scroll;
     overflow-y: hidden;
@@ -1100,6 +1115,7 @@ select {
 .upload-img-bar {
     display: inline-block;
     text-align: center;
+    padding-left: 0px;
 }
 .upload-img-bar > span {
     float: none;

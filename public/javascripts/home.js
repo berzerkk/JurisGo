@@ -12,17 +12,20 @@ function logOut() {
         });
 }
 
-function addUserViewCandidate(user, recruiter) {
+function addUserViewCandidate(user, candidate) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo)
-                $("#image-user-sidebar").attr('src', recruiter.photo);
+        if (candidate.photo)
+                $("#image-user-sidebar").attr('src', candidate.photo);
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-jobs").remove();
         $("#sidebar-button-jobs-add").remove();
         $("#sidebar-button-favorite").remove();
         $("#sidebar-button-jobs-pricing").remove();
+        $("#sidebar-email-alias").text(candidate.email_alias);
+        $("#sidebar-location").text(candidate.city + ' / ' + candidate.departement);
+
 }
 
 function addUserViewRecruiter(user, recruiter) {

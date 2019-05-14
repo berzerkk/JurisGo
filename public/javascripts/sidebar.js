@@ -1,8 +1,6 @@
 $("#candidate_profile_button").on("click", (e) => {
     e.preventDefault();
-    setCookie("user_token", "", 0)
-    console.log("jej");
-    
+    setCookie("user_token", "", 0)    
     document.location.reload(true);
 });
 

@@ -6,7 +6,7 @@ var request = require('request');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.redirect('localhost:3000/login');
+  res.redirect('/login');
 });
 
 router.get('/register', function (req, res, next) {
@@ -19,10 +19,6 @@ router.get('/login', function (req, res, next) {
 
 router.get('/home', function (req, res, next) {
   res.render('candidates_dashboard');
-});
-
-router.get('/candidates_resume_add', function (req, res, next) {
-  res.render('candidates_my_resume_add_new');
 });
 
 router.get('/candidate_resume', function (req, res, next) {
