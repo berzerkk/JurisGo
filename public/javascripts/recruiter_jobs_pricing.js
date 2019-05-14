@@ -40,7 +40,7 @@ function stripe() {
             if (recruiterStripe.count >= 1) {
                 let token = {
                     customer: recruiterStripe.data.token,
-                    amount: 100,
+                    amount: 999,
                     description: "05 profils"
                 }
                 $.ajax({
@@ -61,7 +61,7 @@ function stripe() {
                     name: "05 profils",
                     description: "Example",
                     token: (token) => {
-                        token.amount = 100;
+                        token.amount = 999;
                         token.description = "05 profils";
                         $.ajax({
                             type: 'POST',
@@ -87,7 +87,7 @@ function stripe() {
             if (recruiterStripe.count >= 1) {
                 let token = {
                     customer: recruiterStripe.data.token,
-                    amount: 200,
+                    amount: 5999,
                     description: "10 profils"
                 }
                 $.ajax({
@@ -108,7 +108,7 @@ function stripe() {
                     name: "10 profils",
                     description: "Example",
                     token: (token) => {
-                        token.amount = 100;
+                        token.amount = 5999;
                         token.description = "10 profils";
                         $.ajax({
                             type: 'POST',
@@ -134,7 +134,7 @@ function stripe() {
             if (recruiterStripe.count >= 1) {
                 let token = {
                     customer: recruiterStripe.data.token,
-                    amount: 400,
+                    amount: 9999,
                     description: "20 profils"
                 }
                 $.ajax({
@@ -155,55 +155,8 @@ function stripe() {
                     name: "20 profils",
                     description: "Example",
                     token: (token) => {
-                        token.amount = 400;
+                        token.amount = 9999;
                         token.description = "20 profils";
-                        $.ajax({
-                            type: 'POST',
-                            url: '/charge_new',
-                            data: token,
-                            dataType: 'json',
-                            success: function (res) {
-                                console.log(res);
-                                if (res.status === "succeeded") {
-                                    saveToken(res.customer, (result) => {
-                                        console.log(result);
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    });
-    $("#pricing-button-four-offer").on("click", function (e) {
-        getStripe((recruiterStripe) => {
-            if (recruiterStripe.count >= 1) {
-                let token = {
-                    customer: recruiterStripe.data.token,
-                    amount: 1000,
-                    description: "Profils illimités"
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: '/charge',
-                    data: token,
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === "succeeded") {
-                            saveToken(res.customer, (result) => {
-                                // VIEW DE BRAVO 
-                            });
-                        }
-                    }
-                });
-            } else {
-                checkoutHandler.open({
-                    name: "Profils illimités",
-                    description: "Example",
-                    token: (token) => {
-                        token.amount = 1000;
-                        token.description = "Profils illimités";
                         $.ajax({
                             type: 'POST',
                             url: '/charge_new',
