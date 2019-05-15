@@ -34,9 +34,8 @@
 
 		<section class="overlape">
 			<div class="block no-padding">
-				<div data-velocity="-.1"
-					style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;"
-					class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
+				<div data-velocity="-.1" style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;"
+				 class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
 				<div class="container fluid">
 					<div class="row">
 						<div class="col-lg-12">
@@ -86,7 +85,12 @@
 											<div class="col-lg-6">
 												<span class="pf-title">Contract</span>
 												<div class="pf-field">
-													<input id="job-add-contract" type="text" />
+													<select id="job-add-contract" data-placeholder="Tout" class="chosen">
+														<option>Tout</option>
+														<option>CDI</option>
+														<option>CDD</option>
+														<option>Stage</option>
+													</select>
 												</div>
 											</div>
 											<div class="col-lg-6">
@@ -102,7 +106,7 @@
 												</div>
 											</div>
 											<div class="col-lg-6">
-												<span class="pf-title">Salaire (brut?)</span>
+												<span class="pf-title">Salaire (brut)</span>
 												<div class="pf-field">
 													<input id="job-add-salary" type="text" />
 												</div>
@@ -110,8 +114,7 @@
 											<div class="col-lg-12">
 												<span class="pf-title">Date de début</span>
 												<div class="pf-field">
-													<input id="job-add-date-start" type="date"
-														placeholder="20/02/2018" />
+													<input id="job-add-date-start" type="date" placeholder="20/02/2018" />
 												</div>
 											</div>
 											<div class="col-lg-12">
@@ -128,13 +131,10 @@
 												</div>
 											</div>
 										</div>
-										<div class="row">
-											<div class="col-lg-6">
-												<button id="draft" class="job-add-button" style="float: left;"
-													type="submit">Brouillon</button>
-											</div>
-											<div class="col-lg-6">
-												<button id="active" class="job-add-button" type="submit">Créer</button>
+										<div class="container">
+											<div class="col-lg-12">
+												<button id="draft" class="job-add-button" style="float:left;" type="submit">Brouillon</button>
+												<button id="active" class="job-add-button" style="float:right;" type="submit">Créer</button>
 											</div>
 										</div>
 									</div>

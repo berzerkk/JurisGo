@@ -15,6 +15,7 @@ $(document).on('ready', function () {
 });
 
 function submitButtonRegister() {
+        let error = false;
         $("#button_create_account").on("click", (e) => {
                 e.preventDefault();
                 var data = {
@@ -29,9 +30,33 @@ function submitButtonRegister() {
                 }
                 console.log(data);
                 
+                if (data.firstname === "") {
+                        $("#firstname_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.lastname === "") {
+                        $("#lastname_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.phone === "") {
+                        $("#phone_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.email === "") {
+                        $("#mail_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.password === "") {
+                        $("#password_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if ($("#password_create_account").val() === "" || $("#password_create_account").val() != data.password) {
+                        $("#password_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
                 if (data.type === "") {
-                        $("#error_connexion").show();
-                        return;
+                        $("#firstname_create_account").parent().css("border", "2px solid #951B3F");
+                        error = true;
                 }
                 $.ajax({
                         type: 'POST',

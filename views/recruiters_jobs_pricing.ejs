@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Jurisgo</title>
@@ -16,77 +17,86 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/responsive.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/chosen.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/colors/colors.css" />
-<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
-	
+	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
+
 </head>
+
 <body>
 
-<div class="page-loading">
-	<img src="images/loader.gif" alt="" />
-	<span>Skip Loader</span>
-</div>
+	<div class="page-loading">
+		<img src="images/loader.gif" alt="" />
+		<span>Skip Loader</span>
+	</div>
 
-<div class="theme-layout" id="scrollup">
-	
-	<%- include header.ejs -%>
+	<div class="theme-layout" id="scrollup">
 
-	<section>
-		<div class="block">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<div id="heading-offers" class="heading">
-							<h2>Buy Our Plans And Packeges</h2>
-							<span>One of our jobs has some kind of flexibility option - such as telecommuting, a part-time schedule or a flexible or flextime schedule.</span>
-						</div><!-- Heading -->
-						<div class="plans-sec">
-							<div class="row">
-								<div class="col-lg-4">
-									<div class="pricetable">
-										<div class="pricetable-head">
-											<h3>Basic Jobs</h3>
-											<h2><i>€</i>9.99</h2>
-											<span>01 Profils</span>
-										</div><!-- Price Table -->
-										<ul>
-											<li>1 job posting</li>
-											<li>0 featured job</li>
-											<li>Job displayed for 20 days</li>
-											<li>Premium Support 24/7</li>
-										</ul>
-										<a id="pricing-button-one-offer">BUY NOW</a>
+		<%- include header.ejs -%>
+
+
+		<div class="account-popup-area" id="overlay-confirm-purchase">
+			<div id="popup-purchase" class="account-popup">
+			</div>
+		</div>
+
+		<section>
+			<div class="block">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-12">
+							<div id="heading-offers" class="heading">
+								<h2>Buy Our Plans And Packeges</h2>
+								<span>One of our jobs has some kind of flexibility option - such as telecommuting, a part-time schedule or a
+									flexible or flextime schedule.</span>
+							</div><!-- Heading -->
+							<div class="plans-sec">
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="pricetable">
+											<div class="pricetable-head">
+												<h3>Basic Jobs</h3>
+												<h2><i>€</i>9.99</h2>
+												<span>01 Profils</span>
+											</div><!-- Price Table -->
+											<ul>
+												<li>1 job posting</li>
+												<li>0 featured job</li>
+												<li>Job displayed for 20 days</li>
+												<li>Premium Support 24/7</li>
+											</ul>
+											<a id="pricing-button-one-offer">BUY NOW</a>
+										</div>
 									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="pricetable active">
-										<div class="pricetable-head">
-											<h3>Standard Jobs</h3>
-											<h2><i>€</i>59.99</h2>
-											<span>5 Profils</span>
-										</div><!-- Price Table -->
-										<ul>
-											<li>11 job posting</li>
-											<li>12 featured job</li>
-											<li>Job displayed for 30 days</li>
-											<li>Premium Support 24/7</li>
-										</ul>
-										<a id="pricing-button-two-offer">BUY NOW</a>
+									<div class="col-lg-4">
+										<div class="pricetable active">
+											<div class="pricetable-head">
+												<h3>Standard Jobs</h3>
+												<h2><i>€</i>59.99</h2>
+												<span>5 Profils</span>
+											</div><!-- Price Table -->
+											<ul>
+												<li>11 job posting</li>
+												<li>12 featured job</li>
+												<li>Job displayed for 30 days</li>
+												<li>Premium Support 24/7</li>
+											</ul>
+											<a id="pricing-button-two-offer">BUY NOW</a>
+										</div>
 									</div>
-								</div>
-								<div class="col-lg-4">
-									<div class="pricetable">
-										<div class="pricetable-head">
-											<h3>Golden Jobs</h3>
-											<h2><i>€</i>99.99</h2>
-											<span>10 Profils</span>
-										</div><!-- Price Table -->
-										<ul>
-											<li>44 job posting</li>
-											<li>56 featured job</li>
-											<li>Job displayed for 80 days</li>
-											<li>Premium Support 24/7</li>
-										</ul>
-										<a id="pricing-button-three-offer">BUY NOW</a>
+									<div class="col-lg-4">
+										<div class="pricetable">
+											<div class="pricetable-head">
+												<h3>Golden Jobs</h3>
+												<h2><i>€</i>99.99</h2>
+												<span>10 Profils</span>
+											</div><!-- Price Table -->
+											<ul>
+												<li>44 job posting</li>
+												<li>56 featured job</li>
+												<li>Job displayed for 80 days</li>
+												<li>Premium Support 24/7</li>
+											</ul>
+											<a id="pricing-button-three-offer">BUY NOW</a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -94,24 +104,23 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-	<%- include bottom_footer.ejs -%>
-</div>
+		</section>
+		<%- include bottom_footer.ejs -%>
+	</div>
 
-<%- include sidebar.ejs -%>
+	<%- include sidebar.ejs -%>
 
-<script src="https://checkout.stripe.com/checkout.js"></script>
-<script src="javascripts/jquery.min.js" type="text/javascript"></script>
-<script src="javascripts/modernizr.js" type="text/javascript"></script>
-<script src="javascripts/script.js" type="text/javascript"></script>
-<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
-<script src="javascripts/wow.min.js" type="text/javascript"></script>
-<script src="javascripts/slick.min.js" type="text/javascript"></script>
-<script src="javascripts/parallax.js" type="text/javascript"></script>
-<script src="javascripts/select-chosen.js" type="text/javascript"></script>
-<script src="javascripts/recruiter_jobs_pricing.js" type="text/javascript"></script>
+	<script src="https://checkout.stripe.com/checkout.js"></script>
+	<script src="javascripts/jquery.min.js" type="text/javascript"></script>
+	<script src="javascripts/modernizr.js" type="text/javascript"></script>
+	<script src="javascripts/script.js" type="text/javascript"></script>
+	<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+	<script src="javascripts/wow.min.js" type="text/javascript"></script>
+	<script src="javascripts/slick.min.js" type="text/javascript"></script>
+	<script src="javascripts/parallax.js" type="text/javascript"></script>
+	<script src="javascripts/select-chosen.js" type="text/javascript"></script>
+	<script src="javascripts/recruiter_jobs_pricing.js" type="text/javascript"></script>
 
 </body>
-</html>
 
+</html>

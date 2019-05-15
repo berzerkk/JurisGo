@@ -71,7 +71,7 @@ router.post("/charge_new", (req, res) => {
       stripe.charges.create({
         amount: req.body.amount,
         description: req.body.description,
-        currency: "usd",
+        currency: "eur",
         customer: customer.id
       })
         .then(charge => {
@@ -89,7 +89,7 @@ router.post("/charge", (req, res) => {
   stripe.charges.create({
     amount: req.body.amount,
     description: req.body.description,
-    currency: "usd",
+    currency: "eur",
     customer: req.body.customer
   })
     .then(charge => {

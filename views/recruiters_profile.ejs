@@ -18,7 +18,8 @@
 	<link rel="stylesheet" type="text/css" href="stylesheets/chosen.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/colors/colors.css" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+	 crossorigin="anonymous">
 
 
 </head>
@@ -42,8 +43,8 @@
 					<div class="row">
 						<div class="col-lg-12">
 							<div class="inner-header">
-									<h3>Modifiez votre profil</h3>
-								</div>
+								<h3>Modifiez votre profil</h3>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -58,23 +59,24 @@
 						<div class="col-lg-9 column">
 							<div class="padding-left">
 								<div class="profile-title" id="mp">
-									<h3>My Profile</h3>
+									<h3>Mon Profil</h3>
 									<div class="upload-img-bar">
-									<span><img id="recruiter_profile_picture" src="http://placehold.it/160x138" alt="" /><i>x</i></span>
-									<div class="upload-info">
-										<label for="recruiter_profile_image_download">
-											<a>Browse</a>
-											<input id="recruiter_profile_image_download" type="file" accept="image/png, image/jpg" style="display:none">
-										</label>
-										<span>Max file size is 1MB, Minimum dimension: 270x210 And Suitable files are .jpg & .png</span>
+										<span><img id="recruiter_profile_picture" src="http://placehold.it/160x138" alt="" /><i>x</i></span>
+										<div class="upload-info">
+											<label for="recruiter_profile_image_download">
+												<a>Rechercher</a>
+												<input id="recruiter_profile_image_download" type="file" accept="image/png, image/jpg" style="display:none">
+											</label>
+											<span>La taille maximale du fichier est de 1 Mo, la taille minimale: 270x210 et les extensions: .jpg & .png</span>
+										</div>
 									</div>
-								</div>
 								</div>
 								<div class="profile-form-edit">
 									<form>
 										<div class="row">
 											<div class="col-lg-12">
-												<span class="pf-title">Nom de l'entreprise</span>											<span id="error_candidate_profile_firstname" class="pf-error">Prénom invalide</span>
+												<span class="pf-title">Nom de l'entreprise</span> <span id="error_candidate_profile_firstname" class="pf-error">Prénom
+													invalide</span>
 												<span id="error_recruiter_profile_company" class="pf-error">Nom invalide</span>
 												<div class="pf-field">
 													<input id="recruiter_profile_company" type="text" placeholder="Tera Planer" />
@@ -105,23 +107,6 @@
 													<input id="recruiter_profile_size" type="text" placeholder="100 - 201" />
 												</div>
 											</div>
-
-											<div class="col-lg-12">
-												<span class="pf-title">Categories</span>
-												<div class="pf-field no-margin">
-													<ul class="tags">
-														<li class="addedTag">Web Deisgn<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
-															 type="hidden" name="tags[]" value="Web Deisgn"></li>
-														<li class="addedTag">Web Develop<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input
-															 type="hidden" name="tags[]" value="Web Develop"></li>
-														<li class="addedTag">SEO<span onclick="$(this).parent().remove();" class="tagRemove">x</span><input type="hidden"
-															 name="tags[]" value="SEO"></li>
-														<li class="tagAdd taglist">
-															<input type="text" id="search-field">
-														</li>
-													</ul>
-												</div>
-											</div>
 											<div class="col-lg-12">
 												<span class="pf-title">Description</span>
 												<span id="error_recruiter_profile_comment" class="pf-error">Nom invalide</span>
@@ -133,7 +118,7 @@
 									</form>
 								</div>
 								<div class="social-edit" id="sn">
-									<h3>Social Edit</h3>
+									<h3>Reseaux Sociaux</h3>
 									<form>
 										<div class="row">
 											<div class="col-lg-6">
@@ -200,8 +185,8 @@
 												<span class="pf-title">Adresse</span>
 												<span id="error_recruiter_profile_location" class="pf-error">Adresse invalide</span>
 												<div class="pf-field">
-													<input id="recruiter_profile_location"type="text" placeholder="Adresse" />
-												<i class="fa fa-map-marker-alt" id="recruiter_profile_button_location"></i>
+													<input id="recruiter_profile_location" type="text" placeholder="Adresse" />
+													<i class="fa fa-map-marker-alt" id="recruiter_profile_button_location"></i>
 												</div>
 											</div>
 											<div class="col-lg-12">

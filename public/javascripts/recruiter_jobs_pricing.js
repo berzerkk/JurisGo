@@ -2,7 +2,7 @@ $(document).on('ready', function () {
     checkIfAlreadyConnected();
     getTypeUser();
     logOut();
-    stripe();
+    confirmPurchase();
 });
 
 
@@ -30,151 +30,159 @@ function getStripe(next) {
     });
 }
 
-function stripe() {
+function stripeOne() {
     var checkoutHandler = StripeCheckout.configure({
         key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
         locale: "auto"
     });
-    $("#pricing-button-one-offer").on("click", function (e) {
-        getStripe((recruiterStripe) => {
-            if (recruiterStripe.count >= 1) {
-                let token = {
-                    customer: recruiterStripe.data.token,
-                    amount: 999,
-                    description: "05 profils"
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: '/charge',
-                    data: token,
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === "succeeded") {
-                            saveToken(res.customer, (result) => {
-                                // VIEW DE BRAVO 
-                            });
-                        }
-                    }
-                });
-            } else {
-                checkoutHandler.open({
-                    name: "05 profils",
-                    description: "Example",
-                    token: (token) => {
-                        token.amount = 999;
-                        token.description = "05 profils";
-                        $.ajax({
-                            type: 'POST',
-                            url: '/charge_new',
-                            data: token,
-                            dataType: 'json',
-                            success: function (res) {
-                                console.log(res);
-                                if (res.status === "succeeded") {
-                                    saveToken(res.customer, (result) => {
-                                        console.log(result);
-                                    });
-                                }
-                            }
+    getStripe((recruiterStripe) => {
+        if (recruiterStripe.count >= 1) {
+            let token = {
+                customer: recruiterStripe.data.token,
+                amount: 999,
+                description: "01 profil"
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/charge',
+                data: token,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status === "succeeded") {
+                        saveToken(res.customer, (result) => {
+                            // VIEW DE BRAVO 
                         });
                     }
-                });
-            }
-        });
+                }
+            });
+        } else {
+            checkoutHandler.open({
+                name: "01 profils",
+                description: "Example",
+                token: (token) => {
+                    token.amount = 999;
+                    token.description = "01 profil";
+                    $.ajax({
+                        type: 'POST',
+                        url: '/charge_new',
+                        data: token,
+                        dataType: 'json',
+                        success: function (res) {
+                            console.log(res);
+                            if (res.status === "succeeded") {
+                                saveToken(res.customer, (result) => {
+                                    console.log(result);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
     });
-    $("#pricing-button-two-offer").on("click", function (e) {
-        getStripe((recruiterStripe) => {
-            if (recruiterStripe.count >= 1) {
-                let token = {
-                    customer: recruiterStripe.data.token,
-                    amount: 5999,
-                    description: "10 profils"
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: '/charge',
-                    data: token,
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === "succeeded") {
-                            saveToken(res.customer, (result) => {
-                                // VIEW DE BRAVO 
-                            });
-                        }
-                    }
-                });
-            } else {
-                checkoutHandler.open({
-                    name: "10 profils",
-                    description: "Example",
-                    token: (token) => {
-                        token.amount = 5999;
-                        token.description = "10 profils";
-                        $.ajax({
-                            type: 'POST',
-                            url: '/charge_new',
-                            data: token,
-                            dataType: 'json',
-                            success: function (res) {
-                                console.log(res);
-                                if (res.status === "succeeded") {
-                                    saveToken(res.customer, (result) => {
-                                        console.log(result);
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        });
+}
+
+function stripeFive() {
+    var checkoutHandler = StripeCheckout.configure({
+        key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
+        locale: "auto"
     });
-    $("#pricing-button-three-offer").on("click", function (e) {
-        getStripe((recruiterStripe) => {
-            if (recruiterStripe.count >= 1) {
-                let token = {
-                    customer: recruiterStripe.data.token,
-                    amount: 9999,
-                    description: "20 profils"
-                }
-                $.ajax({
-                    type: 'POST',
-                    url: '/charge',
-                    data: token,
-                    dataType: 'json',
-                    success: function (res) {
-                        if (res.status === "succeeded") {
-                            saveToken(res.customer, (result) => {
-                                // VIEW DE BRAVO 
-                            });
-                        }
-                    }
-                });
-            } else {
-                checkoutHandler.open({
-                    name: "20 profils",
-                    description: "Example",
-                    token: (token) => {
-                        token.amount = 9999;
-                        token.description = "20 profils";
-                        $.ajax({
-                            type: 'POST',
-                            url: '/charge_new',
-                            data: token,
-                            dataType: 'json',
-                            success: function (res) {
-                                console.log(res);
-                                if (res.status === "succeeded") {
-                                    saveToken(res.customer, (result) => {
-                                        console.log(result);
-                                    });
-                                }
-                            }
+    getStripe((recruiterStripe) => {
+        if (recruiterStripe.count >= 1) {
+            let token = {
+                customer: recruiterStripe.data.token,
+                amount: 5999,
+                description: "5 profils"
+            }
+            $.ajax({
+                type: 'POST',
+                url: '/charge',
+                data: token,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status === "succeeded") {
+                        saveToken(res.customer, (result) => {
+                            // VIEW DE BRAVO 
                         });
                     }
-                });
+                }
+            });
+        } else {
+            checkoutHandler.open({
+                name: "5 profils",
+                description: "Example",
+                token: (token) => {
+                    token.amount = 5999;
+                    token.description = "5 profils";
+                    $.ajax({
+                        type: 'POST',
+                        url: '/charge_new',
+                        data: token,
+                        dataType: 'json',
+                        success: function (res) {
+                            console.log(res);
+                            if (res.status === "succeeded") {
+                                saveToken(res.customer, (result) => {
+                                    console.log(result);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+function stripeTen() {
+    var checkoutHandler = StripeCheckout.configure({
+        key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
+        locale: "auto"
+    });
+    getStripe((recruiterStripe) => {
+        if (recruiterStripe.count >= 1) {
+            let token = {
+                customer: recruiterStripe.data.token,
+                amount: 9999,
+                description: "10 profils"
             }
-        });
+            $.ajax({
+                type: 'POST',
+                url: '/charge',
+                data: token,
+                dataType: 'json',
+                success: function (res) {
+                    if (res.status === "succeeded") {
+                        saveToken(res.customer, (result) => {
+                            // VIEW DE BRAVO 
+                        });
+                    }
+                }
+            });
+        } else {
+            checkoutHandler.open({
+                name: "10 profils",
+                description: "Example",
+                token: (token) => {
+                    token.amount = 9999;
+                    token.description = "10 profils";
+                    $.ajax({
+                        type: 'POST',
+                        url: '/charge_new',
+                        data: token,
+                        dataType: 'json',
+                        success: function (res) {
+                            console.log(res);
+                            if (res.status === "succeeded") {
+                                saveToken(res.customer, (result) => {
+                                    console.log(result);
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
     });
 }
 
@@ -186,6 +194,84 @@ function logOut() {
     });
 }
 
+
+function confirmPurchase() {
+    $("#pricing-button-one-offer").on("click", (e) => {
+        e.preventDefault();
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous acheter 01 profil pour 9.99€ ?</h3>\
+        <div class="resumeadd-form">\
+            <div class="row align-items-end">\
+                <div class="row">\
+                    <div class="col-lg-6">\
+                        <button id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                    </div>\
+                    <div class="col-lg-6">\
+                        <button id="popup-cancel-purchase" type="submit">Annuler</button>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+        $("#overlay-confirm-purchase").css("visibility", "visible");
+        $("#popup-confirm-purchase").unbind().on("click", (e) => {
+            e.preventDefault();
+            stripeOne();
+        });
+        $("#popup-cancel-purchase").unbind().on("click", (e) => {
+            e.preventDefault();
+            $("#overlay-confirm-purchase").css("visibility", "hidden");
+        })
+    });
+    $("#pricing-button-two-offer").on("click", (e) => {
+        e.preventDefault();
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous acheter 05 profils pour 59.99€ ?</h3>\
+        <div class="resumeadd-form">\
+            <div class="row align-items-end">\
+                <div class="row">\
+                    <div class="col-lg-6">\
+                        <button id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                    </div>\
+                    <div class="col-lg-6">\
+                        <button id="popup-cancel-purchase" type="submit">Annuler</button>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+        $("#overlay-confirm-purchase").css("visibility", "visible");
+        $("#popup-confirm-purchase").unbind().on("click", (e) => {
+            e.preventDefault();
+            stripeFive();
+        });
+        $("#popup-cancel-purchase").unbind().on("click", (e) => {
+            e.preventDefault();
+            $("#overlay-confirm-purchase").css("visibility", "hidden");
+        })
+    });
+    $("#pricing-button-three-offer").on("click", (e) => {
+        e.preventDefault();
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous acheter 10 profilS pour 99.99€ ?</h3>\
+        <div class="resumeadd-form">\
+            <div class="row align-items-end">\
+                <div class="row">\
+                    <div class="col-lg-6">\
+                        <button id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                    </div>\
+                    <div class="col-lg-6">\
+                        <button id="popup-cancel-purchase" type="submit">Annuler</button>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>');
+        $("#overlay-confirm-purchase").css("visibility", "visible");
+        $("#popup-confirm-purchase").unbind().on("click", (e) => {
+            e.preventDefault();
+            stripeTen();
+        });
+        $("#popup-cancel-purchase").unbind().on("click", (e) => {
+            e.preventDefault();
+            $("#overlay-confirm-purchase").css("visibility", "hidden");
+        })
+    });
+}
 
 function addUserView(user, recruiter) {
 

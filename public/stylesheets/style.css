@@ -426,7 +426,7 @@ button{
 .slick-arrow.slick-hidden {display: none; }
 /* Page Loading */
 .page-loading {
-    background-color: #ffffff;
+    background-color: #09111F;
     content: "";
     height: 100%;
     left: 0;
@@ -6759,7 +6759,7 @@ aside .widget.border:first-child {
     margin-bottom: 10px;
 }
 .pf-error {
-    visibility: hidden;
+    display: none;
     color: #a51212;
     font-family: Open Sans;
     font-size: 13px;
@@ -6929,7 +6929,7 @@ aside .widget.border:first-child {
     float: right;
     background: #ffffff;
     border: 2px solid #EC6626;
-    color: #2E2E2E;
+    color: #EC6626;
     font-family: Open Sans;
     font-size: 15px;
     padding: 11px 40px;
@@ -7086,7 +7086,7 @@ aside .widget.border:first-child {
     bottom: 100%;
     opacity: 0;
     visibility: hidden;
-    background: #0f36a5;
+    background: #951B3F;
     color: #ffffff;
     width: 80px;
     font-size: 12px;
@@ -7112,7 +7112,7 @@ aside .widget.border:first-child {
     width: 10px;
     height: 10px;
     content: "";
-    background: #0f36a5;
+    background: #951B3F;
     margin-left: -5px;
     margin-bottom: -4px;
     
@@ -9301,7 +9301,7 @@ header.gradient{
 .resumeadd-form button {
     float: right;
     border: 2px solid #EC6626;
-    color: #ffffff;
+    color: #EC6626;
     font-family: Open Sans;
     font-size: 15px;
     padding: 12px 41px;
@@ -9313,7 +9313,7 @@ header.gradient{
     border-radius: 8px;
 
     margin-top: 10px;
-    background: #f43574;
+    background: #ffffff;
 }
 .resumeadd-form .remember-label {
     float: right;
