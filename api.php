@@ -729,6 +729,8 @@
 			latitude='".$datas["latitude"]."',
 			birthday='".$datas["birthday"]."',
 			city='".$datas["city"]."',
+			departement='".$datas["departement"]."',
+			contrat='".$datas["contrat"]."',
 			address='".$datas["address"]."'
 			WHERE user='".$user_id."'";
 			$result = $this->db->query($sql);

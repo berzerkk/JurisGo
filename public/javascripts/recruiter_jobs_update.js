@@ -104,7 +104,7 @@ function getJob(next) {
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
-                        $("#job-add-title").val(result.datas.title);
+                        $("#job-add-title").val(result.datas.title).trigger("chosen:updated");
                         $("#job-add-comment").val(result.datas.description);
                         $("#job-add-date-start").val(result.datas.date_start);
                         $("#job-add-contract").val(result.datas.contract);

@@ -93,6 +93,9 @@ function getCandidate() {
                                         $("#candidate_profile_email").val(result.data.email_alias);
                                         $("#candidate_profile_location").val(result.data.address);
                                         $("#candidate_profile_birthdate").val(result.data.birthday);
+                                        $("#candidate_profile_freedom").val(translateDisponibility(result.data.disponibility, false)).trigger("chosen:updated");
+                                        $("#candidate_profile_contract").val(result.data.contrat).trigger("chosen:updated");
+
                                 }
                         });
                 }
@@ -159,19 +162,52 @@ function DownloadPicture() {
         });
 }
 
+function translateDisponibility(str, french) {
+        if (french) {
+                switch (str) {
+                        case "Immédiatement":
+                                return "immediately";
+                        case "1 mois":
+                                return "one_month";
+                        case "2 mois":
+                                return "two_months";
+                        case "3 mois":
+                                return "three_months";
+                        case "Ne sais pas":
+                                return "unknown";
+                }
+        } else {
+                switch (str) {
+                        case "immediately":
+                                return "Immédiatement";
+                        case "one_month":
+                                return "1 mois";
+                        case "two_months":
+                                return "2 mois";
+                        case "three_months":
+                                return "3 mois";
+                        case "unknown":
+                                return "Ne sais pas";
+                }
+        }
+}
+
 function submitCandidateProfile() {
         $("#candidate_profile_button").on("click", (e) => {
                 e.preventDefault();
                 var data = {
                         user_token: getCookie("user_token"),
                         photo: $("#candidate_profile_picture").attr('src'),
-                        firstname: $("#candidate_profile_firstname").val(), // TODO ADD CHAMP ON USER DB
+                        firstname: $("#candidate_profile_firstname").val(),
                         lastname: $("#candidate_profile_lastname").val(),
                         email: $("#candidate_profile_email").val(),
                         phone: $("#candidate_profile_phone").val(),
-                        disponibility: $("#candidate_profile_freedom").val(),
+                        disponibility: translateDisponibility($("#candidate_profile_freedom").val(), true),
+                        contrat: $("#candidate_profile_contract").val(),
                         birthday: $("#candidate_profile_birthdate").val(),
-                        address: $("#candidate_profile_location").val(), // ADD tags
+                        address: $("#candidate_profile_location").val(),
+                        city: "",
+                        departement: "",
                         status: "active",
                         longitude: $("#longitude").text(),
                         latitude: $("#latitude").text(),
@@ -204,15 +240,27 @@ function submitCandidateProfile() {
                         $("#error_candidate_profile_location").css("visibility", "visible");
                         return;
                 }
-                console.log(data);
                 $.ajax({
-                        type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
-                        data: { datas: data },
-                        dataType: 'json',
+                        type: 'GET',
+                        url: "https://api-adresse.data.gouv.fr/search/?q=" + $("#candidate_profile_location").val(),
                         success: function (result) {
-                                console.log(result);
+                                data.longitude = result.features[0].geometry.coordinates[0];
+                                data.latitude = result.features[0].geometry.coordinates[1];
+                                data.city = result.features[0].properties.city;
+                                data.departement = result.features[0].properties.postcode.slice(0, -3);
+                                console.log(data);
+                                                              
+                                $.ajax({
+                                        type: 'POST',
+                                        url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
+                                        data: { datas: data },
+                                        dataType: 'json',
+                                        success: function (result) {
+                                                console.log(result);
+                                        }
+                                });
                         }
                 });
+
         });
 }

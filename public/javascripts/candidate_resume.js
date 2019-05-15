@@ -206,7 +206,7 @@ function getStudies() {
         dataType: 'json',
         success: function (result) {
             $("#candidate-resume-studies").html("");
-            for (elem in result.datas) {
+            for (elem in result.datas) {                
                 $("#candidate-resume-studies").append('<div id="studie-element-' + result.datas[elem].id + '" class="edu-history">\
                 <i class="la la-graduation-cap"></i>\
                 <div class="edu-hisinfo">\
@@ -273,9 +273,10 @@ function updateStudies(elem_id) {
     $("#popup-update-studies").css("visibility", "visible");
     $("#popup-add-studies").css("visibility", "hidden");
     $("#overlay-add-education").css("visibility", "visible");
-    $("#popup-input-diploma-studies").val($("#resume-studies-diploma-value-" + elem_id).text());
-    console.log($("#resume-studies-date-value-" + elem_id).text().split(" ")[0]); // TODO
-    $("#popup-input-school-studies").val($("#resume-studies-school-value-" + elem_id).text());
+    $("#popup-input-diploma-studies").val($("#resume-studies-diploma-value-" + elem_id).text()).trigger("chosen:updated");
+    $("#popup-input-datestart-studies").val($("#resume-studies-date-value-" + elem_id).text().split(" ")[0]);
+    $("#popup-input-dateend-studies").val($("#resume-studies-date-value-" + elem_id).text().split(" ")[2]);
+    $("#popup-input-school-studies").val($("#resume-studies-school-value-" + elem_id).clone().children().remove().end().text());
     $("#popup-input-branch-studies").val($("#resume-studies-branch-value-" + elem_id).text());
     $("#popup-input-comment-studies").val($("#resume-studies-comment-value-" + elem_id).text());
     $("#popup-update-studies").unbind().on("click", (e) => {
@@ -289,6 +290,8 @@ function updateStudies(elem_id) {
             branch: $("#popup-input-branch-studies").val(),
             id: elem_id
         };
+        console.log(data);
+        
         $.ajax({
             type: 'POST',
             url: 'http://jurisgo.petitesaffiches.fr/candidate/studie/update',
@@ -296,8 +299,8 @@ function updateStudies(elem_id) {
             dataType: 'json',
             success: function (result) {
                 $("#resume-studies-diploma-value-" + elem_id).text(data.diploma);
+                $("#resume-studies-school-value-" + elem_id)[0].firstChild.data = data.school;
                 $("#resume-studies-branch-value-" + elem_id).text(data.branch);
-                $("#resume-studies-school-value-" + elem_id).text(data.school);
                 $("#resume-studies-comment-value-" + elem_id).text(data.comment);
                 $("#resume-studies-date-value-" + elem_id).text(data.date_start + " - " + data.date_end);
                 $("#popup-update-studies").css("visibility", "hidden");
