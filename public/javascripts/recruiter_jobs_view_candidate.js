@@ -64,7 +64,7 @@ function getSkills() {
                 dataType: 'json',
                 success: function (result) {
                         $("#skills-menu").text("Skills (" + result.count + ")")
-                        $("#skills").html('<h2>Professional Skills</h2>');
+                        $("#skills").html('<h2>Skills</h2>');
                         for (elem in result.datas) {
                                 $("#skills").append('<div class="progress-sec">\
                         <span>'+ result.datas[elem].name + '</span>\

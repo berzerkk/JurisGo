@@ -98,7 +98,7 @@ function getExperience() {
                 <i></i>\
                 <div class="edu-hisinfo">\
                     <h3 id="resume-experience-company-value-' + result.datas[elem].id + '">' + result.datas[elem].company + '<span id="resume-experience-function-value-' + result.datas[elem].id + '">' + result.datas[elem].function + '</span></h3>\
-                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                    <i id="resume-experience-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start.split('-').reverse().join('/') + ' - ' + result.datas[elem].date_end.split('-').reverse().join('/') + '</i>\
                     <p id="resume-experience-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
                 </div>\
                 <ul class="action_job">\
@@ -147,8 +147,8 @@ function updateExperience(elem_id) {
     $("#popup-add-experience").css("visibility", "hidden");
     $("#overlay-add-experiences").css("visibility", "visible");
     $("#popup-input-function-experience").val($("#resume-experience-function-value-" + elem_id).text());
-    $("#popup-input-datestart-experience").val($("#resume-experience-date-value-" + elem_id).text().split(" ")[0]);
-    $("#popup-input-dateend-experience").val($("#resume-experience-date-value-" + elem_id).text().split(" ")[2]);
+    $("#popup-input-datestart-experience").val($("#resume-experience-date-value-" + elem_id).text().split(" ")[0].split('/').reverse().join('-'));
+    $("#popup-input-dateend-experience").val($("#resume-experience-date-value-" + elem_id).text().split(" ")[2].split('/').reverse().join('-'));
     $("#popup-input-company-experience").val($("#resume-experience-company-value-" + elem_id).justtext());
     $("#popup-input-comment-experience").val($("#resume-experience-comment-value-" + elem_id).text());
     $("#popup-update-experience").unbind().on("click", (e) => {
@@ -211,7 +211,7 @@ function getStudies() {
                 <i class="la la-graduation-cap"></i>\
                 <div class="edu-hisinfo">\
                     <h3 id="resume-studies-diploma-value-' + result.datas[elem].id + '">' + result.datas[elem].diploma + '</h3>\
-                    <i id="resume-studies-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                    <i id="resume-studies-date-value-' + result.datas[elem].id + '">' + result.datas[elem].date_start.split('-').reverse().join('/') + ' - ' + result.datas[elem].date_end.split('-').reverse().join('/') + '</i>\
                     <span id="resume-studies-school-value-' + result.datas[elem].id + '">' + result.datas[elem].school + '<i id="resume-studies-branch-value-' + result.datas[elem].id + '">' + result.datas[elem].branch + '</i></span>\
                     <p id="resume-studies-comment-value-' + result.datas[elem].id + '">' + result.datas[elem].comment + '</p>\
                 </div>\
@@ -274,8 +274,8 @@ function updateStudies(elem_id) {
     $("#popup-add-studies").css("visibility", "hidden");
     $("#overlay-add-education").css("visibility", "visible");
     $("#popup-input-diploma-studies").val($("#resume-studies-diploma-value-" + elem_id).text()).trigger("chosen:updated");
-    $("#popup-input-datestart-studies").val($("#resume-studies-date-value-" + elem_id).text().split(" ")[0]);
-    $("#popup-input-dateend-studies").val($("#resume-studies-date-value-" + elem_id).text().split(" ")[2]);
+    $("#popup-input-datestart-studies").val($("#resume-studies-date-value-" + elem_id).text().split(" ")[0].split('/').reverse().join('-'));
+    $("#popup-input-dateend-studies").val($("#resume-studies-date-value-" + elem_id).text().split(" ")[2].split('/').reverse().join('-'));
     $("#popup-input-school-studies").val($("#resume-studies-school-value-" + elem_id).clone().children().remove().end().text());
     $("#popup-input-branch-studies").val($("#resume-studies-branch-value-" + elem_id).text());
     $("#popup-input-comment-studies").val($("#resume-studies-comment-value-" + elem_id).text());
