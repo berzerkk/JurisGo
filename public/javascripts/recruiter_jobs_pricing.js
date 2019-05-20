@@ -198,7 +198,7 @@ function logOut() {
 function confirmPurchase() {
     $("#pricing-button-one-offer").on("click", (e) => {
         e.preventDefault();
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous acheter 01 profil pour 9.99€ ?</h3>\
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 9.99€ euros ?</h3>\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
                 <div class="row">\
@@ -223,7 +223,7 @@ function confirmPurchase() {
     });
     $("#pricing-button-two-offer").on("click", (e) => {
         e.preventDefault();
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous acheter 05 profils pour 59.99€ ?</h3>\
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 59.99€ euros ?</h3>\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
                 <div class="row">\
@@ -248,7 +248,7 @@ function confirmPurchase() {
     });
     $("#pricing-button-three-offer").on("click", (e) => {
         e.preventDefault();
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous acheter 10 profilS pour 99.99€ ?</h3>\
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 99.99€ euros ?</h3>\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
                 <div class="row">\

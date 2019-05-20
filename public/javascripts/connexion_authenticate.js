@@ -4,6 +4,8 @@ $(document).on('ready', function () {
         $('#error_connexion').hide();
         submitButtonRegister();
         sumbitButtonConnexion();
+        linkedin();
+        facebook();
         $("#button_connexion_to_register").on("click", (e) => {
                 e.preventDefault();
                 window.location.pathname = '/register';
@@ -13,6 +15,27 @@ $(document).on('ready', function () {
                 window.location.pathname = '/login';
         });
 });
+
+function facebook() {
+        $("#facebook-login").on('click', (e) => {
+                e.preventDefault();
+                popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook','height=800,width=1200');
+        });
+}
+
+function linkedin() {
+        $('#linkedin-login').on('click', (e) => {
+                
+                e.preventDefault();
+                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=http://localhost:3000/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress%20w_member_social', 'Jursigo - Linkedin','height=800,width=1200');
+                popup.onunload = linkedinDone;
+        });
+}
+
+function linkedinDone() {
+        window.location.pathname = '/home'
+        
+}
 
 function submitButtonRegister() {
         let error = false;
@@ -29,7 +52,7 @@ function submitButtonRegister() {
                                 : $("#employer_create_account").hasClass("active") ? "recruiter" : ""
                 }
                 console.log(data);
-                
+
                 if (data.firstname === "") {
                         $("#firstname_create_account").parent().css("border", "2px solid #951B3F");
                         error = true;

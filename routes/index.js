@@ -141,4 +141,26 @@ router.post('/contact', (req, res, next) => {
 //   });
 // });
 
+router.get('/callback_facebook', (req, res, next) => {
+  console.log(req.query);
+  res.render('login');
+});
+
+router.get('/callback_linkedin', (req, res, next) => {
+  request.post({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: 'https://www.linkedin.com/oauth/v2/accessToken',
+    form: {
+      grant_type: "authorization_code",
+      code: req.query.code,
+      redirect_uri: "http://localhost:3000/callback_linkedin",
+      client_id: "86nhbra0gwjcrb",
+      client_secret: "8g3Yrf4jjnq53E9a"
+    }
+  }, function (error, response, body) {
+    console.log(req.query);
+    res.set('Content-Type', 'text/html');
+    res.send(new Buffer('<script>window.close();</script>'));});
+});
+
 module.exports = router;

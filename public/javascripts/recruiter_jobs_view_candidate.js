@@ -9,6 +9,7 @@ $(document).on('ready', function () {
         contact();
         addFavorite();
         checkFavorite();
+       
 });
 
 function getCandidate() {
@@ -46,7 +47,7 @@ function getStudies() {
                                 <i class="la la-graduation-cap"></i>\
                                 <div class="edu-hisinfo">\
                                         <h3>'+ result.datas[elem].diploma + '</h3>\
-                                        <i>'+ result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                                        <i>'+ result.datas[elem].date_start.split('-').reverse().join('/') + ' - ' + result.datas[elem].date_end.split('-').reverse().join('/') + '</i>\
                                         <span>'+ result.datas[elem].school + ' <i>' + result.datas[elem].branch + '</i></span>\
                                         <p></p>\
                                 </div>\
@@ -89,7 +90,7 @@ function getExperiences() {
                                 <i></i>\
                                 <div class="edu-hisinfo">\
                                         <h3>'+ result.datas[elem].function + '<span>' + result.datas[elem].company + '</span></h3>\
-                                        <i>'+ result.datas[elem].date_start + ' - ' + result.datas[elem].date_end + '</i>\
+                                        <i>'+ result.datas[elem].date_start.split('-').reverse().join('/') + ' - ' + result.datas[elem].date_end.split('-').reverse().join('/') + '</i>\
                                         <p>'+ result.datas[elem].comment + '</p>\
                                 </div>\
                         </div>');
@@ -133,25 +134,16 @@ function checkFavorite() {
                 },
                 dataType: 'json',
                 success: function (result) {
-                        if (!result.status) {
-                                $("#job-view-candidate-favorite").css("color", "#008000").css("border", "2px solid #008000").addClass("add")
-                                $("#job-view-candidate-favorite")
-                                        .mouseover(() => { $('#job-view-candidate-favorite').css("background-color", "#008000").css("color", "#FFF") })
-                                        .mouseout(() => { $('#job-view-candidate-favorite').css("background-color", "#FFF").css("color", "#008000") })
-                        } else {
-                                $("#job-view-candidate-favorite").css("color", "#FF0000").css("border", "2px solid #FF0000")
-                                $("#job-view-candidate-favorite")
-                                        .mouseover(() => { $('#job-view-candidate-favorite').css("background-color", "#FF0000").css("color", "#FFF") })
-                                        .mouseout(() => { $('#job-view-candidate-favorite').css("background-color", "#FFF").css("color", "#FF0000") })
-                        }
+                        if (result.status)
+                                $(".heart").removeClass("far").addClass("fas");
                 }
         });
 }
 
 function addFavorite() {
-        $("#job-view-candidate-favorite").on("click", (e) => {
+        $(".heart").on("click", (e) => {
                 e.preventDefault();
-                if ($("#job-view-candidate-favorite").hasClass("add")) {
+                if ($(".heart").hasClass("far")) {
                         $.ajax({
                                 type: 'POST',
                                 url: 'http://jurisgo.petitesaffiches.fr/favorite/add',
@@ -164,10 +156,7 @@ function addFavorite() {
                                 },
                                 dataType: 'json',
                                 success: function (result) {
-                                        $("#job-view-candidate-favorite").css("color", "#FF0000").css("border", "2px solid #FF0000").removeClass("add");
-                                        $("#job-view-candidate-favorite")
-                                                .mouseover(() => { $('#job-view-candidate-favorite').css("background-color", "#FF0000").css("color", "#FFF") })
-                                                .mouseout(() => { $('#job-view-candidate-favorite').css("background-color", "#FFF").css("color", "#FF0000") })
+                                        $(".heart").removeClass("far").addClass("fas");
                                 }
                         });
                 } else {
@@ -183,10 +172,7 @@ function addFavorite() {
                                 },
                                 dataType: 'json',
                                 success: function (result) {
-                                        $("#job-view-candidate-favorite").css("color", "#008000").css("border", "2px solid #008000").addClass("add")
-                                        $("#job-view-candidate-favorite")
-                                                .mouseover(() => { $('#job-view-candidate-favorite').css("background-color", "#008000").css("color", "#FFF") })
-                                                .mouseout(() => { $('#job-view-candidate-favorite').css("background-color", "#FFF").css("color", "#008000") })
+                                        $(".heart").removeClass("fas").addClass("far");
                                 }
                         });
                 }

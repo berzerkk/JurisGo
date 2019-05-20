@@ -22,8 +22,8 @@ function getJobs() {
                                 </div>\
                         </td>\
                         <td>\
-                                <span>'+ data[i].date_created + '</span><br />\
-                                <span>'+ data[i].date_start + '</span>\
+                                <span>'+ data[i].date_created.split('-').reverse().join('/') + '</span><br />\
+                                <span>'+ data[i].date_start.split('-').reverse().join('/') + '</span>\
                         </td>\
                         <td>\
                                 <span class="status active">'+ data[i].status + '</span>\

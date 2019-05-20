@@ -5965,12 +5965,12 @@ aside .widget.border:first-child {
     -o-border-radius: 30px;
     border-radius: 30px;
 
-    background: #424f95;
+    background: #951B3F;
     font-size: 18px;
     font-family: Open Sans;
     padding: 16px 10px;
     margin-bottom: 15px;
-    border: 2px solid #424f95;
+    border: 2px solid #951B3F;
 }
 .quick-form-job form > span {
     float: left;
@@ -10937,8 +10937,8 @@ header.style5 .post-job-btn:hover {
 }
 .quick-form-job form button:hover {
     background: transparent;
-    border: 2px solid #424f95;
-    color: #424f95;
+    border: 2px solid #951B3F;
+    color: #951B3F;
 }
 .emply-text > ul > li:hover::before {
     background: #EC6626;
@@ -11791,6 +11791,28 @@ footer.ft .scrollup {
 .newbg .or-browser > span{color: #888888;}
 .newbg .or-browser > a{color: #888888; border-color: #888888;}
 
+
+.heart {
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size:150px;
+    color:#951B3F;
+    cursor: pointer;
+}
+/* 
+.heart {
+  width: 100px;
+  height: 200px;
+  background: url("https://cssanimation.rocks/images/posts/steps/heart.png") no-repeat;
+  background-position: 0 0;
+  cursor: pointer;
+  transition: background-position 1s steps(28);
+  transition-duration: 0s;
+}
+.heart:active{
+    transition-duration: 1s;
+    background-position: -2800px 0;
+} */
 
 /* .overlay-message{
     padding: 10px;
