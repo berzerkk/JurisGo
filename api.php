@@ -87,8 +87,8 @@
 				$this->response($this->json($data),400); 
 			}
 			if(empty($datas["player_id"])){
-				$data["message"] = "player_id empty";
-				$data["status"]= false;
+			 	$data["message"] = "player_id empty";
+			 	$data["status"]= false;
 				$this->response($this->json($data),403);
 			}
 			if(empty($datas["user_id"])){
@@ -313,6 +313,28 @@
 			$this->response($this->json($data), 200);
 		}
 		
+		private function user_linkedin() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			 $datas = $_POST["datas"];
+			 $sql = "SELECT * FROM users WHERE id_linkedin='".$datas["id_linkedin"]."' AND email='".$datas["email"]."'";
+			 $result = $this->db->query($sql);
+			 if ($result->num_rows == 1) {
+			 	$datas["user_id"] = $data["user"]["id"];
+			 	$datas["player_id"] = "123546789";
+			 	$data["token"] = $this->generate_token($datas);
+				$data["exist"] = true;
+			 	$this->response($this->json($data),200);
+			} else {
+			 	$data["exist"] = false;
+			 	$this->response($this->json($data),200);
+			}
+		}
+
+
+
 		private function user_add(){
 			if($this->get_request_method() != "POST"){ 
 				$data["status"]= false;

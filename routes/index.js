@@ -157,10 +157,43 @@ router.get('/callback_linkedin', (req, res, next) => {
       client_id: "86nhbra0gwjcrb",
       client_secret: "8g3Yrf4jjnq53E9a"
     }
-  }, function (error, response, body) {
-    console.log(req.query);
-    res.set('Content-Type', 'text/html');
-    res.send(new Buffer('<script>window.close();</script>'));});
+  }, function (error, token, body) {
+    let parsedRes = JSON.parse(token.body);
+    request.get({
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + parsedRes.access_token },
+      url: 'https://api.linkedin.com/v2/me',
+    }, function (error, user, body) {
+      request.get({
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + parsedRes.access_token },
+        url: 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
+      }, function (error, mail, body) {
+        let datas = {
+          linkedin_id: JSON.parse(user.body).id,
+          email: JSON.parse(mail.body).elements[0]['handle~'].emailAddress
+        };
+        request.post({
+          headers: { 'Content-Type': 'application/json' },
+          url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
+          form: {
+            datas: datas
+          }
+        }, function (error, result, body) {
+          console.log('########', result.body);
+          if (JSON.parse(result.body).exist) {
+            res.set('Content-Type', 'text/html');
+            res.send(new Buffer('<script>document.cookie="' + 'code=1' + '"; window.close();</script>'));
+          } else {
+            res.set('Content-Type', 'text/html');
+            res.send(new Buffer('<script>document.cookie="' + 'exist=true' +
+             '";document.cookie="' + 'firstname=' + JSON.parse(user.body).firstName.localized.fr_FR +
+              '";document.cookie="' + 'lastname=' + JSON.parse(user.body).lastName.localized.fr_FR + 
+               '";document.cookie="' + 'linkedin_id=' + JSON.parse(user.body).id + 
+                '";document.cookie="' + 'email=' + JSON.parse(mail.body).elements[0]['handle~'].emailAddress + 
+                 '"; window.close();</script>'));          }
+        });
+      });
+    });
+  });
 });
 
 module.exports = router;

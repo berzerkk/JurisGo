@@ -4,6 +4,7 @@ $(document).on('ready', function () {
         $('#error_connexion').hide();
         submitButtonRegister();
         sumbitButtonConnexion();
+        checkExistOauth();
         linkedin();
         facebook();
         $("#button_connexion_to_register").on("click", (e) => {
@@ -23,18 +24,24 @@ function facebook() {
         });
 }
 
+function checkExistOauth() {
+        if ( window.location.pathname === '/register' && getCookie('exist') !== "") {
+                $('#button_register_to_connexion').hide();
+                setCookie('exist', '', 1);
+                $('#firstname_create_account').val(getCookie('firstname'));
+                $('#lastname_create_account').val(getCookie('lastname'));
+                $('#mail_create_account').val(getCookie('email'));
+        }
+}
+
 function linkedin() {
         $('#linkedin-login').on('click', (e) => {
                 
                 e.preventDefault();
-                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=http://localhost:3000/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress%20w_member_social', 'Jursigo - Linkedin','height=800,width=1200');
-                popup.onunload = linkedinDone;
+                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=http://localhost:3000/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress', 'Jursigo - Linkedin','height=800,width=1200');
+                popup.onunload = () => {window.location.pathname = '/register';};
+                
         });
-}
-
-function linkedinDone() {
-        window.location.pathname = '/home'
-        
 }
 
 function submitButtonRegister() {
@@ -129,6 +136,22 @@ function sumbitButtonConnexion() {
 function getCookie(cname) {
         var name = cname + "=";
         var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                }
+        }
+        return "";
+}
+
+function getCookieWindows(cname, win) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(win.document.cookie);
         var ca = decodedCookie.split(';');
         for (var i = 0; i < ca.length; i++) {
                 var c = ca[i];
