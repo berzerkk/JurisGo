@@ -47,6 +47,7 @@ function addUserView(user, candidate) {
         $("#sidebar-button-jobs-pricing").remove();
         $("#sidebar-email-alias").text(candidate.email_alias);
         $("#sidebar-location").text(candidate.city + ' / ' + candidate.departement);
+        $("#sidebar-button-interview-recruiter").remove();
 }
 
 function capitalize(string) {

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Jobhunt</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="CreativeLayers">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap-grid.css" />
+	<link rel="stylesheet" href="stylesheets/icons.css">
+	<link rel="stylesheet" href="stylesheets/animate.min.css">
+	<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/responsive.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/chosen.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/colors/colors.css" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.css" />
+
+</head>
+
+<body>
+
+	<div class="page-loading">
+		<img src="images/loader.gif" alt="" />
+		<span>Skip Loader</span>
+	</div>
+
+	<div class="theme-layout" id="scrollup">
+
+		<%- include header.ejs -%>
+
+		<div class="account-popup-area" id="overlay-confirm-purchase">
+			<div id="popup-purchase" class="confirm-popup" style="width: 460px">
+			</div>
+		</div>
+
+		<section class="overlape">
+			<div class="block no-padding">
+				<div data-velocity="-.1" style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;"
+				 class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
+				<div class="container fluid">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="inner-header">
+								<h3>Liste des rendez-vous</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="block no-padding">
+				<div class="container">
+					<div class="row no-gape">
+
+						<div class="col-lg-12 column">
+							<div class="padding-left">
+								<div class="manage-jobs-sec">
+									<h3>Vos rendez-vous</h3>
+									<table>
+										<thead>
+											<tr>
+												<td>Candidat</td>
+												<td>Job</td>
+												<td>Date</td>
+												<td>Adresse</td>
+												<td>Status</td>
+											</tr>
+										</thead>
+										<tbody id="interview-list"></tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<%- include bottom_footer.ejs -%>
+	</div>
+	<%- include sidebar.ejs -%>
+
+	<script src="javascripts/jquery.min.js" type="text/javascript"></script>
+	<script src="javascripts/modernizr.js" type="text/javascript"></script>
+	<script src="javascripts/script.js" type="text/javascript"></script>
+	<script src="javascripts/bootstrap.min.js" type="text/javascript"></script>
+	<script src="javascripts/wow.min.js" type="text/javascript"></script>
+	<script src="javascripts/slick.min.js" type="text/javascript"></script>
+	<script src="javascripts/parallax.js" type="text/javascript"></script>
+	<script src="javascripts/select-chosen.js" type="text/javascript"></script>
+	<script src="javascripts/recruiter_appointment.js" type="text/javascript"></script>
+
+</body>
+
+</html>

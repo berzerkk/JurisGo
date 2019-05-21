@@ -876,6 +876,47 @@ label::after {
     color: #888888;
     margin-top: 20px;
 }
+
+.confirm-popup {
+    position: relative;
+    float: left;
+    width: 690px;
+    background: #ffffff;
+    z-index: 1;
+    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+
+    left: 50%;
+    margin-left: -230px;
+    margin-top: 50px;
+    margin-bottom: 60px;
+    text-align: center;
+    padding:40px 100px;
+}
+.confirm-popup > h3 {
+    float: left;
+    width: 100%;
+    font-family: Quicksand;
+    color: #222222;
+    font-weight: bold;
+    margin: 0;
+        margin-bottom: 0px;
+    margin-bottom: 12px;
+    line-height: 10px;
+}
+.confirm-popup > span {
+    float: left;
+    width: 100%;
+    font-size: 13px;
+    font-family: Open Sans;
+    font-size: 13px;
+    color: #888888;
+    margin-top: 20px;
+}
 .select-user {
     float: left;
     width: 100%;
@@ -938,6 +979,43 @@ label::after {
     right: 20px;
     font-size: 19px;
 }
+
+.confirm-popup > form {
+    float: left;
+    width: 100%;
+    margin-top: 30px;
+}
+.confirm-popup > form .cfield {
+    float: left;
+    width: 100%;
+    position: relative;
+    margin-bottom: 19px;
+    border: 2px solid #e8ecec;
+    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+
+}
+.confirm-popup > form .cfield input {
+    float: left;
+    width: 100%;
+    background: no-repeat;
+    margin: 0;
+    font-family: Open Sans;
+    font-size: 13px;
+    color: #474747;
+    padding: 16px 45px 16px 15px;
+}
+.confirm-popup > form .cfield i {
+    position: absolute;
+    right: 0;
+    top: 15px;
+    right: 20px;
+    font-size: 19px;
+}
 .remember-label {
     float: left;
     margin: 0;
@@ -953,6 +1031,29 @@ label::after {
     line-height: 30px;
 }
 .account-popup > form button {
+    float: left;
+    width: 100%;
+    height: 60px;
+    font-size: 17px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    margin-top: 20px;
+    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+
+}
+.confirm-popup > form > a {
+    float: right;
+    font-family: Open Sans;
+    font-size: 13px;
+    text-decoration: underline;
+    line-height: 30px;
+}
+.confirm-popup > form button {
     float: left;
     width: 100%;
     height: 60px;
@@ -1031,10 +1132,31 @@ label::after {
 }
 
 .login-social a {
-    font-size: 15px;
+    font-size: 35px;
 }
 
 .account-popup .close-popup {
+    position: absolute;
+    top: -20px;
+    width: 50px;
+    height: 50px;
+    float: none;
+    margin: 0;
+    right: -20px;
+    text-align: center;
+    line-height: 50px;
+    color: #ffffff;
+    font-size: 20px;
+    
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+
+    cursor: pointer;
+}
+.confirm-popup .close-popup {
     position: absolute;
     top: -20px;
     width: 50px;
@@ -5950,7 +6072,7 @@ aside .widget.border:first-child {
     border-radius: 8px;
 
     font-size: 13px;
-    color: #888888;
+    color: #2E2E2E;
     padding: 15px 25px;
     font-family: Open Sans;
     margin-bottom: 15px;
@@ -7985,7 +8107,7 @@ header.gradient{
 }
 .emply-resume-list.round .emply-resume-thumb img {
     width: 90px;
-    height: 114px;
+    height: 90px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     -ms-border-radius: 50%;
@@ -9318,6 +9440,31 @@ header.gradient{
 .resumeadd-form .remember-label {
     float: right;
 }
+
+.resumeconfirm-form {
+    float: left;
+    width: 70%;
+}
+.resumeconfirm-form button {
+    float: right;
+    border: 2px solid #EC6626;
+    color: #EC6626;
+    font-family: Open Sans;
+    font-size: 15px;
+    padding: 12px 41px;
+    
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+
+    margin-top: 10px;
+    background: #ffffff;
+}
+.resumeconfirm-form .remember-label {
+    float: right;
+}
 input[type="file"] {
     
 }
@@ -10417,6 +10564,32 @@ header.white {
 .account-popup-area.static .account-popup > h3 {
     line-height: 30px;
 }
+.confirm-popup-area.static {
+    position: static;
+    float: left;
+    width: 100%;
+    display: block !important;;
+    overflow: auto;
+    background: no-repeat;
+    z-index: 1;
+}
+.confirm-popup-area.static .confirm-popup {
+    margin-top: 0;
+    width: 430px;
+    padding: 0;
+}
+.confirm-popup-area.static .confirm-popup {
+    margin-top: 0;
+    width: 430px;
+    padding: 0;
+}
+.confirm-popup-area.static .confirm-popup > span {
+    line-height: 24px;
+    margin: 0;
+}
+.confirm-popup-area.static .confirm-popup > h3 {
+    line-height: 30px;
+}
 
 /* FAQS */
 .faqs {
@@ -11040,6 +11213,10 @@ header.style5 .post-job-btn:hover {
     background: #EC6626;
 }
 .resumeadd-form button:hover{
+    background: #555555;
+    border-color: #555555;
+}
+.resumeconfirm-form button:hover{
     background: #555555;
     border-color: #555555;
 }
@@ -11795,7 +11972,7 @@ footer.ft .scrollup {
 .heart {
     margin-left: 20px;
     margin-top: 20px;
-    font-size:150px;
+    font-size:70px;
     color:#951B3F;
     cursor: pointer;
 }
@@ -11928,6 +12105,7 @@ header.style4 .account-btns > li a,
 .border-title > a,
 .border-title > a *,
 .resumeadd-form button,
+.resumeconfirm-form button,
 .coverletter-sec > form button,
 .blogpost,
 .blogpost *,

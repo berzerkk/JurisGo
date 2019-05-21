@@ -454,6 +454,26 @@
 			$this->response($this->json($data),200);
 		}
 
+		private function recruiter_id(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM recruiters WHERE user='".$datas["id"]."'";
+			$result = $this->db->query($sql);
+			$data["data"] = $result->fetch_assoc();
+			$data["status"] = true;
+			$this->response($this->json($data),200);
+		}
+
 				
 		private function recruiter_edit(){
 			if ($this->get_request_method() != "POST") {
@@ -559,17 +579,17 @@
 			}
 		}
 		
-		private function recruiter_update(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
-				$this->response($this->json($data),400); 
-			}
-			$sql = "UPDATE recruiters
-			SET
-			
-			WHERE id='".$datas["id"]."'";
-			$result = $this->db->query($sql);
-		}
+		// private function(){
+		// 	if($this->get_request_method() != "POST"){ 
+		// 		$data["status"]= false;
+		// 		$this->response($this->json($data),400); 
+		// 	}
+		// 	$sql = "UPDATE recruiters
+		// 	SET
+
+		// 	WHERE id='".$datas["id"]."'";
+		// 	$result = $this->db->query($sql);
+		// }
 		
 		private function candidates(){
 			
@@ -1312,46 +1332,122 @@
 			}
 		}
 		
-		private function job_candidate_interview(){
-			if($this->get_request_method() != "GET"){ 
-				$data["status"]= false;
+		private function recruiter_interview(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$sql = "SELECT * FROM candidates_interview WHERE job='".$_GET["job"]."'";
-			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$this->response($this->json($data),200);
-			}
-			else{
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
 				$data["status"] = false;
-				$this->response($this->json($data),200);
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
 			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates_interview WHERE recruiter='".$user_id."'";
+			$result = $this->db->query($sql);
+			$i = 0;
+			while($row = $result->fetch_assoc()){
+     			$json[$i] = $row;
+				$json[$i] = array_map('utf8_encode', $json[$i]);
+     			$i++;
+			}
+			$data["datas"] = $json;
+			$data["status"] = true;
+			$data["sql"] = $sql;
+			$data["count"] = $result->num_rows;
+			$this->response($this->json($data),200);
 		}
-		
-		private function job_candidate_interview_add(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
+
+		private function candidate_interview() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			$candidate = $datas["candidate"];
-			$recruiter = $datas["recruiter"];
-			$date = $datas["date"];
-			$job = $datas["job"];
-			$status = $datas["status"];
-			$sql = "INSERT INTO candidates_view (candidate,recruiter,job,date,status)
-			VALUES ('".$candidate."','".$recruiter."','".$job."','".$date."','".$status."')";
-			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$this->response($this->json($data),200);
-			}
-			else{
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
 				$data["status"] = false;
-				$this->response($this->json($data),200);
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
 			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM candidates_interview WHERE candidate='".$user_id."'";
+			$result = $this->db->query($sql);
+			$i = 0;
+			while($row = $result->fetch_assoc()){
+     			$json[$i] = $row;
+				$json[$i] = array_map('utf8_encode', $json[$i]);
+     			$i++;
+			}
+			$data["datas"] = $json;
+			$data["status"] = true;
+			$data["sql"] = $sql;
+			$data["count"] = $result->num_rows;
+			$this->response($this->json($data),200);
 		}
 		
+		private function interview_add() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "INSERT INTO candidates_interview (date,candidate,job,status,address,recruiter)
+			VALUES ('".$datas["datetime"]."','".$datas["candidate"]."','".$datas["job"]."','waiting','".$datas["address"]."','".$user_id."')";
+			$result = $this->db->query($sql);
+			$data["status"] = $result ? true: false;
+			$this->response($this->json($data), 200);
+		}
+
+		private function interview_update_status() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "UPDATE candidates_interview SET
+			status='".$datas["status"]."'
+			WHERE id='".$datas['id']."'";
+			$result = $this->db->query($sql);
+			$data["status"] = $result ? true: false;
+			$this->response($this->json($data), 200);
+		}
+		
+		private function interview_delete(){
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "DELETE FROM candidates_interview WHERE id='".$datas["id"]."' AND recruiter='".$user_id."'";
+			$result = $this->db->query($sql);
+			$data["status"] = $result ? true: false;
+			$this->response($this->json($data), 200);
+		}
+
 		private function job_candidate_interview_update(){
 			if($this->get_request_method() != "POST"){ 
 				$data["status"]= false;
@@ -1379,23 +1475,6 @@
 				$this->response($this->json($data),200);
 			}
 		}
-		
-		private function job_candidate_interview_delete(){
-			if($this->get_request_method() != "POST"){ 
-				$data["status"]= false;
-				$this->response($this->json($data),400); 
-			}
-			$sql = "DELETE FROM candidates_interview WHERE id='".$datas["id"]."' AND candidate='".$datas["candidate"]."' AND job='".$datas["job"]."'";
-			$result = $this->db->query($sql);
-			if($result){
-				$data["status"] = true;
-				$this->response($this->json($data),200);
-			}
-			else{
-				$data["status"] = false;
-				$this->response($this->json($data),200);
-			}
-		}
 
 		private function job() {
 			if ($this->get_request_method() != "POST") {
@@ -1411,6 +1490,26 @@
 			}
 			$user_id = $this->check_token($datas);
 			$sql = "SELECT * FROM jobs WHERE recruiter='".$user_id."' AND id='".$datas["id"]."'";
+			$result = $this->db->query($sql);
+			$data["datas"] = $result->fetch_assoc();
+			$data["status"] = true;
+			$this->response($this->json($data),200);
+		}
+
+		private function job_id() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM jobs WHERE id='".$datas["id"]."'";
 			$result = $this->db->query($sql);
 			$data["datas"] = $result->fetch_assoc();
 			$data["status"] = true;
@@ -1676,6 +1775,90 @@
 			$this->response($this->json($data),200);
 		}
 
+		private function recruiter_point_add() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "UPDATE recruiters SET profile_point = profile_point + '".$datas["point"]."' WHERE user='".$user_id."'";
+			$result = $this->db->query($sql);
+			$data["status"] = $result ? true: false;
+			$this->response($this->json($data), 200);
+		}
+
+		private function candidate_unlocked_add() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "INSERT INTO unlocked_candidate (candidate,recruiter) VALUES ('".$datas["candidate"]."','".$user_id."')";
+			$result = $this->db->query($sql);
+			$data["status"] = $result ? true: false;
+			$this->response($this->json($data), 200);
+		}
+		private function candidate_unlocked() { // TODO
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT candidate FROM unlocked_candidate WHERE recruiter='".$user_id."'";
+			$i = 0;
+			while($row = $result->fetch_assoc()){
+     			$json[$i] = $row;
+				$json[$i] = array_map('utf8_encode', $json[$i]);
+     			$i++;
+			}
+			$data["datas"] = $json;
+			$data["status"] = true;
+			$data["sql"] = $sql;
+			$data["count"] = $result->num_rows;
+			$this->response($this->json($data),200);
+		}
+
+		private function candidate_unlocked_id() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+				$data["status"] = false;
+				$data["message"] = "token empty";
+				$this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "SELECT * FROM unlocked_candidate WHERE recruiter='".$user_id."' AND candidate='".$datas["candidate"]."'";
+			$data["datas"] = $result->fetch_assoc();
+			$data["status"] = $result ? true: false;
+			$data["sql"] = $sql;
+			$this->response($this->json($data),200);
+		}
+
 		private function recruiter_stripe_add(){
 			if ($this->get_request_method() != "POST") {
 				$data["status"] = false;
@@ -1691,7 +1874,6 @@
 			$user_id = $this->check_token($datas);
 			$sql = "INSERT INTO recruiters_stripe (token,recruiter) VALUES ('".$datas["token"]."','".$user_id."')";
 			$result = $this->db->query($sql);
-			$data["status"] = $result ? true: false;
 			$this->response($this->json($data), 200);
 		}
 
@@ -1714,7 +1896,7 @@
 			$data["count"] = $result->num_rows;
 			$this->response($this->json($data), 200);
 		}
-		
+
 		private function packs(){
 			if($this->get_request_method() != "GET"){ 
 				$data["status"]= false;

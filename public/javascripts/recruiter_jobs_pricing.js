@@ -40,7 +40,8 @@ function stripeOne() {
             let token = {
                 customer: recruiterStripe.data.token,
                 amount: 999,
-                description: "01 profil"
+                description: "01 profil",
+                user_token: getCookie("user_token")
             }
             $.ajax({
                 type: 'POST',
@@ -62,6 +63,7 @@ function stripeOne() {
                 token: (token) => {
                     token.amount = 999;
                     token.description = "01 profil";
+                    token.user_token = getCookie("user_token");
                     $.ajax({
                         type: 'POST',
                         url: '/charge_new',
@@ -92,7 +94,8 @@ function stripeFive() {
             let token = {
                 customer: recruiterStripe.data.token,
                 amount: 5999,
-                description: "5 profils"
+                description: "5 profils",
+                user_token: getCookie("user_token")
             }
             $.ajax({
                 type: 'POST',
@@ -114,6 +117,7 @@ function stripeFive() {
                 token: (token) => {
                     token.amount = 5999;
                     token.description = "5 profils";
+                    token.user_token = getCookie("user_token");
                     $.ajax({
                         type: 'POST',
                         url: '/charge_new',
@@ -144,7 +148,8 @@ function stripeTen() {
             let token = {
                 customer: recruiterStripe.data.token,
                 amount: 9999,
-                description: "10 profils"
+                description: "10 profils",
+                user_token: getCookie("user_token")
             }
             $.ajax({
                 type: 'POST',
@@ -166,6 +171,7 @@ function stripeTen() {
                 token: (token) => {
                     token.amount = 9999;
                     token.description = "10 profils";
+                    token.user_token = getCookie("user_token");
                     $.ajax({
                         type: 'POST',
                         url: '/charge_new',
@@ -282,6 +288,7 @@ function addUserView(user, recruiter) {
     $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#sidebar-button-resume").remove();
+    $("#sidebar-button-interview-candidate").remove();
 }
 
 function getTypeUser() {
