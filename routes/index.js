@@ -61,6 +61,15 @@ router.get('/recruiter_favorite', function (req, res, next) {
   res.render('recruiters_favorite');
 });
 
+router.get('/recruiter_appointment', function (req, res, next) {
+  res.render('recruiters_appointment');
+});
+
+
+router.get('/candidate_appointment', function (req, res, next) {
+  res.render('candidates_appointment');
+});
+
 
 router.post("/charge_new", (req, res) => {
   stripe.customers.create({
@@ -75,7 +84,20 @@ router.post("/charge_new", (req, res) => {
         customer: customer.id
       })
         .then(charge => {
-          res.send(charge);
+          console.log(req.body.amount);
+          request.post({
+            headers: { 'Content-Type': 'application/json' },
+            url: 'http://jurisgo.petitesaffiches.fr/recruiter/point/add',
+            form: {
+              datas: {
+                user_token: req.body.user_token,
+                point: req.body.amount === '999' ? 1 : req.body.amount === '5999' ? 5 : 10
+              }
+            }
+          }, function (error, response, body) {
+            console.log(response.body);
+            res.send(charge);
+          });
         })
         .catch(err => {
           console.log("Error:", err);
@@ -93,7 +115,20 @@ router.post("/charge", (req, res) => {
     customer: req.body.customer
   })
     .then(charge => {
-      res.send(charge);
+      console.log(req.body.amount);
+      request.post({
+        headers: { 'Content-Type': 'application/json' },
+        url: 'http://jurisgo.petitesaffiches.fr/recruiter/point/add',
+        form: {
+          datas: {
+            user_token: req.body.user_token,
+            point: req.body.amount === '999' ? 1 : req.body.amount === '5999' ? 5 : 10
+          }
+        }
+      }, function (error, response, body) {
+        console.log(response.body);
+        res.send(charge);
+      });
     })
     .catch(err => {
       console.log("Error:", err);

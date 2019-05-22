@@ -3,7 +3,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Jurisgo</title>
+	<title>Jobhunt</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
@@ -32,54 +32,47 @@
 
 		<%- include header.ejs -%>
 
-
 		<div class="account-popup-area" id="overlay-confirm-purchase">
-			<div id="popup-purchase" class="account-popup">
+			<div id="popup-purchase" class="confirm-popup">
 			</div>
 		</div>
 
-		<section>
-			<div class="block">
-				<div class="container">
+		<section class="overlape">
+			<div class="block no-padding">
+				<div data-velocity="-.1" style="background: url(http://placehold.it/1600x800) repeat scroll 50% 422.28px transparent;"
+				 class="parallax scrolly-invisible no-parallax"></div><!-- PARALLAX BACKGROUND IMAGE -->
+				<div class="container fluid">
 					<div class="row">
 						<div class="col-lg-12">
-							<div id="heading-offers" class="heading">
-								<h2>Packs profils</h2>
-								<span>Achetez un pack de profils pour voir les informations complètes du candidat, organiser un rendez-vous
-									ou évaluer son profil.</span>
-							</div><!-- Heading -->
-							<div class="plans-sec">
-								<div class="row">
-									<div class="col-lg-4">
-										<div class="pricetable">
-											<div class="pricetable-head">
-												<h3>Basic Jobs</h3>
-												<h2><i>€</i>9.99</h2>
-												<span>01 Profils</span>
-											</div>
-											<a id="pricing-button-one-offer">Acheter</a>
-										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="pricetable active">
-											<div class="pricetable-head">
-												<h3>Standard Jobs</h3>
-												<h2><i>€</i>59.99</h2>
-												<span>5 Profils</span>
-											</div>
-											<a id="pricing-button-two-offer">Acheter</a>
-										</div>
-									</div>
-									<div class="col-lg-4">
-										<div class="pricetable">
-											<div class="pricetable-head">
-												<h3>Golden Jobs</h3>
-												<h2><i>€</i>99.99</h2>
-												<span>10 Profils</span>
-											</div>
-											<a id="pricing-button-three-offer">Acheter</a>
-										</div>
-									</div>
+							<div class="inner-header">
+								<h3>Liste des rendez-vous</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<div class="block no-padding">
+				<div class="container">
+					<div class="row no-gape">
+						<div class="col-lg-12 column">
+							<div class="padding-left">
+								<div class="manage-jobs-sec">
+									<h3>Vos rendez-vous</h3>
+									<table>
+										<thead>
+											<tr>
+												<td>Entreprise</td>
+												<td>Job</td>
+												<td>Date</td>
+												<td>Adresse</td>
+												<td>Status</td>
+											</tr>
+										</thead>
+										<tbody id="interview-list"></tbody>
+									</table>
 								</div>
 							</div>
 						</div>
@@ -89,10 +82,8 @@
 		</section>
 		<%- include bottom_footer.ejs -%>
 	</div>
-
 	<%- include sidebar.ejs -%>
 
-	<script src="https://checkout.stripe.com/checkout.js"></script>
 	<script src="javascripts/jquery.min.js" type="text/javascript"></script>
 	<script src="javascripts/modernizr.js" type="text/javascript"></script>
 	<script src="javascripts/script.js" type="text/javascript"></script>
@@ -101,7 +92,7 @@
 	<script src="javascripts/slick.min.js" type="text/javascript"></script>
 	<script src="javascripts/parallax.js" type="text/javascript"></script>
 	<script src="javascripts/select-chosen.js" type="text/javascript"></script>
-	<script src="javascripts/recruiter_jobs_pricing.js" type="text/javascript"></script>
+	<script src="javascripts/candidate_appointment.js" type="text/javascript"></script>
 
 </body>
 

@@ -9,8 +9,66 @@ $(document).on('ready', function () {
         contact();
         addFavorite();
         checkFavorite();
-       
+        takeAppointment();
+        autocomplete();
 });
+
+function autocomplete() {
+        $("#job-candidate-address-appointment").autocomplete({
+                source: function (request, response) {
+                        $.ajax({
+                                type: 'GET',
+                                url: "https://api-adresse.data.gouv.fr/search/?q=" + request.term,
+                                success: function (result) {
+                                        var data = [];
+                                        for (var i = 0; i < result.features.length; i++)
+                                                data.push(result.features[i].properties.label)
+                                        response(data)
+                                }
+                        });
+                },
+                minLength: 5
+        });
+}
+
+
+function takeAppointment() {
+        $("#job-candidate-appointment").on('click', (e) => {
+                e.preventDefault();
+                let error = false;
+                let datas = {
+                        datetime: $("#job-candidate-date-appointment").val() + " " + $("#job-candidate-hour-appointment").val() + ":00",
+                        address: $("#job-candidate-address-appointment").val(),
+                        user_token: getCookie("user_token"),
+                        candidate: new URL(window.location).searchParams.get("id"),
+                        job: new URL(window.location).searchParams.get("job")
+                }
+                if ($("#job-candidate-date-appointment").val() === "") {
+                        $("#job-candidate-date-appointment").css('border', '2px solid #951B3F');
+                        error = true;
+                }
+                if ($("#job-candidate-hour-appointment").val() === "") {
+                        $("#job-candidate-hour-appointment").css('border', '2px solid #951B3F');
+                        error = true;
+                }
+                if ($("#job-candidate-address-appointment").val() === "") {
+                        $("#job-candidate-address-appointment").css('border', '2px solid #951B3F');
+                        error = true;
+                }
+                if (error)
+                        return;
+                $.ajax({
+                        type: 'POST',
+                        url: 'http://jurisgo.petitesaffiches.fr/interview/add',
+                        data: { datas: datas },
+                        dataType: 'json',
+                        success: function (result) {
+                                console.log(result);
+
+                        }
+                });
+        });
+}
 
 function getCandidate() {
         $.ajax({
@@ -187,6 +245,7 @@ function addUserView(user, recruiter) {
         $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-resume").remove();
+        $("#sidebar-button-interview-candidate").remove();
 }
 
 function contact() {
