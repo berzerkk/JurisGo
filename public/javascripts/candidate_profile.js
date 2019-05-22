@@ -7,6 +7,7 @@ $(document).on('ready', function () {
         getUser();
         getCandidate();
         logOut();
+        $(".bottom-footer").css('margin-top', '-100px');
 });
 
 function logOut() {

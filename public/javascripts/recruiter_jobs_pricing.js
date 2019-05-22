@@ -30,7 +30,9 @@ function getStripe(next) {
     });
 }
 
+
 function stripeOne() {
+    $("#purchase-load").css('display', 'block')
     var checkoutHandler = StripeCheckout.configure({
         key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
         locale: "auto"
@@ -50,9 +52,8 @@ function stripeOne() {
                 dataType: 'json',
                 success: function (res) {
                     if (res.status === "succeeded") {
-                        saveToken(res.customer, (result) => {
-                            // VIEW DE BRAVO 
-                        });
+                        $("#purchase-load").attr('src', 'images/curved-check.png');
+                        setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                     }
                 }
             });
@@ -73,7 +74,8 @@ function stripeOne() {
                             console.log(res);
                             if (res.status === "succeeded") {
                                 saveToken(res.customer, (result) => {
-                                    console.log(result);
+                                    $("#purchase-load").attr('src', 'images/curved-check.png');
+                                    setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                                 });
                             }
                         }
@@ -85,6 +87,7 @@ function stripeOne() {
 }
 
 function stripeFive() {
+    $("#purchase-load").css('display', 'block')
     var checkoutHandler = StripeCheckout.configure({
         key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
         locale: "auto"
@@ -104,9 +107,8 @@ function stripeFive() {
                 dataType: 'json',
                 success: function (res) {
                     if (res.status === "succeeded") {
-                        saveToken(res.customer, (result) => {
-                            // VIEW DE BRAVO 
-                        });
+                        $("#purchase-load").attr('src', 'images/curved-check.png');
+                        setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                     }
                 }
             });
@@ -127,7 +129,8 @@ function stripeFive() {
                             console.log(res);
                             if (res.status === "succeeded") {
                                 saveToken(res.customer, (result) => {
-                                    console.log(result);
+                                    $("#purchase-load").attr('src', 'images/curved-check.png');
+                                    setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                                 });
                             }
                         }
@@ -139,6 +142,7 @@ function stripeFive() {
 }
 
 function stripeTen() {
+    $("#purchase-load").css('display', 'block')
     var checkoutHandler = StripeCheckout.configure({
         key: "pk_test_rr8V8bmaiRdC5hniaw7Dtw6V00WRZTq1F1",
         locale: "auto"
@@ -158,9 +162,8 @@ function stripeTen() {
                 dataType: 'json',
                 success: function (res) {
                     if (res.status === "succeeded") {
-                        saveToken(res.customer, (result) => {
-                            // VIEW DE BRAVO 
-                        });
+                        $("#purchase-load").attr('src', 'images/curved-check.png');
+                        setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                     }
                 }
             });
@@ -181,7 +184,8 @@ function stripeTen() {
                             console.log(res);
                             if (res.status === "succeeded") {
                                 saveToken(res.customer, (result) => {
-                                    console.log(result);
+                                    $("#purchase-load").attr('src', 'images/curved-check.png');
+                                    setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                                 });
                             }
                         }
@@ -205,14 +209,13 @@ function confirmPurchase() {
     $("#pricing-button-one-offer").on("click", (e) => {
         e.preventDefault();
         $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 9.99€ euros ?</h3>\
+        <img id="purchase-load" class="loading-purchase" src="images/ajax-loader.gif" alt="" />\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
-                <div class="row">\
-                    <div class="col-lg-6">\
-                        <button id="popup-confirm-purchase" type="submit">Confirmer</button>\
-                    </div>\
-                    <div class="col-lg-6">\
-                        <button id="popup-cancel-purchase" type="submit">Annuler</button>\
+                <div class="container">\
+                    <div class="col-lg-12">\
+                        <button style="float:left; padding:12px 21px;"id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                        <button style="float:right; padding:12px 21px;"id="popup-cancel-purchase" type="submit">Annuler</button>\
                     </div>\
                 </div>\
             </div>\
@@ -230,14 +233,13 @@ function confirmPurchase() {
     $("#pricing-button-two-offer").on("click", (e) => {
         e.preventDefault();
         $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 59.99€ euros ?</h3>\
+        <img id="purchase-load" class="loading-purchase" src="images/ajax-loader.gif" alt="" />\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
-                <div class="row">\
-                    <div class="col-lg-6">\
-                        <button id="popup-confirm-purchase" type="submit">Confirmer</button>\
-                    </div>\
-                    <div class="col-lg-6">\
-                        <button id="popup-cancel-purchase" type="submit">Annuler</button>\
+            <div class="container">\
+            <div class="col-lg-12">\
+                        <button style="float:left; padding:12px 21px;"id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                        <button style="float:right; padding:12px 21px;"id="popup-cancel-purchase" type="submit">Annuler</button>\
                     </div>\
                 </div>\
             </div>\
@@ -255,14 +257,13 @@ function confirmPurchase() {
     $("#pricing-button-three-offer").on("click", (e) => {
         e.preventDefault();
         $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 99.99€ euros ?</h3>\
+        <img class="loading-purchase" id="purchase-load" src="images/ajax-loader.gif" alt="" />\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
-                <div class="row">\
-                    <div class="col-lg-6">\
-                        <button id="popup-confirm-purchase" type="submit">Confirmer</button>\
-                    </div>\
-                    <div class="col-lg-6">\
-                        <button id="popup-cancel-purchase" type="submit">Annuler</button>\
+                <div class="container">\
+                     <div class="col-lg-12">\
+                        <button style="float:left; padding:12px 21px;"id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                        <button style="float:right; padding:12px 21px;"id="popup-cancel-purchase" type="submit">Annuler</button>\
                     </div>\
                 </div>\
             </div>\

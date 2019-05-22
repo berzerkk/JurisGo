@@ -63,13 +63,3 @@ Text Color
 .blog-details > a{
     color: #951B3F ;
 }
-
-/*------------------------------------------------------------------
-Border Color
--------------------------------------------------------------------*/
-.border-color,
-.select-user > span.active,
-.browse-all-cat a{
-    border-color: #fb236a ;
-}
-

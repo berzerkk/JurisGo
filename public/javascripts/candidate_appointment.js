@@ -3,6 +3,7 @@ $(document).on('ready', function () {
         getTypeUser();
         logOut();
         getInterview();
+        
 });
 
 
@@ -14,6 +15,13 @@ function logOut() {
         });
 }
 
+function transformDate(elem) {
+        let date = elem.split(' ')[0].split('-').reverse().join('/');
+        let hour = elem.split(' ')[1].split(':');
+        hour.splice(2, 1);
+        return date + ' ' + hour.join(':');
+}
+
 function getInterview() {
         $.ajax({
                 type: 'POST',
@@ -22,23 +30,19 @@ function getInterview() {
                 dataType: 'json',
                 success: function (interview) {
                         interview.datas.forEach((elem) => {
-                                console.log(elem);
-
                                 $.ajax({
                                         type: 'POST',
                                         url: 'http://jurisgo.petitesaffiches.fr/recruiter/id',
                                         data: { datas: { "user_token": getCookie("user_token"), id: elem.recruiter } },
                                         dataType: 'json',
                                         success: function (recruiter) {
-                                                console.log(recruiter);
-
                                                 $.ajax({
                                                         type: 'POST',
                                                         url: 'http://jurisgo.petitesaffiches.fr/job/id',
                                                         data: { datas: { "user_token": getCookie("user_token"), id: elem.job } },
                                                         dataType: 'json',
                                                         success: function (job) {
-                                                                console.log(recruiter, job);
+                                                                transformDate(elem.date);
                                                                 $("#interview-list").append('<tr id="interview-' + elem.id + '">\
                                                                                 <td>\
                                                                                     <div class="table-list-title">\
@@ -51,7 +55,7 @@ function getInterview() {
                                                                                          </div>\
                                                                                  </td>\
                                                                                  <td>\
-                                                                                         <span>' + elem.date + '</span>\
+                                                                                         <span>' + transformDate(elem.date) + '</span>\
                                                                                  </td>\
                                                                                  <td>\
                                                                                          <span>' + elem.address + '</span>\

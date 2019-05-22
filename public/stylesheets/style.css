@@ -231,7 +231,7 @@ section{
     background-position: inherit !important;
 }
 .layer.color.red::before {
-    background: #d42525;
+    background: #EC6626;
 }
 .layer:before{
     content:"";
@@ -467,7 +467,7 @@ input[type="radio"] {
 label {
   position: relative;
   display: inline-block;
-  padding: 0 0 0 2em;
+  /* padding: 0 0 0 2em; */
   margin-right: 10px;
   height: 1.5em;
   line-height: 1.5;
@@ -918,31 +918,89 @@ label::after {
     margin-top: 20px;
 }
 .select-user {
-    float: left;
     width: 100%;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 12px;
+    background: rgba(149, 27, 63, .8);
+    height:60px;
 }
-.select-user > span {
+
+.message-login {
+    width: 100%;
+    text-align: center;
+    margin-top: 40px;
+    background-image: url('../images/fond1-orange.png');
+    height:60px;
+}
+
+.message-login > span {
+    color:#fff;
+    font-size: 18px;
+}
+
+
+.background-register {
+    background-image: url('../images/advice.jpg');
+    background-size: cover;
+    margin-left: -20px;
+    margin-right: -20px;
+
+    text-align: center;
+}
+
+.background-register > img {
+    margin-top: 10px;
+    width:30%;
+}
+
+.select-user > .register-choose-recruiter {
     float: none;
     display: inline-block;
     font-family: Open Sans;
-    font-size: 13px;
-    color: #2E2E2E;
-    border: 2px solid;
-    
+    font-size: 18px;
+    color: #fff;
+    background-color:#EC6626;
+    border: 2px solid;;
+
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
 
-    padding: 9px 29px;
-    margin: 0 5px;
+    padding: 4.5px 25px;
+    margin: 0 9px;
         margin-top: 0px;
-    margin-top: 5px;
+    margin-top: 10px;
     cursor: pointer;
 }
+
+.select-user > .register-choose-candidate {
+    float: none;
+    display: inline-block;
+    font-family: Open Sans;
+    font-size: 18px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+
+    padding: 4.5px 25px;
+    margin: 0 9px;
+        margin-top: 0px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.select-user > span.active {
+    border: 2px solid rgb(0, 0, 0);
+}
+
 .account-popup > form {
     float: left;
     width: 100%;
@@ -1357,6 +1415,10 @@ label::after {
     -o-border-radius: 8px;
     border-radius: 8px;
 
+}
+.openweathermap{
+    width:1920px; 
+    height:600px;
 }
 .or-browser {
     float: left;
@@ -2285,7 +2347,7 @@ header.style2 nav {
 .search-job2 form button {
     font-size: 15px;
     font-weight: bold;
-    background: #d42525;
+    background: #EC6626;
     padding: 20px 0px;
     width: 100%;
     font-family: Open Sans;
@@ -2359,7 +2421,7 @@ header.style2 nav {
     margin-top: 1px;
 }
 .quick-select:hover i {
-    background: #d42525;
+    background: #EC6626;
 }
 
 /* Job Grid Sec */
@@ -2490,8 +2552,8 @@ header.style2 nav {
     line-height: 94px;
     font-size: 53px;
     text-align: center;
-    color: #d42525;
-    border-color: #d42525;
+    color: #EC6626;
+    border-color: #EC6626;
 }
 .how-to h3 {
     float: left;
@@ -2636,6 +2698,12 @@ header.style2 nav {
     line-height: 35px;
 }
 
+.loading-purchase {
+    display:none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Stats Sec */
 .stats-sec {
     float: left;
@@ -2683,7 +2751,7 @@ header.style2 nav {
     padding: 5px;
     width: 106px;
     height: 106px;
-    border: 2px dashed #d42525;
+    border: 2px dashed #EC6626;
 }
 .reviews.style2 h3 {
     float: left;
@@ -2887,7 +2955,7 @@ header.style2 nav {
 }
 
 .pricetable > a:hover {
-    background: #d42525;
+    background: #EC6626;
     color: #FFF;
 }
 
@@ -2962,7 +3030,7 @@ header.style2 nav {
     height: 50px;
     padding: 0;
     font-size: 24px;
-    background: #d42525;
+    background: #EC6626;
 }
 .social-links {
     float: left;
@@ -3007,7 +3075,7 @@ header.style2 nav {
     background: #bd2a8e;
 }
 .social-links a.gl-color i {
-    background: #d42525;
+    background: #EC6626;
 }
 .mega-widget {
     float: left;
@@ -4521,7 +4589,7 @@ footer.style3 span, footer.style3 a {
     float: left;
     width: 100%;
     position: relative;
-    padding-top: 240px; padding-bottom: 15px;
+    padding-top: 180px; padding-bottom: 15px;
     z-index: 0;
 }
 .inner-header.wform .job-search-sec {
@@ -6787,9 +6855,7 @@ aside .widget.border:first-child {
 }
 .upload-img-bar > span {
     display: table-cell;
-    vertical-align: top;
-    border: 2px solid #e8ecec;
-    
+    vertical-align: top;    
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     -ms-border-radius: 8px;
@@ -6928,7 +6994,7 @@ aside .widget.border:first-child {
     color: #2E2E2E;
     font-family: Open Sans;
     font-size: 15px;
-    padding: 11px 40px;
+    padding: 11px 30px;
     margin-bottom: 20px;
     
     -webkit-border-radius: 8px;
@@ -6970,6 +7036,7 @@ aside .widget.border:first-child {
     font-size: 40px;
     color: #951B3F;
 }
+
 .contact-edit > h3 {
     float: left;
     width: 100%;
@@ -6989,7 +7056,7 @@ aside .widget.border:first-child {
 .contact-edit {
     float: left;
     width: 100%;
-    margin-bottom: 60px;
+    margin-bottom: 160px;
 }
 .contact-edit > form {
     float: left;
@@ -11213,12 +11280,12 @@ header.style5 .post-job-btn:hover {
     background: #EC6626;
 }
 .resumeadd-form button:hover{
-    background: #555555;
-    border-color: #555555;
+    background: #951B3F;
+    border-color: #951B3F;
 }
 .resumeconfirm-form button:hover{
-    background: #555555;
-    border-color: #555555;
+    background: #951B3F;
+    border-color: #951B3F;
 }
 .coverletter-sec > form button:hover {
     background: #EC6626;

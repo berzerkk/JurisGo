@@ -9,6 +9,11 @@
 @media (max-width:1200px){
 
 
+.openweathermap{
+    width:100vw; 
+    height:100vw;
+}
+
 .job-search-sec{
     width: 95%;
 }
@@ -143,6 +148,18 @@ header {
 }
 
 @media (max-width:980px){
+
+.select-user {
+    margin-top: 70px;
+}
+
+.contact-edit {
+    margin-bottom:60px
+}
+
+.my-profiles-sec > span {
+    margin-top: 12px;
+}
 
 .bottom-footer {
     display: none;
@@ -417,7 +434,7 @@ select {
     text-align: center;
 }
 .inner-header {
-    padding-top: 100px;
+    padding-top: 160px;
 }
 .inner-header.wform .job-field {
     
@@ -1142,6 +1159,7 @@ select {
     margin: 0;
 }
 .upload-img-bar {
+    margin-top: -50px;
     display: inline-block;
     text-align: center;
     padding-left: 0px;

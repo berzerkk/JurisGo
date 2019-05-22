@@ -20,12 +20,12 @@ $(document).on('ready', function () {
 function facebook() {
         $("#facebook-login").on('click', (e) => {
                 e.preventDefault();
-                popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook','height=800,width=1200');
+                popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook', 'height=800,width=1200');
         });
 }
 
 function checkExistOauth() {
-        if ( window.location.pathname === '/register' && getCookie('exist') !== "") {
+        if (window.location.pathname === '/register' && getCookie('exist') !== "") {
                 $('#button_register_to_connexion').hide();
                 setCookie('exist', '', 1);
                 $('#firstname_create_account').val(getCookie('firstname'));
@@ -36,11 +36,11 @@ function checkExistOauth() {
 
 function linkedin() {
         $('#linkedin-login').on('click', (e) => {
-                
+
                 e.preventDefault();
-                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=http://localhost:3000/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress', 'Jursigo - Linkedin','height=800,width=1200');
-                popup.onunload = () => {window.location.pathname = '/register';};
-                
+                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=http://localhost:3000/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress', 'Jursigo - Linkedin', 'height=800,width=1200');
+                popup.onunload = () => { window.location.pathname = '/register'; };
+
         });
 }
 
@@ -58,8 +58,6 @@ function submitButtonRegister() {
                         type: $("#candidate_create_account").hasClass("active") ? "candidate"
                                 : $("#employer_create_account").hasClass("active") ? "recruiter" : ""
                 }
-                console.log(data);
-
                 if (data.firstname === "") {
                         $("#firstname_create_account").parent().css("border", "2px solid #951B3F");
                         error = true;
@@ -88,6 +86,8 @@ function submitButtonRegister() {
                         $("#firstname_create_account").parent().css("border", "2px solid #951B3F");
                         error = true;
                 }
+                if (error)
+                        return;
                 $.ajax({
                         type: 'POST',
                         url: 'http://jurisgo.petitesaffiches.fr/user/add',
@@ -109,13 +109,23 @@ function submitButtonRegister() {
 
 function sumbitButtonConnexion() {
         $("#button_connexion").on("click", (e) => {
+                let error = false;
                 e.preventDefault();
                 var data = {
                         email: $("#mail_connexion").val(),
                         password: $("#password_connexion").val(),
                         player_id: "123456789"
                 }
-                // todo parse
+                if (data.email === "") {
+                        $("#mail_connexion").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.password === "") {
+                        $("#password_connexion").parent().css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (error)
+                        return;
                 $.ajax({
                         type: 'POST',
                         url: 'http://jurisgo.petitesaffiches.fr/user/authentification',
