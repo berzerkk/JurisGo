@@ -333,7 +333,36 @@
 			}
 		}
 
-
+		private function user_add_linkedin(){
+			if($this->get_request_method() != "POST"){ 
+				$data["status"]= false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST['datas'];
+			$sql = "INSERT INTO users (lastname,firstname,genre,type,email,phone,password,linkedin_id)
+			VALUE ('".$datas["lastname"]."','".$datas["firstname"]."','".$datas["genre"]."','".$datas["type"]."','".$datas["email"]."','".$datas["phone"]."','".$datas["password"]."','".$datas["linkedin_id"]."')";
+			$result = $this->db->query($sql);
+			if ($result) {
+				$id = $this->db->insert_id;
+				if($datas["type"] == "candidate"){
+					$sql = "INSERT INTO candidates (user,email_alias,status,photo)
+					VALUES ('".$id."','".$datas["email"]."','inactive','".$datas["photo"]."')";
+					$result = $this->db->query($sql);
+				} else if($type == 'recruiter'){
+					$sql = "INSERT INTO recruiters (user,email,status,photo)
+					VALUES ('".$id."','".$datas["email"]."','inactive','".$datas["photo"]."')";
+					$result = $this->db->query($sql);
+				}
+				$data["sql"] = $sql;
+				$data["status"]= true;
+				$data["id"]= $id;
+				$this->response($this->json($data),200);
+			}
+			else{
+				$data["status"]= false;
+				$this->response($this->json($data),400);
+			}
+		}
 
 		private function user_add(){
 			if($this->get_request_method() != "POST"){ 
@@ -1170,6 +1199,26 @@
 			}
 		}
 		
+		// private candidate_evaluation_add() {
+		// 	if ($this->get_request_method() != "POST") {
+		// 		$data["status"] = false;
+		// 		$this->response($this->json($data),400); 
+		// 	}
+		// 	$datas = $_POST["datas"];
+		// 	$token = $datas['user_token'];
+		// 	if(empty($token)){
+		// 		$data["status"] = false;
+		// 		$data["message"] = "token empty";
+		// 		$this->response($this->json($data),400);
+		// 	}
+		// 	$user_id = $this->check_token($datas);
+		// 	$sql = "INSERT INTO candidates_favorites (candidate,recruiter,job,date)
+		// 	VALUES ('".$datas["candidate"]."','".$user_id."','".$datas["job"]."','".date("Y-m-d H:i:s")."')";
+		// 	$result = $this->db->query($sql);
+		// 	$data["status"] = true;
+		// 	$this->response($this->json($data),200);
+		// }
+
 		private function recruiter_favorite(){
 			if ($this->get_request_method() != "POST") {
 				$data["status"] = false;
@@ -1701,16 +1750,27 @@
 			 	// On va regarder aussi la disponibility
 			 	switch($candidate["disponibility"]){
 			 		case 'immediately':$matching_disponibility = 100;break;
- 					case 'one_month':$matching_disponibility = 60;break;
-			 		case 'more_months':$matching_disponibility = 30;break;
-			 		case 'unknow':$matching_disponibility = 0;break;
+					case 'one_month':$matching_disponibility = 80;break;
+					case 'two_months':$matching_disponibility = 60;break;
+			 		case 'three_months':$matching_disponibility = 40;break;
+			 		case 'unknown':$matching_disponibility = 0;break;
 				 }
 				 
 				// On calcule le matching total
 			 	$matching = round($matching_disponibility + $matching_experiences + $matching_skills + $matching_geo)/4;
 			
 			 	// On affecte enfin les variables au tableau
-			 	$candidate["matching"] = $matching;		
+				 $candidate["matching"] = $matching;
+				 $sqlunlock = "SELECT * FROM unlocked_candidate WHERE candidate='".$candidate["user"]."' AND recruiter='".$user_id."'";
+				$resultunlock = $this->db->query($sqlunlock);
+				if ($resultunlock->num_rows == 0) {
+				 	$candidate["lastname"] = preg_replace('/(?!^)\S/', '*', $candidate["lastname"]);
+				 	$candidate["unlocked"] = "false";
+				 	$candidate["city"] = "******";
+					$candidate["departement"] = "**";
+				} else {
+				 	$candidate["unlocked"] = "true";
+				}
 			 	// Si le recruteur n'a pas débloqué le profil je cache son nom
 			 	// et je cache son email
 			 	// $candidate_is_view = job_candidate_is_view($candidate["id"]);
@@ -1829,10 +1889,21 @@
 				$this->response($this->json($data),400);
 			}
 			$user_id = $this->check_token($datas);
-			$sql = "INSERT INTO unlocked_candidate (candidate,recruiter) VALUES ('".$datas["candidate"]."','".$user_id."')";
+			$sql = "SELECT profile_point FROM recruiters WHERE user='".$user_id."'";
 			$result = $this->db->query($sql);
-			$data["status"] = $result ? true: false;
-			$this->response($this->json($data), 200);
+			$point = $result->fetch_assoc();
+			if ((int)$point["profile_point"] >= 1) {
+				$sql = "INSERT INTO unlocked_candidate (candidate,recruiter) VALUES ('".$datas["candidate"]."','".$user_id."')";
+				$result = $this->db->query($sql);
+				$sql = "UPDATE recruiters SET profile_point = profile_point - 1 WHERE user='".$user_id."'";
+				$result = $this->db->query($sql);	
+				$data["status"] = true;
+				$this->response($this->json($data), 200);
+			} else {
+				$data["status"] = false;
+				$this->response($this->json($data), 200);
+			}
+
 		}
 		private function candidate_unlocked() { // TODO
 			if ($this->get_request_method() != "POST") {

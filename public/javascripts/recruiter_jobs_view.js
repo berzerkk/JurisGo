@@ -33,7 +33,8 @@ function getMatching() {
                         data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                         dataType: 'json',
                         success: function (result) {
-                                var data = result.datas;                                
+                                var data = result.datas;
+                                
                                 for (i in result.datas) {
                                         var container = document.createElement('div');
                                         $("#jobs-view-list").append('<div class="emply-resume-list round">\
@@ -45,7 +46,7 @@ function getMatching() {
                                 <p><i class="la la-map-marker"></i>' + data[i].city + ' / ' + data[i].departement + '</p>\
                         </div>\
                         <div class="shortlists">\
-                                <a id="' + data[i].user + '" onclick="detailsCandidate(this.id)">Details <i class="la la-plus"></i></a>\
+                                <a id="' + data[i].user + '" onclick="' + (data[i].unlocked === "true" ? 'detailsCandidate(this.id)' : 'unlockCandidate(this.id)') + '">' + (data[i].unlocked === "true" ? 'Details' : 'Débloquer') + ' <i class="la la-plus"></i></a>\
                         </div>\
                 </div>');
                                         var popup = new ol.Overlay({
@@ -88,6 +89,18 @@ function getMatching() {
                                 console.log(err);
                         }
                 });
+        });
+}
+
+function unlockCandidate(id) {
+        $.ajax({
+                type: 'POST',
+                url: 'http://jurisgo.petitesaffiches.fr/candidate/unlocked/add',
+                data: { datas: { "user_token": getCookie("user_token"), candidate: id } },
+                dataType: 'json',
+                success: function (result) {
+                       console.log(result);
+                }
         });
 }
 

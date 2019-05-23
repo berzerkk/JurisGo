@@ -165,15 +165,6 @@ header {
     display: none;
 }
 
-.heart {
-    font-size: 50px;
-    top: 250px;
-    left: 310px;
-    color: #951B3F;
-    cursor: pointer;
-    position: absolute;
-}
-
 .block{padding: 15px 0px;}    
 .column {
     float: left;

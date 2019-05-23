@@ -200,31 +200,41 @@ router.get('/callback_linkedin', (req, res, next) => {
     }, function (error, user, body) {
       request.get({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + parsedRes.access_token },
-        url: 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
-      }, function (error, mail, body) {
-        let datas = {
-          linkedin_id: JSON.parse(user.body).id,
-          email: JSON.parse(mail.body).elements[0]['handle~'].emailAddress
-        };
-        request.post({
-          headers: { 'Content-Type': 'application/json' },
-          url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
-          form: {
-            datas: datas
-          }
-        }, function (error, result, body) {
-          console.log('########', result.body);
-          if (JSON.parse(result.body).exist) {
-            res.set('Content-Type', 'text/html');
-            res.send(new Buffer('<script>document.cookie="' + 'code=1' + '"; window.close();</script>'));
-          } else {
-            res.set('Content-Type', 'text/html');
-            res.send(new Buffer('<script>document.cookie="' + 'exist=true' +
-             '";document.cookie="' + 'firstname=' + JSON.parse(user.body).firstName.localized.fr_FR +
-              '";document.cookie="' + 'lastname=' + JSON.parse(user.body).lastName.localized.fr_FR + 
-               '";document.cookie="' + 'linkedin_id=' + JSON.parse(user.body).id + 
-                '";document.cookie="' + 'email=' + JSON.parse(mail.body).elements[0]['handle~'].emailAddress + 
-                 '"; window.close();</script>'));          }
+        url: 'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))',
+      }, function (error, picture, body) {        
+        request.get({
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + parsedRes.access_token },
+          url: 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
+        }, function (error, mail, body) {
+
+          let datas = {
+            linkedin_id: JSON.parse(user.body).id,
+            email: JSON.parse(mail.body).elements[0]['handle~'].emailAddress
+          };
+        
+          request.post({
+            headers: { 'Content-Type': 'application/json' },
+            url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
+            form: {
+              datas: datas
+            }
+          }, function (error, result, body) {
+            console.log('########', user.body);
+            if (JSON.parse(result.body).exist) {
+              res.set('Content-Type', 'text/html');
+              res.send(new Buffer('<script>document.cookie="' + 'code=1' + '"; window.close();</script>'));
+            } else {
+              res.set('Content-Type', 'text/html');
+              res.send(new Buffer('<script>document.cookie="' + 'exist=true' +
+              '";document.cookie="' + 'exist=true' +
+                '";document.cookie="' + 'firstname=' + JSON.parse(user.body).firstName.localized.fr_FR +
+                '";document.cookie="' + 'lastname=' + JSON.parse(user.body).lastName.localized.fr_FR +
+                '";document.cookie="' + 'picture=' + JSON.parse(picture.body).profilePicture['displayImage~'].elements[1].identifiers[0].identifier +
+                '";document.cookie="' + 'linkedin_id=' + JSON.parse(user.body).id +
+                '";document.cookie="' + 'email=' + JSON.parse(mail.body).elements[0]['handle~'].emailAddress +
+                '"; window.close();</script>'));
+            }
+          });
         });
       });
     });

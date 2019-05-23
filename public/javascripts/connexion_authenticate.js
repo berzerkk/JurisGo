@@ -2,9 +2,9 @@ $(document).on('ready', function () {
         checkIfAlreadyConnected();
         $('#account-popup-area').css('visibility', 'visible');
         $('#error_connexion').hide();
-        submitButtonRegister();
         sumbitButtonConnexion();
-        checkExistOauth();
+        var exist = checkExistOauth();
+        submitButtonRegister(exist);
         linkedin();
         facebook();
         $("#button_connexion_to_register").on("click", (e) => {
@@ -31,7 +31,9 @@ function checkExistOauth() {
                 $('#firstname_create_account').val(getCookie('firstname'));
                 $('#lastname_create_account').val(getCookie('lastname'));
                 $('#mail_create_account').val(getCookie('email'));
+                return true;
         }
+        return false;
 }
 
 function linkedin() {
@@ -44,7 +46,7 @@ function linkedin() {
         });
 }
 
-function submitButtonRegister() {
+function submitButtonRegister(exist) {
         let error = false;
         $("#button_create_account").on("click", (e) => {
                 e.preventDefault();
@@ -83,25 +85,46 @@ function submitButtonRegister() {
                         error = true;
                 }
                 if (data.type === "") {
-                        $("#firstname_create_account").parent().css("border", "2px solid #951B3F");
+                        $("#candidate_create_account").css("border", "2px solid #951B3F");
+                        $("#employer_create_account").css("border", "2px solid #951B3F");
                         error = true;
                 }
                 if (error)
                         return;
-                $.ajax({
-                        type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/user/add',
-                        data: { datas: data },
-                        dataType: 'json',
-                        success: function (result) {
-                                console.log(result);
-                                if (result.status) {
-                                        window.location.pathname = '/login'
-                                } else {
-                                        $('#error_connexion').show();
+                if (exist) {
+                        data.photo = getCookie('picture');
+                        data.linkedin_id = getCookie('linkedin_id');
+                        console.log(data);
+                        $.ajax({
+                                type: 'POST',
+                                url: 'http://jurisgo.petitesaffiches.fr/user/add/linkedin',
+                                data: { datas: data },
+                                dataType: 'json',
+                                success: function (result) {
+                                        console.log(result);
+                                        if (result.status) {
+                                                // window.location.pathname = '/login'
+                                        } else {
+                                                $('#error_connexion').show();
+                                        }
                                 }
-                        }
-                });
+                        });
+                } else {
+                        $.ajax({
+                                type: 'POST',
+                                url: 'http://jurisgo.petitesaffiches.fr/user/add',
+                                data: { datas: data },
+                                dataType: 'json',
+                                success: function (result) {
+                                        console.log(result);
+                                        if (result.status) {
+                                                window.location.pathname = '/login'
+                                        } else {
+                                                $('#error_connexion').show();
+                                        }
+                                }
+                        });
+                }
         });
 }
 

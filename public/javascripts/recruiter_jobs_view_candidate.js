@@ -11,6 +11,7 @@ $(document).on('ready', function () {
         checkFavorite();
         takeAppointment();
         autocomplete();
+        GoEvaluate();
 });
 
 function autocomplete() {
@@ -176,6 +177,13 @@ function logOut() {
                 e.preventDefault();
                 setCookie("user_token", "", 0)
                 document.location.reload(true);
+        });
+}
+
+function GoEvaluate() {
+        $(".evaluate").on('click', (e) =>{
+                e.preventDefault();
+
         });
 }
 

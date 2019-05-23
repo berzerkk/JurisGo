@@ -12043,6 +12043,14 @@ footer.ft .scrollup {
     color:#951B3F;
     cursor: pointer;
 }
+
+.evaluate {
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size:70px;
+    color:#951B3F;
+    cursor: pointer;
+}
 /* 
 .heart {
   width: 100px;
