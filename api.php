@@ -318,11 +318,33 @@
 				$data["status"] = false;
 				$this->response($this->json($data),400); 
 			}
-			 $datas = $_POST["datas"];
-			 $sql = "SELECT * FROM users WHERE id_linkedin='".$datas["id_linkedin"]."' AND email='".$datas["email"]."'";
-			 $result = $this->db->query($sql);
-			 if ($result->num_rows == 1) {
-			 	$datas["user_id"] = $data["user"]["id"];
+			$datas = $_POST["datas"];
+			$sql = "SELECT id FROM users WHERE linkedin_id='".$datas["linkedin_id"]."'";
+			$result = $this->db->query($sql);
+			if ($result->num_rows >= 1) {
+				$data["user_id"] = $result->fetch_assoc()["id"];
+				$datas["user_id"] = $data["user_id"];
+			 	$datas["player_id"] = "123546789";
+			 	$data["token"] = $this->generate_token($datas);
+				$data["exist"] = true;
+			 	$this->response($this->json($data),200);
+			} else {
+			 	$data["exist"] = false;
+			 	$this->response($this->json($data),200);
+			}
+		}
+
+		private function user_facebook() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$sql = "SELECT id FROM users WHERE facebook_id='".$datas["facebook_id"]."'";
+			$result = $this->db->query($sql);
+			if ($result->num_rows >= 1) {
+				$data["user_id"] = $result->fetch_assoc()["id"];
+				$datas["user_id"] = $data["user_id"];
 			 	$datas["player_id"] = "123546789";
 			 	$data["token"] = $this->generate_token($datas);
 				$data["exist"] = true;
@@ -356,6 +378,43 @@
 				$data["sql"] = $sql;
 				$data["status"]= true;
 				$data["id"]= $id;
+				$datas["user_id"] = $id;
+				$datas["player_id"] = "123546789";
+				$data["token"] = $this->generate_token($datas);
+				$this->response($this->json($data),200);
+			}
+			else{
+				$data["status"]= false;
+				$this->response($this->json($data),400);
+			}
+		}
+
+		private function user_add_facebook(){
+			if($this->get_request_method() != "POST"){ 
+				$data["status"]= false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST['datas'];
+			$sql = "INSERT INTO users (lastname,firstname,genre,type,email,phone,password,facebook_id)
+			VALUE ('".$datas["lastname"]."','".$datas["firstname"]."','".$datas["genre"]."','".$datas["type"]."','".$datas["email"]."','".$datas["phone"]."','".$datas["password"]."','".$datas["facebook_id"]."')";
+			$result = $this->db->query($sql);
+			if ($result) {
+				$id = $this->db->insert_id;
+				if($datas["type"] == "candidate"){
+					$sql = "INSERT INTO candidates (user,email_alias,status,photo)
+					VALUES ('".$id."','".$datas["email"]."','inactive','".$datas["photo"]."')";
+					$result = $this->db->query($sql);
+				} else if($type == 'recruiter'){
+					$sql = "INSERT INTO recruiters (user,email,status,photo)
+					VALUES ('".$id."','".$datas["email"]."','inactive','".$datas["photo"]."')";
+					$result = $this->db->query($sql);
+				}
+				$data["sql"] = $sql;
+				$data["status"]= true;
+				$data["id"]= $id;
+				$datas["user_id"] = $id;
+				$datas["player_id"] = "123546789";
+				$data["token"] = $this->generate_token($datas);
 				$this->response($this->json($data),200);
 			}
 			else{

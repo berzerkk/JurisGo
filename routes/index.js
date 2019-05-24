@@ -177,8 +177,51 @@ router.post('/contact', (req, res, next) => {
 // });
 
 router.get('/callback_facebook', (req, res, next) => {
+  request.get({
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: 'https://graph.facebook.com/v3.3/oauth/access_token?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&client_secret=eb8f926ae2844545e71bb98e0c7038b3&code=' + req.query.code
+  }, function (error, token, body) {
+    request.get({
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      url: 'https://graph.facebook.com/me?fields=id,first_name,last_name,email,birthday,gender,picture&access_token=' + JSON.parse(token.body).access_token
+    }, function (error, user, body) {
+      let datas = {
+        linkedin_id: JSON.parse(user.body).id,
+      };
+      request.post({
+        headers: { 'Content-Type': 'application/json' },
+        url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
+        form: {
+          datas: datas
+        }
+      }, function (error, response, body) {
+        if (JSON.parse(response.body).exist) {
+          res.set('Content-Type', 'text/html');
+          res.send(new Buffer('<script>document.cookie="' + 'user_token=' + JSON.parse(response.body).token + '"; window.close();</script>'));
+        } else {
+          res.set('Content-Type', 'text/html');
+          res.send(new Buffer('<script>document.cookie="' + 'exist=true' +
+            '";document.cookie="' + 'exist=true' +
+            '";document.cookie="' + 'type=facebook' +
+            '";document.cookie="' + 'firstname=' + JSON.parse(user.body).first_name +
+            '";document.cookie="' + 'lastname=' + JSON.parse(user.body).last_name +
+            '";document.cookie="' + 'picture=' + JSON.parse(user.body).picture.data.url +
+            '";document.cookie="' + 'facebook_id=' + JSON.parse(user.body).id +
+            '";document.cookie="' + 'email=' + JSON.parse(user.body).email +
+            '";document.cookie="' + 'gender=' + JSON.parse(user.body).gender +
+            '";document.cookie="' + 'birthday=' + JSON.parse(user.body).gender +
+            '";document.cookie="' + 'email=' + JSON.parse(user.body).gender +
+            '"; window.close();</script>'));
+        }
+      });
+    });
+  });
+});
+
+router.get('/callback_facebook_auth', (req, res, next) => {
   console.log(req.query);
-  res.render('login');
+
+  res.render('register');
 });
 
 router.get('/callback_linkedin', (req, res, next) => {
@@ -201,7 +244,7 @@ router.get('/callback_linkedin', (req, res, next) => {
       request.get({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + parsedRes.access_token },
         url: 'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))',
-      }, function (error, picture, body) {        
+      }, function (error, picture, body) {
         request.get({
           headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Authorization': 'Bearer ' + parsedRes.access_token },
           url: 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))',
@@ -209,24 +252,23 @@ router.get('/callback_linkedin', (req, res, next) => {
 
           let datas = {
             linkedin_id: JSON.parse(user.body).id,
-            email: JSON.parse(mail.body).elements[0]['handle~'].emailAddress
           };
-        
+
           request.post({
             headers: { 'Content-Type': 'application/json' },
             url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
             form: {
               datas: datas
             }
-          }, function (error, result, body) {
-            console.log('########', user.body);
-            if (JSON.parse(result.body).exist) {
+          }, function (error, response, body) {
+            if (JSON.parse(response.body).exist) {
               res.set('Content-Type', 'text/html');
-              res.send(new Buffer('<script>document.cookie="' + 'code=1' + '"; window.close();</script>'));
+              res.send(new Buffer('<script>document.cookie="' + 'user_token=' + JSON.parse(response.body).token + '"; window.close();</script>'));
             } else {
               res.set('Content-Type', 'text/html');
               res.send(new Buffer('<script>document.cookie="' + 'exist=true' +
-              '";document.cookie="' + 'exist=true' +
+                '";document.cookie="' + 'exist=true' +
+                '";document.cookie="' + 'type=linkedin' +
                 '";document.cookie="' + 'firstname=' + JSON.parse(user.body).firstName.localized.fr_FR +
                 '";document.cookie="' + 'lastname=' + JSON.parse(user.body).lastName.localized.fr_FR +
                 '";document.cookie="' + 'picture=' + JSON.parse(picture.body).profilePicture['displayImage~'].elements[1].identifiers[0].identifier +

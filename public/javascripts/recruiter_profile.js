@@ -1,4 +1,5 @@
 $(document).on('ready', function () {
+        checkIfAlreadyConnected();
         getTypeUser();
         submitRecruiterProfile();
         DownloadPicture();
@@ -7,6 +8,11 @@ $(document).on('ready', function () {
         getUser();
         logOut();
 });
+
+function checkIfAlreadyConnected() {
+        if (getCookie("user_token") === "")
+                window.location.pathname = '/login';
+}
 
 function logOut() {
         $("#sidebar-logout").on("click", (e) => {

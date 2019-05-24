@@ -21,6 +21,7 @@ function facebook() {
         $("#facebook-login").on('click', (e) => {
                 e.preventDefault();
                 popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook', 'height=800,width=1200');
+                popup.onunload = () => { window.location.pathname = '/register'; };
         });
 }
 
@@ -28,9 +29,16 @@ function checkExistOauth() {
         if (window.location.pathname === '/register' && getCookie('exist') !== "") {
                 $('#button_register_to_connexion').hide();
                 setCookie('exist', '', 1);
-                $('#firstname_create_account').val(getCookie('firstname'));
-                $('#lastname_create_account').val(getCookie('lastname'));
-                $('#mail_create_account').val(getCookie('email'));
+                if (getCookie('firstname') != "")
+                        $('#firstname_create_account').val(getCookie('firstname'));
+                if (getCookie('lastname') != "")
+                        $('#lastname_create_account').val(getCookie('lastname'));
+                if (getCookie('email') != "undefined")
+                        $('#mail_create_account').val(getCookie('email'));
+                if (getCookie('gender') != "undefined")
+                        console.log('gender');
+                if (getCookie('birthday') != "undefined")
+                        console.log('birthday')
                 return true;
         }
         return false;
@@ -91,7 +99,7 @@ function submitButtonRegister(exist) {
                 }
                 if (error)
                         return;
-                if (exist) {
+                if (exist && getCookie('type') == 'linkedin') {
                         data.photo = getCookie('picture');
                         data.linkedin_id = getCookie('linkedin_id');
                         console.log(data);
@@ -103,7 +111,26 @@ function submitButtonRegister(exist) {
                                 success: function (result) {
                                         console.log(result);
                                         if (result.status) {
-                                                // window.location.pathname = '/login'
+                                                setCookie("user_token", result.token, 250);
+                                                window.location.pathname = '/home'
+                                        } else {
+                                                $('#error_connexion').show();
+                                        }
+                                }
+                        });
+                } else if (exist && getCookie('type') == 'facebook') {
+                        data.photo = getCookie('picture');
+                        data.facebook_id = getCookie('facebook_id');
+                        $.ajax({
+                                type: 'POST',
+                                url: 'http://jurisgo.petitesaffiches.fr/user/add/facebook',
+                                data: { datas: data },
+                                dataType: 'json',
+                                success: function (result) {
+                                        console.log(result);
+                                        if (result.status) {
+                                                setCookie("user_token", result.token, 250);
+                                                window.location.pathname = '/home'
                                         } else {
                                                 $('#error_connexion').show();
                                         }
