@@ -2,6 +2,7 @@ $(document).on('ready', function () {
         checkIfAlreadyConnected();
         $('#account-popup-area').css('visibility', 'visible');
         $('#error_connexion').hide();
+        seePassword();
         sumbitButtonConnexion();
         var exist = checkExistOauth();
         submitButtonRegister(exist);
@@ -22,6 +23,14 @@ function facebook() {
                 e.preventDefault();
                 popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook', 'height=800,width=1200');
                 popup.onunload = () => { window.location.pathname = '/register'; };
+        });
+}
+
+function seePassword() {
+        $("#see-password").on("click", (e) => {
+                e.preventDefault();          
+                $("#password_connexion").attr('type') === "text" ? $("#see-password").removeClass("la-eye").addClass("la-eye-slash") : $("#see-password").removeClass("la-eye-slash").addClass("la-eye");
+                $("#password_connexion").attr('type') === "text" ? $("#password_connexion").attr("type", "password") : $("#password_connexion").attr("type", "text");
         });
 }
 

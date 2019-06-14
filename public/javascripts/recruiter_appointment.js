@@ -14,6 +14,13 @@ function logOut() {
         });
 }
 
+function transformDate(elem) {
+        let date = elem.split(' ')[0].split('-').reverse().join('/');
+        let hour = elem.split(' ')[1].split(':');
+        hour.splice(2, 1);
+        return date + ' ' + hour.join(':');
+}
+
 function getInterview() {
         $.ajax({
                 type: 'POST',
@@ -52,13 +59,13 @@ function getInterview() {
                                                                                         </div>\
                                                                                 </td>\
                                                                                 <td>\
-                                                                                        <span>' + elem.date + '</span>\
+                                                                                        <div>' + transformDate(elem.date) + '</div>\
                                                                                 </td>\
                                                                                 <td>\
-                                                                                        <span>' + elem.address + '</span>\
+                                                                                <a href="http://maps.google.com/?q=' + elem.address + '"><span>' + elem.address + '</span></a>\
                                                                                 </td>\
                                                                                 <td>\
-                                                                                        <span>' + elem.status + '</span>\
+                                                                                        <div>' + elem.status + '</div>\
                                                                                 </td>\
                                                                                 <td><a><i onclick="removeInterview(this.id)" id="' + elem.id + '"class="la la-trash-o" style="color:#951B3F"></i></a>\
                                                                                 </td>\
@@ -116,11 +123,11 @@ function goDetail(id, job) {
 
 function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo)
+        if (recruiter.photo !== "") 
                 $("#image-user-sidebar").attr('src', recruiter.photo);
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-resume").remove();
         $("#sidebar-button-interview-candidate").remove();
 }

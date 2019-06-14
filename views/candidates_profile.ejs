@@ -55,102 +55,105 @@
 				<div class="container">
 					<div class="row no-gape">
 						<div class="col-lg-12 column">
-								<div class="upload-img-bar">
-									<span class="round"><img id="candidate_profile_picture" src="http://placehold.it/140x140" alt="" /><i>x</i></span>
-									<div class="upload-info">
-										<label for="candidate_profile_image_download">
-											<a>Parcourir</a>
-											<input id="candidate_profile_image_download" type="file" accept="image/png, image/jpg" style="display:none">
-										</label>
-										<span>La taille maximale du fichier est de 1 Mo, la taille minimale: 270x210 et les extensions: .jpg & .png</span>
-									</div>
+							<div class="upload-img-bar">
+								<span class="round"><img id="candidate_profile_picture" src="http://placehold.it/140x140" alt="" /><i>x</i></span>
+								<div class="upload-info">
+									<label for="candidate_profile_image_download">
+										<a>Parcourir</a>
+										<input id="candidate_profile_image_download" type="file" accept="image/png, image/jpg" style="display:none">
+									</label>
+									<span>La taille maximale du fichier est de 1 Mo, la taille minimale: 270x210 et les extensions: .jpg & .png</span>
 								</div>
 							</div>
-							<div class="contact-edit">
-								<div class="row">
-									<div class="col-lg-6">
-										<span class="pf-title">Prénom</span>
-										<span id="error_candidate_profile_firstname" class="pf-error">Prénom invalide</span>
-										<div class="pf-field">
-											<input id="candidate_profile_firstname" type="text" placeholder="" />
-										</div>
+						</div>
+						<div class="contact-edit">
+							<div class="row">
+								<div class="col-lg-6">
+									<span class="pf-title">Nom</span>
+									<span id="error_candidate_profile_lastname" class="pf-error">Nom invalide</span>
+									<div class="pf-field">
+										<input id="candidate_profile_lastname" type="text" placeholder="" />
 									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Nom</span>
-										<span id="error_candidate_profile_lastname" class="pf-error">Nom invalide</span>
-										<div class="pf-field">
-											<input id="candidate_profile_lastname" type="text" placeholder="" />
-										</div>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Prénom</span>
+									<span id="error_candidate_profile_firstname" class="pf-error">Prénom invalide</span>
+									<div class="pf-field">
+										<input id="candidate_profile_firstname" type="text" placeholder="" />
 									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Email</span>
-										<span id="error_candidate_profile_email" class="pf-error">Email invalide</span>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Date de naissance</span>
+									<span id="error_candidate_profile_birthdate" class="pf-error">Date de naissance invalide</span>
 
-										<div class="pf-field">
-											<input id="candidate_profile_email" type="email" placeholder="exemple@exemple.com" />
-										</div>
+									<div class="pf-field">
+										<input id="candidate_profile_birthdate" type="date" />
 									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Téléphone</span>
-										<span id="error_candidate_profile_phone" class="pf-error">Téléphone invalide</span>
-										<div class="pf-field">
-											<input id="candidate_profile_phone" type="text" placeholder="" />
-										</div>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Adresse</span>
+									<span id="error_candidate_profile_location" class="pf-error">Adresse invalide</span>
+									<div class="pf-field">
+										<input id="candidate_profile_location" type="text" placeholder="Adresse" />
+										<i class="fa fa-map-marker-alt" id="candidate_profile_button_location"></i>
 									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Disponibilité</span>
-										<span id="error_candidate_profile_freedom" class="pf-error">Disponibilité invalide</span>
-										<div class="pf-field">
-											<select id="candidate_profile_freedom" data-placeholder="Disponibilité" class="chosen">
-												<option>Immédiatement</option>
-												<option>1 mois</option>
-												<option>2 mois</option>
-												<option>3 mois</option>
-												<option>Ne sais pas</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Date de naissance</span>
-										<span id="error_candidate_profile_birthdate" class="pf-error">Date de naissance invalide</span>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Email</span>
+									<span id="error_candidate_profile_email" class="pf-error">Email invalide</span>
 
-										<div class="pf-field">
-											<input id="candidate_profile_birthdate" type="date" />
-										</div>
+									<div class="pf-field">
+										<input id="candidate_profile_email" type="email" placeholder="exemple@exemple.com" />
 									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Contrat</span>
-										<span id="error_candidate_profile_contract" class="pf-error">Contrat invalide</span>
-										<div class="pf-field">
-											<select id="candidate_profile_contract" data-placeholder="Contrat" class="chosen" style="z-index: 5;">
-												<option>Tout</option>
-												<option>CDI</option>
-												<option>CDD</option>
-												<option>Stage</option>
-												<option>Professionnalisation</option>
-												<option>Alternance</option>
-											</select>
-										</div>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Téléphone</span>
+									<span id="error_candidate_profile_phone" class="pf-error">Téléphone invalide</span>
+									<div class="pf-field">
+										<input id="candidate_profile_phone" type="text" placeholder="" />
 									</div>
-									<div class="col-lg-6">
-										<span class="pf-title">Adresse</span>
-										<span id="error_candidate_profile_location" class="pf-error">Adresse invalide</span>
-										<div class="pf-field">
-											<input id="candidate_profile_location" type="text" placeholder="Adresse" />
-											<i class="fa fa-map-marker-alt" id="candidate_profile_button_location"></i>
-										</div>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Contrat</span>
+									<span id="error_candidate_profile_contract" class="pf-error">Contrat invalide</span>
+									<div class="pf-field">
+										<select id="candidate_profile_contract" data-placeholder="Contrat" class="chosen" style="z-index: 5;">
+											<option>Tout</option>
+											<option>Alternance</option>
+											<option>CDD</option>
+											<option>CDI</option>
+											<option>Collaborations</option>
+											<option>Indépendant</option>
+											<option>Professionnalisation</option>
+											<option>Postulations</option>
+											<option>Stage</option>
+										</select>
 									</div>
-									<div class="col-lg-12">
-										<button id="candidate_profile_button" type="submit">Mettre à jour</button>
+								</div>
+								<div class="col-lg-6">
+									<span class="pf-title">Disponibilité</span>
+									<span id="error_candidate_profile_freedom" class="pf-error">Disponibilité invalide</span>
+									<div class="pf-field">
+										<select id="candidate_profile_freedom" data-placeholder="Disponibilité" class="chosen">
+											<option>Immédiatement</option>
+											<option>1 mois</option>
+											<option>2 mois</option>
+											<option>3 mois</option>
+											<option>Ne sais pas</option>
+										</select>
 									</div>
+								</div>
+								<div class="col-lg-12">
+									<button id="candidate_profile_button" type="submit">Mettre à jour</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
-		<%- include bottom_footer.ejs -%>
+	</div>
+	</section>
+	<%- include bottom_footer.ejs -%>
 
 	</div>
 

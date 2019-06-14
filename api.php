@@ -463,8 +463,8 @@
 				$this->response($this->json($data),400);
 			}
 						
-			$sql = "INSERT INTO users (lastname,firstname,genre,type,email,phone,password)
-			VALUE ('".$lastname."','".$firstname."','".$genre."','".$type."','".$email."','".$phone."','".$password."')";
+			$sql = "INSERT INTO users (lastname,firstname,genre,type,email,phone,password,date_created)
+			VALUE ('".$lastname."','".$firstname."','".$genre."','".$type."','".$email."','".$phone."','".$password."','".date("Y-m-d H:i:s")."')";
 
 			$result = $this->db->query($sql);
 			if ($result) {
@@ -601,13 +601,12 @@
 			$sql = "UPDATE recruiters
 			SET photo='".$datas["photo"]."',
 			company='".$datas["company"]."',
-			since='".$datas["since"]."',
 			size='".$datas["size"]."',
 			comment='".$datas["comment"]."',
 			facebook='".$datas["facebook"]."',
 			linkedin='".$datas["linkedin"]."',
 			twitter='".$datas["twitter"]."',
-			google_plus='".$datas["google_plus"]."',
+			fax='".$datas["fax"]."',
 			phone='".$datas["phone"]."',
 			email='".$datas["email"]."',
 			website='".$datas["website"]."',

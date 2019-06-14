@@ -100,7 +100,7 @@ function getStudies() {
                 dataType: 'json',
                 success: function (result) {
                         $("#education-menu").text("Education (" + result.count + ")")
-                        $("#education").html('<h2>Education</h2>');
+                        $("#education").html('<h2>Formations</h2>');
                         for (elem in result.datas) {
                                 $("#education").append('<div class="edu-history">\
                                 <i class="la la-graduation-cap"></i>\
@@ -124,7 +124,7 @@ function getSkills() {
                 dataType: 'json',
                 success: function (result) {
                         $("#skills-menu").text("Skills (" + result.count + ")")
-                        $("#skills").html('<h2>Skills</h2>');
+                        $("#skills").html('<h2>Compétences</h2>');
                         for (elem in result.datas) {
                                 $("#skills").append('<div class="progress-sec">\
                         <span>'+ result.datas[elem].name + '</span>\
@@ -143,7 +143,7 @@ function getExperiences() {
                 dataType: 'json',
                 success: function (result) {
                         $("#experience-menu").text("Experience (" + result.count + ")")
-                        $("#experience").html('<h2>Experience</h2>');
+                        $("#experience").html('<h2>Expériences</h2>');
                         for (elem in result.datas) {
                                 $("#experience").append('<div class="edu-history style2">\
                                 <i></i>\
@@ -158,12 +158,29 @@ function getExperiences() {
         });
 }
 
+function getDisponibility(dispo) {
+        switch (dispo) {
+                case 'unknown':
+                        return 'Non renseigné';
+                case 'one_month':
+                        return 'Un mois';
+                case 'two_months':
+                        return 'Deux mois';
+                case 'three_monts':
+                        return 'Trois mois';
+                case 'immediately':
+                        return "Immédiatement";
+        }
+}
+
 function appendData(user, candidate) {
+        console.log(user);
+
         $('#jobs-view-candidate-profil').html('<div class="cst"><img src="' + candidate.photo + '" alt="" /></div>\
         <h3>'+ user.firstname + ' ' + user.lastname + '</h3>\
-        <span><i>'+ candidate.status + '</i> ' + candidate.disponibility + '</span>\
+        <span><i>'+ (candidate.status === "active" ? "Actif" : "Inactif") + '</i> Disponibilité: ' + getDisponibility(candidate.disponibility) + '</span>\
         <p>'+ candidate.email_alias + '</p>\
-        <p>Member Since, 2017</p>\
+        <p>Member Since, '+ user.date_created.substr(0, user.date_created.indexOf('-')) + '</p>\
         <p><i class="la la-map-marker"></i>'+ candidate.city + ' / ' + candidate.departement + '</p>');
 }
 
@@ -181,7 +198,7 @@ function logOut() {
 }
 
 function GoEvaluate() {
-        $(".evaluate").on('click', (e) =>{
+        $(".evaluate").on('click', (e) => {
                 e.preventDefault();
 
         });
@@ -247,11 +264,11 @@ function addFavorite() {
 
 function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo)
+        if (recruiter.photo !== "")
                 $("#image-user-sidebar").attr('src', recruiter.photo);
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-resume").remove();
         $("#sidebar-button-interview-candidate").remove();
 }

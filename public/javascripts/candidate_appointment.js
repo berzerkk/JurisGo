@@ -55,13 +55,13 @@ function getInterview() {
                                                                                          </div>\
                                                                                  </td>\
                                                                                  <td>\
-                                                                                         <span>' + transformDate(elem.date) + '</span>\
+                                                                                         <div>' + transformDate(elem.date) + '</div>\
                                                                                  </td>\
                                                                                  <td>\
-                                                                                         <span>' + elem.address + '</span>\
+                                                                                         <a href="http://maps.google.com/?q=' + elem.address + '"><span>' + elem.address + '</span></a>\
                                                                                  </td>\
                                                                                  <td>\
-                                                                                         <span id="status-' + elem.id + '">' + translateStatus(elem.status) + '</span>\
+                                                                                         <div id="status-' + elem.id + '">' + translateStatus(elem.status) + '</div>\
                                                                                  </td>\
                                                                                   <td><a><i onclick="statusInterview(this.id)" id="' + elem.id + '"class="la la-pencil" style="color:#951B3F"></i></a>\
                                                                                   </td>\
@@ -145,12 +145,13 @@ function goDetail(id, job) {
 }
 
 function addUserView(user, candidate) {
-        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (candidate.photo)
+        $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));        
+        if (candidate.photo !== "") {
                 $("#image-user-sidebar").attr('src', candidate.photo);
+        }
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + candidate.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + (candidate.photo === "" ? "images/default_avatar.png" : candidate.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + (candidate.photo === "" ? "images/default_avatar.png" : candidate.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-jobs").remove();
         $("#sidebar-button-jobs-add").remove();
         $("#sidebar-button-favorite").remove();

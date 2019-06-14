@@ -30,7 +30,7 @@ function getTypeUser() {
                 dataType: 'json',
                 success: function (result) {
                         if (result.type === "candidate")
-                        window.location.pathname = '/candidate_profile';
+                                window.location.pathname = '/candidate_profile';
                         else if (result.type === "recruiter")
                                 return;
                 }
@@ -40,14 +40,13 @@ function getTypeUser() {
 
 function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo)
+        if (recruiter.photo !== "") 
                 $("#image-user-sidebar").attr('src', recruiter.photo);
-        // $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-resume").remove();
         $("#sidebar-button-interview-candidate").remove();
-
 }
 
 function capitalize(string) {
@@ -88,16 +87,14 @@ function getRecruiter() {
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (resultUser) {
-                                        console.log(result, resultUser);
                                         $("#recruiter_profile_picture").attr('src', result.data.photo);
                                         $("#recruiter_profile_company").val(result.data.company);
-                                        $("#recruiter_profile_since").val(result.data.since);
+                                        $("#recruiter_profile_fax").val(result.data.fax);
                                         $("#recruiter_profile_size").val(result.data.size);
                                         $("#recruiter_profile_comment").val(result.data.comment);
                                         $("#recruiter_profile_facebook").val(result.data.facebook);
                                         $("#recruiter_profile_linkedin").val(result.data.linkedin);
                                         $("#recruiter_profile_twitter").val(result.data.twitter);
-                                        $("#recruiter_profile_google_plus").val(result.data.google_plus);
                                         $("#recruiter_profile_phone").val(result.data.phone);
                                         $("#recruiter_profile_mail").val(result.data.email);
                                         $("#recruiter_profile_website").val(result.data.website);
@@ -177,13 +174,12 @@ function submitRecruiterProfile() {
                         user_token: getCookie("user_token"),
                         photo: $("#recruiter_profile_picture").attr('src'),
                         company: $("#recruiter_profile_company").val(),
-                        since: $("#recruiter_profile_since").val(),
+                        fax: $("#recruiter_profile_fax").val(),
                         size: $("#recruiter_profile_size").val(),
                         comment: $("#recruiter_profile_comment").val(),
                         facebook: $("#recruiter_profile_facebook").val(),
                         linkedin: $("#recruiter_profile_linkedin").val(),
                         twitter: $("#recruiter_profile_twitter").val(),
-                        google_plus: $("#recruiter_profile_google_plus").val(),
                         phone: $("#recruiter_profile_phone").val(),
                         email: $("#recruiter_profile_mail").val(),
                         website: $("#recruiter_profile_website").val(),
@@ -192,32 +188,10 @@ function submitRecruiterProfile() {
                         longitude: $("#longitude").text(),
                         latitude: $("#latitude").text(),
                 };
+                console.log(data);
+
                 if (data.company === "") {
-                        $("#error_recruiter_profile_firstname").css("visibility", "visible");
-                        return;
-                }
-                if (data.since === "") {
-                        $("#error_recruiter_profile_lastname").css("visibility", "visible");
-                        return;
-                }
-                if (data.size === "") {
-                        $("#error_recruiter_profile_email").css("visibility", "visible");
-                        return;
-                }
-                if (data.comment === "") {
-                        $("#error_recruiter_profile_phone").css("visibility", "visible");
-                        return;
-                }
-                if (data.facebook === "") {
-                        $("#error_recruiter_profile_freedom").css("visibility", "visible");
-                        return;
-                }
-                if (data.birthdate === "") {
-                        $("#error_recruiter_profile_birthdate").css("visibility", "visible");
-                        return;
-                }
-                if (data.address === "") {
-                        $("#error_recruiter_profile_location").css("visibility", "visible");
+                        $("#recruiter_profile_company").css("border", "2px solid #951B3F");
                         return;
                 }
                 console.log(data);
@@ -227,7 +201,7 @@ function submitRecruiterProfile() {
                         data: { datas: data },
                         dataType: 'json',
                         success: function (result) {
-                                console.log(result);
+                                $("#recruiter_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
                         }
                 });
         });

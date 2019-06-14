@@ -18,12 +18,12 @@ function getJobs() {
                         <td>\
                                 <div class="table-list-title">\
                                         <h3><a>'+ data[i].title + '</a></h3>\
-                                        <span><i class="la la-map-marker"></i>'+ data[i].city + ', ' + data[i].departement + '</span>\
+                                        <div style="font-size:80%"><i class="la la-map-marker"></i>'+ data[i].city + ', ' + data[i].departement + '</div>\
+                                        <div style="font-size:80%">'+ data[i].date_start.split('-').reverse().join('/') + '</div>\
                                 </div>\
                         </td>\
                         <td>\
                                 <span>'+ data[i].date_created.split('-').reverse().join('/') + '</span><br />\
-                                <span>'+ data[i].date_start.split('-').reverse().join('/') + '</span>\
                         </td>\
                         <td>\
                                 <span class="status active">'+ data[i].status + '</span>\
@@ -90,12 +90,12 @@ function autocomplete() {
 }
 
 function addUserView(user, recruiter) {
-
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo)
+        if (recruiter.photo !== "") 
                 $("#image-user-sidebar").attr('src', recruiter.photo);
-        $("#header-user-name").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
-        $("#header-user-name-responsive").html('<img src="' + recruiter.photo + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
+        $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#sidebar-button-resume").remove();
         $("#sidebar-button-interview-candidate").remove();
 }
