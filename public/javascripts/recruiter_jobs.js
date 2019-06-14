@@ -18,7 +18,7 @@ function getJobs() {
                         <td>\
                                 <div class="table-list-title">\
                                         <h3><a>'+ data[i].title + '</a></h3>\
-                                        <div style="font-size:80%"><i class="la la-map-marker"></i>'+ data[i].city + ', ' + data[i].departement + '</div>\
+                                        <div style="font-size:80%"><i class="la la-map-marker"></i>'+ data[i].city + ' (' + data[i].departement + ')</div>\
                                         <div style="font-size:80%">'+ data[i].date_start.split('-').reverse().join('/') + '</div>\
                                 </div>\
                         </td>\
@@ -30,9 +30,9 @@ function getJobs() {
                         </td>\
                         <td>\
                                 <ul class="action_job">\
-                                        <li><span>View Job</span><a><i class="la la-eye" onclick="viewJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
-                                        <li><span>Edit</span><a><i class="la la-pencil" onclick="updateJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
-                                        <li><span>Delete</span><a><i class="la la-trash-o" onclick="removeJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
+                                        <li><span>Voir les candidats</span><a><i class="la la-eye" onclick="viewJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
+                                        <li><span>Modifier</span><a><i class="la la-pencil" onclick="updateJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
+                                        <li><span>Supprimer</span><a><i class="la la-trash-o" onclick="removeJob(this.id)" id="'+ data[i].id + '"></i></a></li>\
                                 </ul>\
                         </td>\
                 </tr>\

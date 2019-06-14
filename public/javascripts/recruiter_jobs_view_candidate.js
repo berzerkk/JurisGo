@@ -180,8 +180,8 @@ function appendData(user, candidate) {
         <h3>'+ user.firstname + ' ' + user.lastname + '</h3>\
         <span><i>'+ (candidate.status === "active" ? "Actif" : "Inactif") + '</i> Disponibilité: ' + getDisponibility(candidate.disponibility) + '</span>\
         <p>'+ candidate.email_alias + '</p>\
-        <p>Member Since, '+ user.date_created.substr(0, user.date_created.indexOf('-')) + '</p>\
-        <p><i class="la la-map-marker"></i>'+ candidate.city + ' / ' + candidate.departement + '</p>');
+        <p>Membre depuis, '+ user.date_created.substr(0, user.date_created.indexOf('-')) + '</p>\
+        <p><i class="la la-map-marker"></i>'+ candidate.city + ' (' + candidate.departement + ')</p>');
 }
 
 
