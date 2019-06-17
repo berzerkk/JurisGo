@@ -1141,6 +1141,11 @@ label::after {
     border-radius: 8px;
 
 }
+
+.custom-account-popup {
+    overflow-y: initial !important;
+    height:100% !important;
+}
 .extra-login {
     float: left;
     width: 100%;
