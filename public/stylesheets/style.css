@@ -9936,7 +9936,7 @@ input[type="file"] {
     margin-left: 4px;
 }
 
-#candidate_profile_button:hover, #draft:hover, #active:hover {
+#candidate_profile_button:hover, #draft:hover, #active:hover, #candidate_desactivate:hover {
     background: #EC6626;
     color: #ffffff;
 }

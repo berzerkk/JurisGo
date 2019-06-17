@@ -65,7 +65,7 @@
 										<input id="candidate_profile_image_download" type="file"
 											accept="image/png, image/jpg" style="display:none">
 									</label>
-									<span>La taille maximale du fichier est de 1 Mo, la taille minimale: 270x210 et les
+									<span id="datas_download">La taille maximale du fichier est de 1 Mo, la taille minimale: 270x210 et les
 										extensions: .jpg & .png</span>
 								</div>
 							</div>
@@ -152,8 +152,9 @@
 										</select>
 									</div>
 								</div>
-								<div class="col-lg-12">
-									<button id="candidate_profile_button" type="submit">Mettre à jour</button>
+								<div class="col-lg-12" style="margin-top:20px;">
+									<button id="candidate_profile_button" type="submit" style="float:right;">Mettre à jour</button>
+									<button id="candidate_desactivate" type="submit"style="float: left;">Désactiver le compte</button>
 								</div>
 							</div>
 						</div>

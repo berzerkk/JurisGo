@@ -7,6 +7,7 @@ $(document).on('ready', function () {
         getUser();
         getCandidate();
         logOut();
+        DesacProfile();
         removePicture();
         $(".bottom-footer").css('margin-top', '-100px');
 });
@@ -40,6 +41,7 @@ function addUserView(user, candidate) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
         if (candidate.photo !== "") {
                 $("#image-user-sidebar").attr('src', candidate.photo);
+                $("#datas_download").hide();
         }
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name").html('<img src="' + (candidate.photo === "" ? "images/default_avatar.png" : candidate.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
@@ -160,6 +162,23 @@ function getLocation() {
         });
 }
 
+function DesacProfile() {
+        $('#candidate_desactivate').on('click', (e) => {
+                e.preventDefault();
+                $.ajax({
+                        type: 'POST',
+                        url: 'http://jurisgo.petitesaffiches.fr/candidate/desactivate',
+                        data: { datas: { "user_token": getCookie("user_token") } },
+                        dataType: 'json',
+                        success: function (result) {
+                                setCookie("user_token", "", 0);
+                                window.location = '/login';
+                        }
+                });
+
+        });
+}
+
 function DownloadPicture() {
         $('#candidate_profile_image_download').change((e) => {
                 e.preventDefault();
@@ -255,6 +274,7 @@ function submitCandidateProfile() {
                                                 data: { datas: data },
                                                 dataType: 'json',
                                                 success: function (result) {
+                                                        console.log(result);
                                                         $("#candidate_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
 
                                                 }
@@ -268,6 +288,7 @@ function submitCandidateProfile() {
                                 data: { datas: data },
                                 dataType: 'json',
                                 success: function (result) {
+                                        console.log(result);
                                         $("#candidate_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
 
                                 }

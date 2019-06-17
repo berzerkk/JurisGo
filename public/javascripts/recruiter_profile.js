@@ -39,10 +39,13 @@ function getTypeUser() {
 }
 
 
+
 function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo !== "") 
+        if (recruiter.photo !== "") {
                 $("#image-user-sidebar").attr('src', recruiter.photo);
+                $("#datas_download").hide();
+        }
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));

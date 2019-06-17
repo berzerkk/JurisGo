@@ -32,6 +32,16 @@ function seePassword() {
                 $("#password_connexion").attr('type') === "text" ? $("#see-password").removeClass("la-eye").addClass("la-eye-slash") : $("#see-password").removeClass("la-eye-slash").addClass("la-eye");
                 $("#password_connexion").attr('type') === "text" ? $("#password_connexion").attr("type", "password") : $("#password_connexion").attr("type", "text");
         });
+        $("#see-password-account").on("click", (e) => {
+                e.preventDefault();          
+                $("#password_create_account").attr('type') === "text" ? $("#see-password-account").removeClass("la-eye").addClass("la-eye-slash") : $("#see-password-account").removeClass("la-eye-slash").addClass("la-eye");
+                $("#password_create_account").attr('type') === "text" ? $("#password_create_account").attr("type", "password") : $("#password_create_account").attr("type", "text");
+        });
+        $("#see-confirm-password-account").on("click", (e) => {
+                e.preventDefault();          
+                $("#confirm_password_create_account").attr('type') === "text" ? $("#see-confirm-password-account").removeClass("la-eye").addClass("la-eye-slash") : $("#see-confirm-password-account").removeClass("la-eye-slash").addClass("la-eye");
+                $("#confirm_password_create_account").attr('type') === "text" ? $("#confirm_password_create_account").attr("type", "password") : $("#confirm_password_create_account").attr("type", "text");
+        });
 }
 
 function checkExistOauth() {

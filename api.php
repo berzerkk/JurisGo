@@ -836,6 +836,26 @@
 		// 	return $result;
 		// }
 		
+		private function candidate_desactivate() {
+			if ($this->get_request_method() != "POST") {
+				$data["status"] = false;
+				$this->response($this->json($data),400); 
+			}
+			$datas = $_POST["datas"];
+			$token = $datas['user_token'];
+			if(empty($token)){
+			    $data["status"] = false;
+			    $data["message"] = "token empty";
+			    $this->response($this->json($data),400);
+			}
+			$user_id = $this->check_token($datas);
+			$sql = "UPDATE candidates SET status='inactive' WHERE user='".$user_id."'";
+			$result = $this->db->query($sql);
+			$data["status"] = $result;
+			$data["sql"] = $sql;
+			$this->response($this->json($data),200);
+		}
+
 		private function candidate_edit(){
 			if ($this->get_request_method() != "POST") {
 				$data["status"] = false;
@@ -862,6 +882,8 @@
 			contrat='".$datas["contrat"]."',
 			address='".$datas["address"]."'
 			WHERE user='".$user_id."'";
+			$result = $this->db->query($sql);
+			$sql = "UPDATE users SET phone='".$datas["phone"]."'";
 			$result = $this->db->query($sql);
 			$data["status"] = $result;
 			$data["sql"] = $sql;
@@ -1686,9 +1708,10 @@
 					$this->response($this->json($data),400);
 				}
 				$user_id = $this->check_token($datas);
-				$sql = "INSERT INTO jobs (title,description,date_created,date_start,contract,sector,recruiter,status,latitude,longitude,experience,skills,salary,departement,city,address)
-				VALUE ('".$datas["title"]."','".$datas["description"]."','".$datas["date_created"]."','".$datas["date_start"]."','".$datas["contract"]."','".$datas["sector"]."','".$user_id."','".$datas["status"]."','".$datas["latitude"]."','".$datas["longitude"]."','".$datas["experience"]."','".$datas["skills"]."','".$datas["salary"]."','".$datas["departement"]."','".$datas["city"]."','".$datas["address"]."')";
+				$sql = "INSERT INTO jobs (title,description,date_created,date_start,contract,recruiter,status,latitude,longitude,experience,skills,salary,departement,city,address)
+				VALUE ('".$datas["title"]."','".$datas["description"]."','".$datas["date_created"]."','".$datas["date_start"]."','".$datas["contract"]."','".$user_id."','".$datas["status"]."','".$datas["latitude"]."','".$datas["longitude"]."','".$datas["experience"]."','".$datas["skills"]."','".$datas["salary"]."','".$datas["departement"]."','".$datas["city"]."','".$datas["address"]."')";
 				$result = $this->db->query($sql);
+				$data["id"] = $this->db->insert_id;
 				$data["sql"] = $sql;
 				$data["status"] = $result;
 				$this->response($this->json($data),200);

@@ -103,7 +103,6 @@ function postJob() {
                         date_created: formatDate(new Date()),
                         date_start: $("#job-add-date-start").val().split("/").reverse().join("-"),
                         contract: $("#job-add-contract").val(),
-                        sector: $("#job-add-sector").val(),
                         status: e.target.id,
                         latitude: "",
                         longitude: "",
@@ -114,8 +113,6 @@ function postJob() {
                         city: "",
                         departement: "",
                 };
-                if ($("#job-add-adress").val() === "")
-                        return;
                 var i = 0
                 var stringSkills = ""
                 $(".addedTag").each((e) => {
@@ -123,6 +120,20 @@ function postJob() {
                         i++;
                 });
                 data.skills = stringSkills;
+                error = false;
+                if (data.status === 'active' && data.experience === "") {
+                        $("#job-add-experience").css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.status === 'active' && data.skills === "") {
+                        $("#job-add-skills").css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.status === 'active' && data.address === "") {
+                        $("#job-add-adress").css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (error) return;
                 $.ajax({
                         type: 'GET',
                         url: "https://api-adresse.data.gouv.fr/search/?q=" + $("#job-add-adress").val(),
@@ -138,7 +149,8 @@ function postJob() {
                                         data: { datas: data },
                                         dataType: 'json',
                                         success: function (res) {
-                                                window.location.pathname = '/recruiter_jobs';
+                                                console.log(res);
+                                                 window.location = (data.status === 'draft' ? '/recruiter_jobs' : 'recruiter_jobs_view?id=' + res.id);                                                
                                         },
                                         error: function(err) {
                                                 console.log(err); 

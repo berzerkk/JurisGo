@@ -73,7 +73,7 @@ function autocomplete() {
 
 function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo !== "") 
+        if (recruiter.photo !== "")
                 $("#image-user-sidebar").attr('src', recruiter.photo);
         $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
@@ -107,7 +107,6 @@ function getJob(next) {
                         $("#job-add-comment").val(result.datas.description);
                         $("#job-add-date-start").val(result.datas.date_start);
                         $("#job-add-contract").val(result.datas.contract);
-                        $("#job-add-sector").val(result.datas.sector);
                         $("#job-add-experience").val(result.datas.experience);
                         $("#job-add-adress").val(result.datas.address);
                         var skills = result.datas.skills.split("///");
@@ -170,7 +169,6 @@ function postJob() {
                         description: $("#job-add-comment").val(),
                         date_start: $("#job-add-date-start").val().split("/").reverse().join("-"),
                         contract: $("#job-add-contract").val(),
-                        sector: $("#job-add-sector").val(),
                         status: e.target.id,
                         latitude: "",
                         longitude: "",
@@ -181,8 +179,6 @@ function postJob() {
                         city: "",
                         departement: "",
                 };
-                if ($("#job-add-adress").val() === "")
-                        return;
                 var i = 0
                 var stringSkills = ""
                 $(".addedTag").each((e) => {
@@ -192,7 +188,21 @@ function postJob() {
 
                 });
                 data.skills = stringSkills;
-                console.log(stringSkills);
+
+                error = false;
+                if (data.status === 'active' && data.experience === "") {
+                        $("#job-add-experience").css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.status === 'active' && data.skills === "") {
+                        $("#job-add-skills").css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (data.status === 'active' && data.address === "") {
+                        $("#job-add-adress").css("border", "2px solid #951B3F");
+                        error = true;
+                }
+                if (error) return;
 
                 $.ajax({
                         type: 'GET',
@@ -209,7 +219,7 @@ function postJob() {
                                         data: { datas: data },
                                         dataType: 'json',
                                         success: function (res) {
-                                                window.location.pathname = '/recruiter_jobs';
+                                                window.location = (data.status === 'draft' ? '/recruiter_jobs' : 'recruiter_jobs_view?id=' + data.id);
                                         },
                                         error: function (err) {
                                                 console.log(err);
