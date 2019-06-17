@@ -1049,6 +1049,7 @@ select {
 }
 .account-popup {
     width: 94%;
+    overflow-y: scroll;
     margin-left: -47%;
     left: 50%;
 }
@@ -1056,10 +1057,6 @@ select {
     width: 94%;
     margin-left: -45%;
     left: 50%;
-}
-
-.account-popup-area {
-    overflow-y: scroll;
 }
 
 .pagination li {
@@ -1345,14 +1342,19 @@ select {
 .account-popup {
     padding-left: 20px;
     padding-right: 20px;
+    height: 80%;
 }
 .confirm-popup {
-    padding-left: 20px;
-    padding-right: 20px;
     width: 360px;
-
+    margin-left: -48%
 }
 
-
+.account-popup .close-popup {
+    top: 15px;
+    right: 5px;
+}
+.resumeadd-form button {
+    float: initial;
+}
 
 }

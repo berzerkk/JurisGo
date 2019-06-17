@@ -822,6 +822,17 @@ label::after {
     padding-left: 35px;
 }
 
+#recruiter_profile_linkedin, #recruiter_profile_twitter, #recruiter_profile_facebook {
+    padding-right:40px !important;
+}
+
+.la-linkedin, .fa-twitter {
+   right: 6px !important;
+}
+.fa-facebook-f {
+    right: 10px !important;
+}
+
 /* Account Popup Area */
 .account-popup-area {
     position: fixed;
@@ -832,7 +843,6 @@ label::after {
     background: rgba(20,31,114,0.6);
     opacity: 1;
     z-index: 99;
-    overflow-Y: hidden;
     visibility: hidden;
 
 }
@@ -1036,6 +1046,10 @@ label::after {
     top: 15px;
     right: 20px;
     font-size: 19px;
+}
+
+.confirm-appoint {
+    width: 460px;
 }
 
 .confirm-popup > form {
@@ -6867,8 +6881,10 @@ aside .widget.border:first-child {
 }
 .upload-img-bar > span img {
     float: left;
-    width: 100%;
+    width: 160px;
+    height: 160px;
 }
+
 .upload-img-bar > span i {
     position: absolute;
     right: -8px;
@@ -9916,6 +9932,15 @@ input[type="file"] {
     top: 2px;
     margin-left: 4px;
 }
+
+#candidate_profile_button:hover, #draft:hover, #active:hover {
+    background: #EC6626;
+    color: #ffffff;
+}
+.upload-info > label > a:hover {
+    background: #EC6626;
+    color: #ffffff;
+}
 footer .footer-title {
     float: left;
     width: 100%;
@@ -10610,7 +10635,6 @@ header.white {
     float: left;
     width: 100%;
     display: block !important;;
-    overflow: auto;
     background: no-repeat;
     z-index: 1;
 }

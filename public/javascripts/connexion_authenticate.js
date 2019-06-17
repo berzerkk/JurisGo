@@ -63,6 +63,11 @@ function linkedin() {
         });
 }
 
+function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+}
+
 function submitButtonRegister(exist) {
         let error = false;
         $("#button_create_account").on("click", (e) => {
@@ -89,7 +94,7 @@ function submitButtonRegister(exist) {
                         $("#phone_create_account").parent().css("border", "2px solid #951B3F");
                         error = true;
                 }
-                if (data.email === "") {
+                if (data.email === "" || !validateEmail(data.email)) {
                         $("#mail_create_account").parent().css("border", "2px solid #951B3F");
                         error = true;
                 }
@@ -121,7 +126,7 @@ function submitButtonRegister(exist) {
                                         console.log(result);
                                         if (result.status) {
                                                 setCookie("user_token", result.token, 250);
-                                                window.location.pathname = '/home'
+                                                window.location.pathname = '/candidate_profile'
                                         } else {
                                                 $('#error_connexion').show();
                                         }
@@ -139,7 +144,7 @@ function submitButtonRegister(exist) {
                                         console.log(result);
                                         if (result.status) {
                                                 setCookie("user_token", result.token, 250);
-                                                window.location.pathname = '/home'
+                                                window.location.pathname = '/candidate_profile'
                                         } else {
                                                 $('#error_connexion').show();
                                         }
@@ -193,7 +198,7 @@ function sumbitButtonConnexion() {
                         success: function (res) {
                                 if (res.status) {
                                         setCookie("user_token", res.token, 250);
-                                        window.location.pathname = '/home'
+                                        window.location.pathname = '/candidate_profile'
                                 } else {
                                         $('#error_connexion').show();
                                 }
@@ -236,7 +241,7 @@ function getCookieWindows(cname, win) {
 
 function checkIfAlreadyConnected() {
         if (getCookie("user_token") !== "")
-                window.location.pathname = '/home';
+                window.location.pathname = '/candidate_profile';
 }
 
 function setCookie(cname, cvalue, exdays) {

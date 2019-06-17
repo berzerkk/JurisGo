@@ -220,10 +220,6 @@ $(document).on('ready',function(){
         $(this).parent().fadeOut();
     });
 
-    $('.upload-img-bar > span i').on('click', function(){
-        $(this).parent().parent().fadeOut();
-    });
-
     $('.del-resume').on('click', function(){
         $(this).parent().fadeOut();
         return false;

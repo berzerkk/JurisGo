@@ -7,6 +7,7 @@ $(document).on('ready', function () {
         getRecruiter();
         getUser();
         logOut();
+        removePicture();
 });
 
 function checkIfAlreadyConnected() {
@@ -70,6 +71,12 @@ function getUser() {
                                 }
                         });
                 }
+        });
+}
+
+function removePicture() {
+        $('.upload-img-bar > span i').on('click', function () {
+                $('#recruiter_profile_picture').attr('src', 'images/default_avatar.png')
         });
 }
 
@@ -167,6 +174,11 @@ function DownloadPicture() {
         });
 }
 
+function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+}
+
 function submitRecruiterProfile() {
         $("#recruiter_profile_button").on("click", (e) => {
                 e.preventDefault();
@@ -188,13 +200,14 @@ function submitRecruiterProfile() {
                         longitude: $("#longitude").text(),
                         latitude: $("#latitude").text(),
                 };
-                console.log(data);
-
                 if (data.company === "") {
                         $("#recruiter_profile_company").css("border", "2px solid #951B3F");
                         return;
                 }
-                console.log(data);
+                if (!validateEmail(data.email)) {
+                        $("#recruiter_profile_mail").css("border", "2px solid #951B3F");
+                        return;
+                }
                 $.ajax({
                         type: 'POST',
                         url: 'http://jurisgo.petitesaffiches.fr/recruiter/edit',

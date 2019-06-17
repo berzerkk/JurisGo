@@ -7,6 +7,7 @@ $(document).on('ready', function () {
         getUser();
         getCandidate();
         logOut();
+        removePicture();
         $(".bottom-footer").css('margin-top', '-100px');
 });
 
@@ -54,6 +55,12 @@ function addUserView(user, candidate) {
 
 function capitalize(string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
+
+function removePicture() {
+        $('.upload-img-bar > span i').on('click', function () {
+                $('#candidate_profile_picture').attr('src', 'images/default_avatar.png')
+        });
 }
 
 function getUser() {
@@ -195,6 +202,11 @@ function translateDisponibility(str, french) {
         }
 }
 
+function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+}
+
 function submitCandidateProfile() {
         $("#candidate_profile_button").on("click", (e) => {
                 e.preventDefault();
@@ -223,6 +235,11 @@ function submitCandidateProfile() {
                         $("#candidate_profile_lastname").css("border", "2px solid #951B3F");
                         return;
                 }
+                if (!validateEmail(data.email)) {
+                        $("#candidate_profile_email").css("border", "2px solid #951B3F");
+                        return;
+                }
+
                 if ($("#candidate_profile_location").val() !== "") {
                         $.ajax({
                                 type: 'GET',
@@ -238,7 +255,8 @@ function submitCandidateProfile() {
                                                 data: { datas: data },
                                                 dataType: 'json',
                                                 success: function (result) {
-                                                        console.log(result);
+                                                        $("#candidate_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
+
                                                 }
                                         });
                                 }
@@ -250,7 +268,8 @@ function submitCandidateProfile() {
                                 data: { datas: data },
                                 dataType: 'json',
                                 success: function (result) {
-                                        console.log(result);
+                                        $("#candidate_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
+
                                 }
                         });
                 }

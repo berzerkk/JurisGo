@@ -137,8 +137,9 @@ function addExperience() {
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
-                console.log(result);
                 getExperience();
+                $("#overlay-add-experiences").css("visibility", "hidden");
+                $("#popup-add-experience").css("visibility", "hidden");
             }
         });
     });
@@ -178,6 +179,8 @@ function updateExperience(elem_id) {
                 $("#resume-experience-function-value-" + elem_id).text(data.function);
                 $("#resume-experience-comment-value-" + elem_id).text(data.comment);
                 $("#resume-experience-date-value-" + elem_id).text(data.date_start + " - " + data.date_end);
+                $("#overlay-add-experiences").css("visibility", "hidden");
+                $("#popup-update-experience").css("visibility", "hidden");
             }
         });
     });
@@ -249,6 +252,7 @@ function addStudies() {
                 console.log(result);
                 getStudies();
                 $("#overlay-add-education").css("visibility", "hidden");
+                $("#popup-add-studies").css("visibility", "hidden");
             }
         });
     });
@@ -304,7 +308,7 @@ function updateStudies(elem_id) {
                 $("#resume-studies-school-value-" + elem_id)[0].firstChild.data = data.school;
                 $("#resume-studies-branch-value-" + elem_id).text(data.branch);
                 $("#resume-studies-comment-value-" + elem_id).text(data.comment);
-                $("#resume-studies-date-value-" + elem_id).text(data.date_start + " - " + data.date_end);
+                $("#resume-studies-date-value-" + elem_id).text(data.date_start.split('-').reverse().join('/') + " - " + data.date_end.split('-').reverse().join('/'));
                 $("#popup-update-studies").css("visibility", "hidden");
                 $("#overlay-add-education").css("visibility", "hidden");
 
@@ -359,9 +363,10 @@ function updateSkills(elem_id) {
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
-                console.log(result);
                 $("#resume-competencies-name-value-" + elem_id).text(data.name);
                 $("#resume-competencies-percentage-value-" + elem_id).text(data.percentage);
+                $("#overlay-add-competencies").css("visibility", "hidden");
+                $("#popup-update-competencies").css("visibility", "hidden");
             }
         });
     });
@@ -399,6 +404,9 @@ function addSkill() {
             dataType: 'json',
             success: function (result) {
                 getSkills();
+                $("#overlay-add-competencies").css("visibility", "hidden");
+                $("#popup-add-competencies").css("visibility", "hidden");
+                
             }
         });
     });
