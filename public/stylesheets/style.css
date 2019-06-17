@@ -900,8 +900,7 @@ label::after {
     -o-border-radius: 8px;
     border-radius: 8px;
 
-    left: 50%;
-    margin-left: -230px;
+    left: 30%;
     margin-top: 50px;
     margin-bottom: 60px;
     text-align: center;
