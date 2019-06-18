@@ -36,6 +36,7 @@ function getMatching() {
                                 var data = result.datas;
                                 
                                 for (i in result.datas) {
+                                        console.log(data[i]);
                                         var container = document.createElement('div');
                                         $("#jobs-view-list").append('<div class="emply-resume-list round">\
                         <div class="emply-resume-thumb">\
@@ -44,6 +45,11 @@ function getMatching() {
                         <div class="emply-resume-info">\
                                 <h3><a onclick="focusOnMap(' + data[i].longitude + ',' + data[i].latitude + ',\'' + data[i].firstname + '\',\'' + data[i].lastname + '\')">' + data[i].firstname + ' ' + data[i].lastname + '</a></h3>\
                                 <p><i class="la la-map-marker"></i>' + data[i].city + ' / ' + data[i].departement + '</p>\
+                        </div>\
+                        <div class="progress-sec with-edit">\
+				<div class="progressbar">\
+	        			<div class="progress" style="width:' + data[i].matching + '%;"><span>' + data[i].matching + '%</span></div>\
+                                </div>\
                         </div>\
                         <div class="shortlists">\
                                 <a id="' + data[i].user + '" onclick="' + (data[i].unlocked === "true" ? 'detailsCandidate(this.id)' : 'unlockCandidate(this.id)') + '">' + (data[i].unlocked === "true" ? 'Details' : 'Débloquer') + ' <i class="la la-plus"></i></a>\
