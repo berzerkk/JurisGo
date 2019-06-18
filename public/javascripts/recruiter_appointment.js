@@ -62,7 +62,7 @@ function getInterview() {
                                                                                         <div>' + transformDate(elem.date) + '</div>\
                                                                                 </td>\
                                                                                 <td>\
-                                                                                <a href="http://maps.google.com/?q=' + elem.address + '"><span>' + elem.address + '</span></a>\
+                                                                                <a href="https://maps.google.com/?q=' + elem.address + '"><span>' + elem.address + '</span></a>\
                                                                                 </td>\
                                                                                 <td>\
                                                                                         <div>' + elem.status + '</div>\

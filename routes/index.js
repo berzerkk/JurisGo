@@ -179,7 +179,7 @@ router.post('/contact', (req, res, next) => {
 router.get('/callback_facebook', (req, res, next) => {
   request.get({
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    url: 'https://graph.facebook.com/v3.3/oauth/access_token?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&client_secret=eb8f926ae2844545e71bb98e0c7038b3&code=' + req.query.code
+    url: 'https://graph.facebook.com/v3.3/oauth/access_token?client_id=657425804702385&redirect_uri=https://jurisgo.fr/callback_facebook&client_secret=eb8f926ae2844545e71bb98e0c7038b3&code=' + req.query.code
   }, function (error, token, body) {
     request.get({
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -231,7 +231,7 @@ router.get('/callback_linkedin', (req, res, next) => {
     form: {
       grant_type: "authorization_code",
       code: req.query.code,
-      redirect_uri: "http://localhost:3000/callback_linkedin",
+      redirect_uri: "https://jurisgo.fr/callback_linkedin",
       client_id: "86nhbra0gwjcrb",
       client_secret: "8g3Yrf4jjnq53E9a"
     }

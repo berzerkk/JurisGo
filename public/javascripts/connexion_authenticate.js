@@ -21,7 +21,7 @@ $(document).on('ready', function () {
 function facebook() {
         $("#facebook-login").on('click', (e) => {
                 e.preventDefault();
-                popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=http://localhost:3000/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook', 'height=800,width=1200');
+                popup = window.open('https://www.facebook.com/v3.3/dialog/oauth?client_id=657425804702385&redirect_uri=https://jurisgo.fr/callback_facebook&state=DCEeFWf45A53sdfKef424', 'Jursigo - Facebook', 'height=800,width=1200');
                 popup.onunload = () => { window.location.pathname = '/register'; };
         });
 }
@@ -67,7 +67,7 @@ function linkedin() {
         $('#linkedin-login').on('click', (e) => {
 
                 e.preventDefault();
-                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=http://localhost:3000/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress', 'Jursigo - Linkedin', 'height=800,width=1200');
+                popup = window.open('https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=86nhbra0gwjcrb&redirect_uri=https://jurisgo.fr/callback_linkedin&state=DCEeFWf45A53sdfKef424&scope=r_liteprofile%20r_emailaddress', 'Jursigo - Linkedin', 'height=800,width=1200');
                 popup.onunload = () => { window.location.pathname = '/register'; };
 
         });
