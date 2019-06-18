@@ -87,7 +87,7 @@ router.post("/charge_new", (req, res) => {
           console.log(req.body.amount);
           request.post({
             headers: { 'Content-Type': 'application/json' },
-            url: 'http://jurisgo.petitesaffiches.fr/recruiter/point/add',
+            url: 'https://api.jurisgo.fr/recruiter/point/add',
             form: {
               datas: {
                 user_token: req.body.user_token,
@@ -118,7 +118,7 @@ router.post("/charge", (req, res) => {
       console.log(req.body.amount);
       request.post({
         headers: { 'Content-Type': 'application/json' },
-        url: 'http://jurisgo.petitesaffiches.fr/recruiter/point/add',
+        url: 'https://api.jurisgo.fr/recruiter/point/add',
         form: {
           datas: {
             user_token: req.body.user_token,
@@ -190,7 +190,7 @@ router.get('/callback_facebook', (req, res, next) => {
       };
       request.post({
         headers: { 'Content-Type': 'application/json' },
-        url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
+        url: 'https://api.jurisgo.fr/user/linkedin',
         form: {
           datas: datas
         }
@@ -256,7 +256,7 @@ router.get('/callback_linkedin', (req, res, next) => {
 
           request.post({
             headers: { 'Content-Type': 'application/json' },
-            url: 'http://jurisgo.petitesaffiches.fr/user/linkedin',
+            url: 'https://api.jurisgo.fr/user/linkedin',
             form: {
               datas: datas
             }

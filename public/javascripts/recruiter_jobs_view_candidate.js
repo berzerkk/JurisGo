@@ -60,7 +60,7 @@ function takeAppointment() {
                         return;
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/interview/add',
+                        url: 'https://api.jurisgo.fr/interview/add',
                         data: { datas: datas },
                         dataType: 'json',
                         success: function (result) {
@@ -74,13 +74,13 @@ function takeAppointment() {
 function getCandidate() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/id',
+                url: 'https://api.jurisgo.fr/user/id',
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/candidate/id',
+                                url: 'https://api.jurisgo.fr/candidate/id',
                                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                                 dataType: 'json',
                                 success: function (result2) {
@@ -95,7 +95,7 @@ function getCandidate() {
 function getStudies() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/candidate/studies/id',
+                url: 'https://api.jurisgo.fr/candidate/studies/id',
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
@@ -119,7 +119,7 @@ function getStudies() {
 function getSkills() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/candidate/skills/id',
+                url: 'https://api.jurisgo.fr/candidate/skills/id',
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
@@ -138,7 +138,7 @@ function getSkills() {
 function getExperiences() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/candidate/experiences/id',
+                url: 'https://api.jurisgo.fr/candidate/experiences/id',
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
@@ -207,7 +207,7 @@ function GoEvaluate() {
 function checkFavorite() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/favorite/is',
+                url: 'https://api.jurisgo.fr/favorite/is',
                 data: {
                         datas: {
                                 "user_token": getCookie("user_token"),
@@ -229,7 +229,7 @@ function addFavorite() {
                 if ($(".heart").hasClass("far")) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/favorite/add',
+                                url: 'https://api.jurisgo.fr/favorite/add',
                                 data: {
                                         datas: {
                                                 "user_token": getCookie("user_token"),
@@ -245,7 +245,7 @@ function addFavorite() {
                 } else {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/favorite/delete',
+                                url: 'https://api.jurisgo.fr/favorite/delete',
                                 data: {
                                         datas: {
                                                 "user_token": getCookie("user_token"),
@@ -278,20 +278,20 @@ function contact() {
                 e.preventDefault();
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/user/id',
+                        url: 'https://api.jurisgo.fr/user/id',
                         data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                         dataType: 'json',
                         success: function (result) {
 
                                 $.ajax({
                                         type: 'POST',
-                                        url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                                        url: 'https://api.jurisgo.fr/recruiter',
                                         data: { datas: { "user_token": getCookie("user_token") } },
                                         dataType: 'json',
                                         success: function (result2) {
                                                 $.ajax({
                                                         type: 'POST',
-                                                        url: 'http://jurisgo.petitesaffiches.fr/candidate/id',
+                                                        url: 'https://api.jurisgo.fr/candidate/id',
                                                         data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                                                         dataType: 'json',
                                                         success: function (result3) {
@@ -322,7 +322,7 @@ function contact() {
 function getTypeUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                url: 'https://api.jurisgo.fr/user/type',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
@@ -341,13 +341,13 @@ function capitalize(string) {
 function getRecruiter() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                                url: 'https://api.jurisgo.fr/recruiter',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {

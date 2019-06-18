@@ -84,7 +84,7 @@ function addUserView(user, recruiter) {
 function getTypeUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                url: 'https://api.jurisgo.fr/user/type',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
@@ -99,7 +99,7 @@ function getTypeUser() {
 function getJob(next) {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/job',
+                url: 'https://api.jurisgo.fr/job',
                 data: { datas: { "user_token": getCookie("user_token"), id: new URL(window.location).searchParams.get("id") } },
                 dataType: 'json',
                 success: function (result) {
@@ -130,13 +130,13 @@ function capitalize(string) {
 function getRecruiter() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                                url: 'https://api.jurisgo.fr/recruiter',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {
@@ -215,7 +215,7 @@ function postJob() {
                                 console.log(data);
                                 $.ajax({
                                         type: 'POST',
-                                        url: 'http://jurisgo.petitesaffiches.fr/job/update',
+                                        url: 'https://api.jurisgo.fr/job/update',
                                         data: { datas: data },
                                         dataType: 'json',
                                         success: function (res) {

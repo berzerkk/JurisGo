@@ -9,7 +9,7 @@ $(document).on('ready', function () {
 function saveToken(token, next) {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/recruiter/stripe/add',
+        url: 'https://api.jurisgo.fr/recruiter/stripe/add',
         data: { datas: { "user_token": getCookie("user_token"), token: token } },
         dataType: 'json',
         success: function (res) {
@@ -21,7 +21,7 @@ function saveToken(token, next) {
 function getStripe(next) {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/recruiter/stripe',
+        url: 'https://api.jurisgo.fr/recruiter/stripe',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (res) {
@@ -294,7 +294,7 @@ function addUserView(user, recruiter) {
 function getTypeUser() {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/user/type',
+        url: 'https://api.jurisgo.fr/user/type',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (result) {
@@ -313,13 +313,13 @@ function capitalize(string) {
 function getRecruiter() {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/user',
+        url: 'https://api.jurisgo.fr/user',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (result) {
             $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                url: 'https://api.jurisgo.fr/recruiter',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result2) {

@@ -24,26 +24,26 @@ function transformDate(elem) {
 function getInterview() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/recruiter/interview',
+                url: 'https://api.jurisgo.fr/recruiter/interview',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (interview) {
                         interview.datas.forEach((elem) => {
                                 $.ajax({
                                         type: 'POST',
-                                        url: 'http://jurisgo.petitesaffiches.fr/candidate/id',
+                                        url: 'https://api.jurisgo.fr/candidate/id',
                                         data: { datas: { "user_token": getCookie("user_token"), id: elem.candidate } },
                                         dataType: 'json',
                                         success: function (candidate) {
                                                 $.ajax({
                                                         type: 'POST',
-                                                        url: 'http://jurisgo.petitesaffiches.fr/user/id',
+                                                        url: 'https://api.jurisgo.fr/user/id',
                                                         data: { datas: { "user_token": getCookie("user_token"), id: candidate.data.user } },
                                                         dataType: 'json',
                                                         success: function (user) {
                                                                 $.ajax({
                                                                         type: 'POST',
-                                                                        url: 'http://jurisgo.petitesaffiches.fr/job',
+                                                                        url: 'https://api.jurisgo.fr/job',
                                                                         data: { datas: { "user_token": getCookie("user_token"), id: elem.job } },
                                                                         dataType: 'json',
                                                                         success: function (job) {
@@ -100,7 +100,7 @@ function removeInterview(id) {
                 e.preventDefault();
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/interview/delete',
+                        url: 'https://api.jurisgo.fr/interview/delete',
                         data: { datas: { "user_token": getCookie("user_token"), id: id } },
                         dataType: 'json',
                         success: function (result) {
@@ -135,7 +135,7 @@ function addUserView(user, recruiter) {
 function getTypeUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                url: 'https://api.jurisgo.fr/user/type',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
@@ -154,13 +154,13 @@ function capitalize(string) {
 function getRecruiter() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                                url: 'https://api.jurisgo.fr/recruiter',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {

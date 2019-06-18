@@ -44,7 +44,7 @@ function addUserViewRecruiter(user, recruiter) {
 function getTypeUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                url: 'https://api.jurisgo.fr/user/type',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
@@ -59,13 +59,13 @@ function getTypeUser() {
 function getRecruiter() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/recruiter',
+                                url: 'https://api.jurisgo.fr/recruiter',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {
@@ -83,13 +83,13 @@ function capitalize(string) {
 function getCandidate() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                                url: 'https://api.jurisgo.fr/candidate',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {

@@ -129,7 +129,7 @@ function submitButtonRegister(exist) {
                         console.log(data);
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/user/add/linkedin',
+                                url: 'https://api.jurisgo.fr/user/add/linkedin',
                                 data: { datas: data },
                                 dataType: 'json',
                                 success: function (result) {
@@ -147,7 +147,7 @@ function submitButtonRegister(exist) {
                         data.facebook_id = getCookie('facebook_id');
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/user/add/facebook',
+                                url: 'https://api.jurisgo.fr/user/add/facebook',
                                 data: { datas: data },
                                 dataType: 'json',
                                 success: function (result) {
@@ -163,7 +163,7 @@ function submitButtonRegister(exist) {
                 } else {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/user/add',
+                                url: 'https://api.jurisgo.fr/user/add',
                                 data: { datas: data },
                                 dataType: 'json',
                                 success: function (result) {
@@ -202,7 +202,7 @@ function sumbitButtonConnexion() {
                         return;
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/user/authentification',
+                        url: 'https://api.jurisgo.fr/user/authentification',
                         data: { datas: data },
                         dataType: 'json',
                         success: function (res) {

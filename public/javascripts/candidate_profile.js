@@ -23,7 +23,7 @@ function logOut() {
 function getTypeUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                url: 'https://api.jurisgo.fr/user/type',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
@@ -68,13 +68,13 @@ function removePicture() {
 function getUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                                url: 'https://api.jurisgo.fr/candidate',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {
@@ -88,13 +88,13 @@ function getUser() {
 function getCandidate() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                url: 'https://api.jurisgo.fr/candidate',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/user',
+                                url: 'https://api.jurisgo.fr/user',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (resultUser) {
@@ -167,7 +167,7 @@ function DesacProfile() {
                 e.preventDefault();
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/candidate/desactivate',
+                        url: 'https://api.jurisgo.fr/candidate/desactivate',
                         data: { datas: { "user_token": getCookie("user_token") } },
                         dataType: 'json',
                         success: function (result) {
@@ -270,7 +270,7 @@ function submitCandidateProfile() {
                                         data.departement = result.features[0].properties.postcode.slice(0, -3);
                                         $.ajax({
                                                 type: 'POST',
-                                                url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
+                                                url: 'https://api.jurisgo.fr/candidate/edit',
                                                 data: { datas: data },
                                                 dataType: 'json',
                                                 success: function (result) {
@@ -284,7 +284,7 @@ function submitCandidateProfile() {
                 } else {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
+                                url: 'https://api.jurisgo.fr/candidate/edit',
                                 data: { datas: data },
                                 dataType: 'json',
                                 success: function (result) {
@@ -304,7 +304,7 @@ function submitCandidateProfile() {
                 //                 data.departement = result.features[0].properties.postcode.slice(0, -3);                                                              
                 //                 $.ajax({
                 //                         type: 'POST',
-                //                         url: 'http://jurisgo.petitesaffiches.fr/candidate/edit',
+                //                         url: 'https://api.jurisgo.fr/candidate/edit',
                 //                         data: { datas: data },
                 //                         dataType: 'json',
                 //                         success: function (result) {

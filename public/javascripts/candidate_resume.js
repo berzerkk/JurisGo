@@ -54,13 +54,13 @@ function capitalize(string) {
 function getUser() {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/user',
+        url: 'https://api.jurisgo.fr/user',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (result) {
             $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                url: 'https://api.jurisgo.fr/candidate',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result2) {
@@ -90,7 +90,7 @@ function getCookie(cname) {
 function getExperience() {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/candidate/experiences',
+        url: 'https://api.jurisgo.fr/candidate/experiences',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (result) {
@@ -133,7 +133,7 @@ function addExperience() {
         data.duration = monthDiff(new Date(data.date_start), new Date(data.date_end));
         $.ajax({
             type: 'POST',
-            url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/add',
+            url: 'https://api.jurisgo.fr/candidate/experience/add',
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
@@ -170,7 +170,7 @@ function updateExperience(elem_id) {
         console.log(data);
         $.ajax({
             type: 'POST',
-            url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/update',
+            url: 'https://api.jurisgo.fr/candidate/experience/update',
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
@@ -193,7 +193,7 @@ function removeExperience(elem_id) {
     };
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/candidate/experience/delete',
+        url: 'https://api.jurisgo.fr/candidate/experience/delete',
         data: { datas: data },
         dataType: 'json',
         success: function (result) {
@@ -206,7 +206,7 @@ function removeExperience(elem_id) {
 function getStudies() {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/candidate/studies',
+        url: 'https://api.jurisgo.fr/candidate/studies',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (result) {
@@ -245,7 +245,7 @@ function addStudies() {
         };
         $.ajax({
             type: 'POST',
-            url: 'http://jurisgo.petitesaffiches.fr/candidate/studie/add',
+            url: 'https://api.jurisgo.fr/candidate/studie/add',
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
@@ -265,7 +265,7 @@ function removeStudies(elem_id) {
     };
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/candidate/studie/delete',
+        url: 'https://api.jurisgo.fr/candidate/studie/delete',
         data: { datas: data },
         dataType: 'json',
         success: function (result) {
@@ -300,7 +300,7 @@ function updateStudies(elem_id) {
         
         $.ajax({
             type: 'POST',
-            url: 'http://jurisgo.petitesaffiches.fr/candidate/studie/update',
+            url: 'https://api.jurisgo.fr/candidate/studie/update',
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
@@ -320,7 +320,7 @@ function updateStudies(elem_id) {
 function getSkills() {
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/candidate/skills',
+        url: 'https://api.jurisgo.fr/candidate/skills',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (result) {
@@ -359,7 +359,7 @@ function updateSkills(elem_id) {
         console.log(data);
         $.ajax({
             type: 'POST',
-            url: 'http://jurisgo.petitesaffiches.fr/candidate/skill/update',
+            url: 'https://api.jurisgo.fr/candidate/skill/update',
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
@@ -379,7 +379,7 @@ function removeSkills(elem_id) {
     };
     $.ajax({
         type: 'POST',
-        url: 'http://jurisgo.petitesaffiches.fr/candidate/skill/delete',
+        url: 'https://api.jurisgo.fr/candidate/skill/delete',
         data: { datas: data },
         dataType: 'json',
         success: function (result) {
@@ -399,7 +399,7 @@ function addSkill() {
         console.log(data);
         $.ajax({
             type: 'POST',
-            url: 'http://jurisgo.petitesaffiches.fr/candidate/skill/add',
+            url: 'https://api.jurisgo.fr/candidate/skill/add',
             data: { datas: data },
             dataType: 'json',
             success: function (result) {

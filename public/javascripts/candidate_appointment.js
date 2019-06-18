@@ -25,20 +25,20 @@ function transformDate(elem) {
 function getInterview() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/candidate/interview',
+                url: 'https://api.jurisgo.fr//candidate/interview',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (interview) {
                         interview.datas.forEach((elem) => {
                                 $.ajax({
                                         type: 'POST',
-                                        url: 'http://jurisgo.petitesaffiches.fr/recruiter/id',
+                                        url: 'https://api.jurisgo.fr/recruiter/id',
                                         data: { datas: { "user_token": getCookie("user_token"), id: elem.recruiter } },
                                         dataType: 'json',
                                         success: function (recruiter) {
                                                 $.ajax({
                                                         type: 'POST',
-                                                        url: 'http://jurisgo.petitesaffiches.fr/job/id',
+                                                        url: 'https://api.jurisgo.fr/job/id',
                                                         data: { datas: { "user_token": getCookie("user_token"), id: elem.job } },
                                                         dataType: 'json',
                                                         success: function (job) {
@@ -108,7 +108,7 @@ function statusInterview(id) {
                 e.preventDefault();
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/interview/update/status',
+                        url: 'https://api.jurisgo.fr/interview/update/status',
                         data: { datas: { "user_token": getCookie("user_token"), id: id, status: 'confirmed' } },
                         dataType: 'json',
                         success: function (result) {
@@ -122,7 +122,7 @@ function statusInterview(id) {
                 e.preventDefault();
                 $.ajax({
                         type: 'POST',
-                        url: 'http://jurisgo.petitesaffiches.fr/interview/update/status',
+                        url: 'https://api.jurisgo.fr/interview/update/status',
                         data: { datas: { "user_token": getCookie("user_token"), id: id, status: 'canceled' } },
                         dataType: 'json',
                         success: function (result) {
@@ -165,7 +165,7 @@ function addUserView(user, candidate) {
 function getTypeUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user/type',
+                url: 'https://api.jurisgo.fr/user/type',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
@@ -185,13 +185,13 @@ function capitalize(string) {
 function getUser() {
         $.ajax({
                 type: 'POST',
-                url: 'http://jurisgo.petitesaffiches.fr/user',
+                url: 'https://api.jurisgo.fr/user',
                 data: { datas: { "user_token": getCookie("user_token") } },
                 dataType: 'json',
                 success: function (result) {
                         $.ajax({
                                 type: 'POST',
-                                url: 'http://jurisgo.petitesaffiches.fr/candidate',
+                                url: 'https://api.jurisgo.fr/candidate',
                                 data: { datas: { "user_token": getCookie("user_token") } },
                                 dataType: 'json',
                                 success: function (result2) {

@@ -54,10 +54,10 @@
 		/*
 		BDD MYSQL
 		*/
-		const DB_SERVER = "localhost";
-		const DB_USER = "jurisgo";
-		const DB_PASSWORD = "5ozALhD83FUKMq6Q";
-		const DB = "jurisgo";
+		const DB_SERVER = "jurisgcgb190937.mysql.db";
+		const DB_USER = "jurisgcgb190937";
+		const DB_PASSWORD = "InstantLink19";
+		const DB = "jurisgcgb190937";
 		
 		private $db = NULL;
 			
