@@ -49,6 +49,10 @@ router.get('/recruiter_jobs_view', function (req, res, next) {
   res.render('recruiters_jobs_view');
 });
 
+router.get('/terms_and_condition', function(req, res, next) {
+  res.render('terms_and_condition')
+})
+
 router.get('/recruiter_jobs_view_candidate', function (req, res, next) {
   res.render('recruiters_jobs_view_candidate');
 });
