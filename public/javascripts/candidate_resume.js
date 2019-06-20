@@ -30,10 +30,16 @@ jQuery.fn.justtext = function () {
 
 };
 
+function changeHandler(val) {
+    if (Number(val.value) > 100) {
+        val.value = 100
+    }
+}
+
 function addUserView(user, candidate) {
-    $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));        
+    $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
     if (candidate.photo !== "") {
-            $("#image-user-sidebar").attr('src', candidate.photo);
+        $("#image-user-sidebar").attr('src', candidate.photo);
     }
     $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name").html('<img src="' + (candidate.photo === "" ? "images/default_avatar.png" : candidate.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
@@ -93,7 +99,9 @@ function getExperience() {
         url: 'https://api.jurisgo.fr/candidate/experiences',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
-        success: function (result) {
+        success: function (result) {            
+            console.log(result);
+            
             $("#candidate-resume-experience").html("");
             for (elem in result.datas) {
                 $("#candidate-resume-experience").append('<div id="experience-element-' + result.datas[elem].id + '" class="edu-history style2">\
@@ -129,7 +137,7 @@ function addExperience() {
             duration: "",
             function: $("#popup-input-function-experience").val(),
             company: $("#popup-input-company-experience").val(),
-        };
+        };        
         data.duration = monthDiff(new Date(data.date_start), new Date(data.date_end));
         $.ajax({
             type: 'POST',
@@ -137,6 +145,7 @@ function addExperience() {
             data: { datas: data },
             dataType: 'json',
             success: function (result) {
+                console.log(result);
                 getExperience();
                 $("#overlay-add-experiences").css("visibility", "hidden");
                 $("#popup-add-experience").css("visibility", "hidden");
@@ -209,9 +218,9 @@ function getStudies() {
         url: 'https://api.jurisgo.fr/candidate/studies',
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
-        success: function (result) {
+        success: function (result) {            
             $("#candidate-resume-studies").html("");
-            for (elem in result.datas) {                
+            for (elem in result.datas) {
                 $("#candidate-resume-studies").append('<div id="studie-element-' + result.datas[elem].id + '" class="edu-history">\
                 <i class="la la-graduation-cap"></i>\
                 <div class="edu-hisinfo">\
@@ -297,7 +306,7 @@ function updateStudies(elem_id) {
             id: elem_id
         };
         console.log(data);
-        
+
         $.ajax({
             type: 'POST',
             url: 'https://api.jurisgo.fr/candidate/studie/update',
@@ -356,6 +365,7 @@ function updateSkills(elem_id) {
             name: $("#popup-input-name-competencies").val(),
             id: elem_id
         };
+        data.percentage = data.percentage > 100 ? 100 : data.percentage;
         console.log(data);
         $.ajax({
             type: 'POST',
@@ -396,7 +406,7 @@ function addSkill() {
             percentage: $("#popup-input-percentage-competencies").val(),
             name: $("#popup-input-name-competencies").val()
         };
-        console.log(data);
+        data.percentage = data.percentage > 100 ? 100 : data.percentage;
         $.ajax({
             type: 'POST',
             url: 'https://api.jurisgo.fr/candidate/skill/add',
@@ -406,7 +416,7 @@ function addSkill() {
                 getSkills();
                 $("#overlay-add-competencies").css("visibility", "hidden");
                 $("#popup-add-competencies").css("visibility", "hidden");
-                
+
             }
         });
     });

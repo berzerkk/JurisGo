@@ -226,6 +226,14 @@ function validateEmail(email) {
         return re.test(String(email).toLowerCase());
 }
 
+function parseApostrophe(data) {        
+        Object.keys(data).map(elem => {
+                console.log(elem);
+                data[elem] = data[elem].replace(/'/g, "\\'");
+        }); 
+        return data;
+}
+
 function submitCandidateProfile() {
         $("#candidate_profile_button").on("click", (e) => {
                 e.preventDefault();
@@ -244,7 +252,7 @@ function submitCandidateProfile() {
                         departement: "",
                         status: "active",
                         longitude: $("#longitude").text(),
-                        latitude: $("#latitude").text(),
+                        latitude: $("#latitude").text()
                 };
                 if (data.firstname === "") {
                         $("#candidate_profile_firstname").css("border", "2px solid #951B3F");
@@ -258,23 +266,23 @@ function submitCandidateProfile() {
                         $("#candidate_profile_email").css("border", "2px solid #951B3F");
                         return;
                 }
-
+            
                 if ($("#candidate_profile_location").val() !== "") {
                         $.ajax({
                                 type: 'GET',
                                 url: "https://api-adresse.data.gouv.fr/search/?q=" + $("#candidate_profile_location").val(),
                                 success: function (result) {
-                                        data.longitude = result.features[0].geometry.coordinates[0];
-                                        data.latitude = result.features[0].geometry.coordinates[1];
+                                        console.log(result.features[0].geometry.coordinates[1].toString());
+                                        data.longitude = result.features[0].geometry.coordinates[0].toString();
+                                        data.latitude = result.features[0].geometry.coordinates[1].toString();
                                         data.city = result.features[0].properties.city;
                                         data.departement = result.features[0].properties.postcode.slice(0, -3);
                                         $.ajax({
                                                 type: 'POST',
                                                 url: 'https://api.jurisgo.fr/candidate/edit',
-                                                data: { datas: data },
+                                                data: { datas: parseApostrophe(data) },
                                                 dataType: 'json',
                                                 success: function (result) {
-                                                        console.log(result);
                                                         $("#candidate_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
 
                                                 }
@@ -285,10 +293,9 @@ function submitCandidateProfile() {
                         $.ajax({
                                 type: 'POST',
                                 url: 'https://api.jurisgo.fr/candidate/edit',
-                                data: { datas: data },
+                                data: { datas: parseApostrophe(data) },
                                 dataType: 'json',
                                 success: function (result) {
-                                        console.log(result);
                                         $("#candidate_profile_button").css("border", "2px solid #5cc417").css("color", "#fff").css("background", "#5cc417");
 
                                 }

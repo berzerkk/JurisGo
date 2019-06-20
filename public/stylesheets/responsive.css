@@ -1156,6 +1156,13 @@ select {
     float: none;
     display: inline-block;
 }
+
+#draft {
+    float:right !important;
+}
+#candidate_desactivate {
+    float:right !important;
+}
 .upload-info {
     display: inline-block;
     text-align: center;

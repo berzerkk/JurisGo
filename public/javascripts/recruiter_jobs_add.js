@@ -129,11 +129,16 @@ function postJob() {
                         $("#job-add-skills").css("border", "2px solid #951B3F");
                         error = true;
                 }
-                if (data.status === 'active' && data.address === "") {
+                if (data.address === "") {
                         $("#job-add-adress").css("border", "2px solid #951B3F");
                         error = true;
                 }
                 if (error) return;
+                Object.keys(data).map(elem => {
+                        data[elem] = data[elem].replace(/'/g, "\\'");
+                }); 
+                
+
                 $.ajax({
                         type: 'GET',
                         url: "https://api-adresse.data.gouv.fr/search/?q=" + $("#job-add-adress").val(),
@@ -150,7 +155,7 @@ function postJob() {
                                         dataType: 'json',
                                         success: function (res) {
                                                 console.log(res);
-                                                 window.location = (data.status === 'draft' ? '/recruiter_jobs' : 'recruiter_jobs_view?id=' + res.id);                                                
+                                                //  window.location = (data.status === 'draft' ? '/recruiter_jobs' : 'recruiter_jobs_view?id=' + res.id);                                                
                                         },
                                         error: function(err) {
                                                 console.log(err); 

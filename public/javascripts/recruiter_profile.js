@@ -203,6 +203,7 @@ function submitRecruiterProfile() {
                         longitude: $("#longitude").text(),
                         latitude: $("#latitude").text(),
                 };
+
                 if (data.company === "") {
                         $("#recruiter_profile_company").css("border", "2px solid #951B3F");
                         return;
@@ -211,6 +212,9 @@ function submitRecruiterProfile() {
                         $("#recruiter_profile_mail").css("border", "2px solid #951B3F");
                         return;
                 }
+                Object.keys(data).map(elem => {
+                        data[elem] = data[elem].replace(/'/g, "\\'");
+                }); 
                 $.ajax({
                         type: 'POST',
                         url: 'https://api.jurisgo.fr/recruiter/edit',

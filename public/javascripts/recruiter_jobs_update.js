@@ -203,6 +203,10 @@ function postJob() {
                         error = true;
                 }
                 if (error) return;
+                Object.keys(data).map(elem => {
+                        data[elem] = data[elem].replace(/'/g, "\\'");
+                }); 
+                
 
                 $.ajax({
                         type: 'GET',

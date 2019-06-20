@@ -70,6 +70,7 @@
 		private function dbConnect(){
 
 			$this->db = new mysqli(self::DB_SERVER, self::DB_USER, self::DB_PASSWORD, self::DB);	
+			$this->db->set_charset("utf8");
 			
 		}
 		
@@ -908,7 +909,7 @@
 			$i = 0;
 			while($row = $result->fetch_assoc()){
      			$json[$i] = $row;
-				$json[$i] = array_map('utf8_encode', $json[$i]);
+				$json[$i] = array_map(function($tmp) {return $tmp;}, $json[$i]);
      			$i++;
 			}
 			$data["datas"] = $json;
@@ -1037,7 +1038,7 @@
 			$i = 0;
 			while($row = $result->fetch_assoc()){
      			$json[$i] = $row;
-				$json[$i] = array_map('utf8_encode', $json[$i]);
+				$json[$i] = array_map(function($tmp) {return $tmp;}, $json[$i]);
      			$i++;
 			}
 			$data["datas"] = $json;
@@ -1168,7 +1169,7 @@
 			$i = 0;
 			while($row = $result->fetch_assoc()){
      			$json[$i] = $row;
-				$json[$i] = array_map('utf8_encode', $json[$i]);
+				$json[$i] = array_map(function($tmp) {return $tmp;}, $json[$i]);
      			$i++;
 			}
 			$data["datas"] = $json;
@@ -1219,11 +1220,14 @@
 			    $data["message"] = "token empty";
 			    $this->response($this->json($data),400);
 			}
+
 			$user_id = $this->check_token($datas);
 			$sql = "INSERT INTO candidates_experiences (date_start,date_end,comment,company,function,duration,candidate)
 			VALUES ('".$datas["date_start"]."','".$datas["date_end"]."','".$datas["comment"]."','".$datas["company"]."','".$datas["function"]."','".$datas["duration"]."','".$user_id."')";
 			$result = $this->db->query($sql);
 			$data["status"] = $result;
+			$data["sql"] = $sql;
+			$data["keka"] = $datas["company"];
 			$this->response($this->json($data),200);
 		}
 		
@@ -1735,7 +1739,6 @@
 			description='".$datas["description"]."',
 			date_start='".$datas["date_start"]."',
 			contract='".$datas["contract"]."',
-			sector='".$datas["sector"]."',
 			status='".$datas["status"]."',
 			latitude='".$datas["latitude"]."',
 			longitude='".$datas["longitude"]."',
