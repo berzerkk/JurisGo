@@ -212,6 +212,7 @@ function submitRecruiterProfile() {
                         $("#recruiter_profile_mail").css("border", "2px solid #951B3F");
                         return;
                 }
+                
                 Object.keys(data).map(elem => {
                         data[elem] = data[elem].replace(/'/g, "\\'");
                 }); 

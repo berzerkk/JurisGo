@@ -106,7 +106,7 @@ function getCandidate() {
                                         $("#candidate_profile_location").val(result.data.address);
                                         $("#candidate_profile_birthdate").val(result.data.birthday);
                                         $("#candidate_profile_freedom").val(translateDisponibility(result.data.disponibility, false)).trigger("chosen:updated");
-                                        $("#candidate_profile_contract").val(result.data.contrat).trigger("chosen:updated");
+                                        $("#candidate_profile_contract").val(getRevertContract(result.data.contrat)).trigger("chosen:updated");
 
                                 }
                         });
@@ -234,6 +234,48 @@ function parseApostrophe(data) {
         return data;
 }
 
+function getContract(contract) {
+        switch(contract) {
+                case 'Tout':
+                return 'all';
+                case 'CDD':
+                return 'CDD';
+                case 'CDI':
+                return 'CDI';
+                case 'Stage':
+                return 'stage';
+                case 'Collaboration':
+                return 'collab';
+                case 'Indépendant':
+                return 'inde';
+                case 'Professionnalisation':
+                return 'pro';
+                case 'Postulation':
+                return 'postulation';
+        }
+}
+
+function getRevertContract(contract) {
+        switch(contract) {
+                case 'all':
+                return 'Tout';
+                case 'CDD':
+                return 'CDD';
+                case 'CDI':
+                return 'CDI';
+                case 'stage':
+                return 'Stage';
+                case 'collab':
+                return 'Collaboration';
+                case 'inde':
+                return 'Indépendant';
+                case 'pro':
+                return 'Professionnalisation';
+                case 'postulation':
+                return 'Postulation';
+        }
+}
+
 function submitCandidateProfile() {
         $("#candidate_profile_button").on("click", (e) => {
                 e.preventDefault();
@@ -245,7 +287,7 @@ function submitCandidateProfile() {
                         email: $("#candidate_profile_email").val(),
                         phone: $("#candidate_profile_phone").val(),
                         disponibility: translateDisponibility($("#candidate_profile_freedom").val(), true),
-                        contrat: $("#candidate_profile_contract").val(),
+                        contrat: $("#candidate_profile_contract").val() == null ? "all" : getContract($("#candidate_profile_contract").val()),
                         birthday: $("#candidate_profile_birthdate").val(),
                         address: $("#candidate_profile_location").val(),
                         city: "",
@@ -266,6 +308,8 @@ function submitCandidateProfile() {
                         $("#candidate_profile_email").css("border", "2px solid #951B3F");
                         return;
                 }
+                console.log(data);
+                
             
                 if ($("#candidate_profile_location").val() !== "") {
                         $.ajax({
