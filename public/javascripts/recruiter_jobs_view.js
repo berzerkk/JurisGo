@@ -34,7 +34,7 @@ function getMatching() {
                         dataType: 'json',
                         success: function (result) {
                                 var data = result.datas;
-                                
+
                                 for (i in result.datas) {
                                         console.log(data[i]);
                                         var container = document.createElement('div');
@@ -77,19 +77,19 @@ function getMatching() {
                                         });
                                         map.addOverlay(marker);
                                 }
-                //                 $("#jobs-view-list").append('<div class="pagination">\
-                //         <ul>\
-                //                 <li class="prev"><a href=""><i class="la la-long-arrow-left"></i> Prev</a>\
-                //                 </li>\
-                //                 <li><a href="">1</a></li>\
-                //                 <li class="active"><a href="">2</a></li>\
-                //                 <li><a href="">3</a></li>\
-                //                 <li><span class="delimeter">...</span></li>\
-                //                 <li><a href="">14</a></li>\
-                //                 <li class="next"><a href="">Next <i class="la la-long-arrow-right"></i></a>\
-                //                 </li>\
-                //         </ul>\
-                // </div>')
+                                //                 $("#jobs-view-list").append('<div class="pagination">\
+                                //         <ul>\
+                                //                 <li class="prev"><a href=""><i class="la la-long-arrow-left"></i> Prev</a>\
+                                //                 </li>\
+                                //                 <li><a href="">1</a></li>\
+                                //                 <li class="active"><a href="">2</a></li>\
+                                //                 <li><a href="">3</a></li>\
+                                //                 <li><span class="delimeter">...</span></li>\
+                                //                 <li><a href="">14</a></li>\
+                                //                 <li class="next"><a href="">Next <i class="la la-long-arrow-right"></i></a>\
+                                //                 </li>\
+                                //         </ul>\
+                                // </div>')
                         },
                         error: function (err) {
                                 console.log(err);
@@ -99,15 +99,35 @@ function getMatching() {
 }
 
 function unlockCandidate(id) {
-        $.ajax({
-                type: 'POST',
-                url: 'https://api.jurisgo.fr/candidate/unlocked/add',
-                data: { datas: { "user_token": getCookie("user_token"), candidate: id } },
-                dataType: 'json',
-                success: function (result) {
-                       console.log(result);
-                }
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous débloquer ce profil ?</h3>\
+        <div class="resumeadd-form">\
+        <div class="row align-items-end">\
+            <div class="container">\
+                <div class="col-lg-12">\
+                    <button style="float:left; padding:12px 21px;"id="popup-confirm-purchase" type="submit">Confirmer</button>\
+                    <button style="float:right; padding:12px 21px;"id="popup-cancel-purchase" type="submit">Annuler</button>\
+                </div>\
+            </div>\
+        </div>\
+    </div>');
+        $("#overlay-confirm-purchase").css("visibility", "visible");
+        $("#popup-confirm-purchase").unbind().on("click", (e) => {
+                e.preventDefault();
+                $.ajax({
+                        type: 'POST',
+                        url: 'https://api.jurisgo.fr/candidate/unlocked/add',
+                        data: { datas: { "user_token": getCookie("user_token"), candidate: id } },
+                        dataType: 'json',
+                        success: function (result) {
+                                location.reload();
+                        }
+                });
         });
+        $("#popup-cancel-purchase").unbind().on("click", (e) => {
+                e.preventDefault();
+                $("#overlay-confirm-purchase").css("visibility", "hidden");
+        });
+
 }
 
 function focusOnMap(lon, lat, firstname, lastname) {
@@ -217,7 +237,7 @@ function autocomplete() {
 
 function addUserView(user, recruiter) {
         $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-        if (recruiter.photo !== "") 
+        if (recruiter.photo !== "")
                 $("#image-user-sidebar").attr('src', recruiter.photo);
         $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
         $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
