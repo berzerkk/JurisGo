@@ -42,16 +42,14 @@ function getMatching() {
                         <div class="emply-resume-thumb">\
                                 <img src="'+ data[i].photo + '" alt="" />\
                         </div>\
-                        <div class="emply-resume-info">\
+                        <div class="emply-resume-info" style="margin-bottom:20px;">\
                                 <h3><a onclick="focusOnMap(' + data[i].longitude + ',' + data[i].latitude + ',\'' + data[i].firstname + '\',\'' + data[i].lastname + '\')">' + data[i].firstname + ' ' + data[i].lastname + '</a></h3>\
                                 <p><i class="la la-map-marker"></i>' + data[i].city + ' / ' + data[i].departement + '</p>\
                         </div>\
-                        <div class="progress-sec with-edit">\
-				<div class="progressbar">\
+                        <div class="shortlists">\
+                        <div class="progressbar" style="margin-bottom:20px;">\
 	        			<div class="progress" style="width:' + data[i].matching + '%;"><span>' + data[i].matching + '%</span></div>\
                                 </div>\
-                        </div>\
-                        <div class="shortlists">\
                                 <a id="' + data[i].user + '" onclick="' + (data[i].unlocked === "true" ? 'detailsCandidate(this.id)' : 'unlockCandidate(this.id)') + '">' + (data[i].unlocked === "true" ? 'Details' : 'Débloquer') + ' <i class="la la-plus"></i></a>\
                         </div>\
                 </div>');
