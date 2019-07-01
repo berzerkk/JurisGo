@@ -4581,7 +4581,7 @@ footer.style3 span, footer.style3 a {
     content: "";
     z-index: -1;
     
-    background: url('../images/fond2-bordeaux.png');
+    background: url('../images/advice.jpg');
      /* background: rgb(139,145,221); */
     /* background: -moz-linear-gradient(45deg,  rgba(139,145,221,1) 0%, rgba(16,25,93,1) 71%, rgba(16,25,93,1) 100%); */
     /* background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,rgba(139,145,221,1)), color-stop(71%,rgba(16,25,93,1)), color-stop(100%,rgba(16,25,93,1))); */
@@ -11400,10 +11400,10 @@ header.style5 .post-job-btn:hover {
     opacity: 1;
     visibility: visible;
 }
-.bottom-line .scrollup {
+.scrollup {
     position: absolute;
     right: 70px;
-    bottom: 44px;
+    bottom: 4px;
     width: 50px;
     height: 50px;
     border: 2px solid #EC6626;
@@ -11425,14 +11425,14 @@ header.style5 .post-job-btn:hover {
     font-size: 23px;
 }
 
-.bottom-line .scrollup:hover {
+.scrollup:hover {
     border: 2px solid #951B3F;
     color: #951B3F;
 }
 
 footer.ft .scrollup:hover{border-color: #951B3F; color: #951B3F;}
 
-.bottom-line.style2 .scrollup {
+.style2 .scrollup {
     border: none;
     bottom: 8px;
 }

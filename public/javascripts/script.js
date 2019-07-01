@@ -203,7 +203,7 @@ $(document).on('ready',function(){
         $(this).next().slideToggle();
     });
 
-    $('.scroll-to a, .scrollup, .back-top, .tree_widget-sec > ul > li > ul > li a, .cand-extralink a').on('click', function(e) {
+    $('.scrollup').on('click', function(e) {
         e.preventDefault();
         $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
     });

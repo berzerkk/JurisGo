@@ -199,6 +199,7 @@ function submitRecruiterProfile() {
                         email: $("#recruiter_profile_mail").val(),
                         website: $("#recruiter_profile_website").val(),
                         address: $("#recruiter_profile_location").val(),
+                        sector: $("#recruiter_profile_sector").val(),
                         status: "active",
                         longitude: $("#longitude").text(),
                         latitude: $("#latitude").text(),

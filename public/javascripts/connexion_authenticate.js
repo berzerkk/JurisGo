@@ -16,6 +16,20 @@ $(document).on('ready', function () {
                 e.preventDefault();
                 window.location.pathname = '/login';
         });
+        navigator.geolocation.watchPosition(() => {
+                console.log("i'm tracking you!");
+        }, (error) => {
+                if (error.code == error.PERMISSION_DENIED) {
+                        $("#popup-geolocation").html('<h3 style="line-height:40px;">Veuillez activer la géolocalisation.</h3>\
+        <div class="resumeconfirm-form">\
+            <div class="row align-items-end">\
+                <div class="row">\
+                </div>\
+            </div>\
+        </div>');
+                        $("#overlay-confirm-purchase").css("visibility", "visible");
+                }
+        });
 });
 
 function facebook() {
@@ -28,17 +42,17 @@ function facebook() {
 
 function seePassword() {
         $("#see-password").on("click", (e) => {
-                e.preventDefault();          
+                e.preventDefault();
                 $("#password_connexion").attr('type') === "text" ? $("#see-password").removeClass("la-eye").addClass("la-eye-slash") : $("#see-password").removeClass("la-eye-slash").addClass("la-eye");
                 $("#password_connexion").attr('type') === "text" ? $("#password_connexion").attr("type", "password") : $("#password_connexion").attr("type", "text");
         });
         $("#see-password-account").on("click", (e) => {
-                e.preventDefault();          
+                e.preventDefault();
                 $("#password_create_account").attr('type') === "text" ? $("#see-password-account").removeClass("la-eye").addClass("la-eye-slash") : $("#see-password-account").removeClass("la-eye-slash").addClass("la-eye");
                 $("#password_create_account").attr('type') === "text" ? $("#password_create_account").attr("type", "password") : $("#password_create_account").attr("type", "text");
         });
         $("#see-confirm-password-account").on("click", (e) => {
-                e.preventDefault();          
+                e.preventDefault();
                 $("#confirm_password_create_account").attr('type') === "text" ? $("#see-confirm-password-account").removeClass("la-eye").addClass("la-eye-slash") : $("#see-confirm-password-account").removeClass("la-eye-slash").addClass("la-eye");
                 $("#confirm_password_create_account").attr('type') === "text" ? $("#confirm_password_create_account").attr("type", "password") : $("#confirm_password_create_account").attr("type", "text");
         });

@@ -612,6 +612,7 @@
 			email='".$datas["email"]."',
 			website='".$datas["website"]."',
 			address='".$datas["address"]."',
+			sector='".$datas["sector"]."',
 			status='".$datas["status"]."',
 			longitude='".$datas["longitude"]."',
 			latitude='".$datas["latitude"]."'
