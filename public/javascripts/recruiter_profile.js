@@ -108,6 +108,7 @@ function getRecruiter() {
                                         $("#recruiter_profile_phone").val(result.data.phone);
                                         $("#recruiter_profile_mail").val(result.data.email);
                                         $("#recruiter_profile_website").val(result.data.website);
+                                        $("#recruiter_profile_sector").val(result.data.sector).trigger("chosen:updated");
                                         $("#recruiter_profile_location").val(result.data.address);
                                         $("#longitude").text(result.data.longitude);
                                         $("#latitude").text(result.data.latitude);

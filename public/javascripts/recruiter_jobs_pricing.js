@@ -3,6 +3,10 @@ $(document).on('ready', function () {
     getTypeUser();
     logOut();
     confirmPurchase();
+    window.addEventListener('popstate', function() {
+        console.log('jej');
+        
+      });
 });
 
 
@@ -41,8 +45,8 @@ function stripeOne() {
         if (recruiterStripe.count >= 1) {
             let token = {
                 customer: recruiterStripe.data.token,
-                amount: 999,
-                description: "01 profil",
+                amount: 4999,
+                description: "05 profils",
                 user_token: getCookie("user_token")
             }
             $.ajax({
@@ -59,11 +63,11 @@ function stripeOne() {
             });
         } else {
             checkoutHandler.open({
-                name: "01 profils",
-                description: "Example",
+                name: "Juris'Go",
+                description: "05 profils",
                 token: (token) => {
-                    token.amount = 999;
-                    token.description = "01 profil";
+                    token.amount = 4999;
+                    token.description = "05 profils";
                     token.user_token = getCookie("user_token");
                     $.ajax({
                         type: 'POST',
@@ -80,7 +84,7 @@ function stripeOne() {
                             }
                         }
                     });
-                }
+                }, closed: () => {$("#overlay-confirm-purchase").css("visibility", "hidden");}
             });
         }
     });
@@ -96,8 +100,8 @@ function stripeFive() {
         if (recruiterStripe.count >= 1) {
             let token = {
                 customer: recruiterStripe.data.token,
-                amount: 5999,
-                description: "5 profils",
+                amount: 9999,
+                description: "10 profils",
                 user_token: getCookie("user_token")
             }
             $.ajax({
@@ -114,11 +118,11 @@ function stripeFive() {
             });
         } else {
             checkoutHandler.open({
-                name: "5 profils",
-                description: "Example",
+                name: "Juris'Go",
+                description: "10 profils",
                 token: (token) => {
-                    token.amount = 5999;
-                    token.description = "5 profils";
+                    token.amount = 9999;
+                    token.description = "10 profils";
                     token.user_token = getCookie("user_token");
                     $.ajax({
                         type: 'POST',
@@ -151,8 +155,8 @@ function stripeTen() {
         if (recruiterStripe.count >= 1) {
             let token = {
                 customer: recruiterStripe.data.token,
-                amount: 9999,
-                description: "10 profils",
+                amount: 29999,
+                description: "profils illimités",
                 user_token: getCookie("user_token")
             }
             $.ajax({
@@ -169,11 +173,11 @@ function stripeTen() {
             });
         } else {
             checkoutHandler.open({
-                name: "10 profils",
-                description: "Example",
+                name: "Juris'Go",
+                description: "profils illimités",
                 token: (token) => {
-                    token.amount = 9999;
-                    token.description = "10 profils";
+                    token.amount = 29999;
+                    token.description = "profils illimités";
                     token.user_token = getCookie("user_token");
                     $.ajax({
                         type: 'POST',
@@ -208,7 +212,7 @@ function logOut() {
 function confirmPurchase() {
     $("#pricing-button-one-offer").on("click", (e) => {
         e.preventDefault();
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 9.99€ euros ?</h3>\
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmer le paiement de 49.99€ euros ?</h3>\
         <img id="purchase-load" class="loading-purchase" src="images/ajax-loader.gif" alt="" />\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
@@ -232,7 +236,7 @@ function confirmPurchase() {
     });
     $("#pricing-button-two-offer").on("click", (e) => {
         e.preventDefault();
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 59.99€ euros ?</h3>\
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmer le paiement de 99.99€ euros ?</h3>\
         <img id="purchase-load" class="loading-purchase" src="images/ajax-loader.gif" alt="" />\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\
@@ -256,7 +260,7 @@ function confirmPurchase() {
     });
     $("#pricing-button-three-offer").on("click", (e) => {
         e.preventDefault();
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmez le paiement de 99.99€ euros ?</h3>\
+        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez vous confirmer le paiement de 299.99€ euros ?</h3>\
         <img class="loading-purchase" id="purchase-load" src="images/ajax-loader.gif" alt="" />\
         <div class="resumeadd-form">\
             <div class="row align-items-end">\

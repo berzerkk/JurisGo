@@ -49,7 +49,7 @@ router.get('/recruiter_jobs_view', function (req, res, next) {
   res.render('recruiters_jobs_view');
 });
 
-router.get('/terms_and_condition', function(req, res, next) {
+router.get('/terms_and_condition', function (req, res, next) {
   res.render('terms_and_condition')
 })
 
@@ -95,7 +95,7 @@ router.post("/charge_new", (req, res) => {
             form: {
               datas: {
                 user_token: req.body.user_token,
-                point: req.body.amount === '999' ? 1 : req.body.amount === '5999' ? 5 : 10
+                point: req.body.amount === '4999' ? 5 : req.body.amount === '9999' ? 10 : 2000000000
               }
             }
           }, function (error, response, body) {
@@ -126,7 +126,7 @@ router.post("/charge", (req, res) => {
         form: {
           datas: {
             user_token: req.body.user_token,
-            point: req.body.amount === '999' ? 1 : req.body.amount === '5999' ? 5 : 10
+            point: req.body.amount === '4999' ? 5 : req.body.amount === '9999' ? 10 : 2000000000
           }
         }
       }, function (error, response, body) {
@@ -141,7 +141,7 @@ router.post("/charge", (req, res) => {
 });
 
 let Mail = {
-  sendMail: function (to, subject, text, next) {
+  sendMail: function (to, subject, text, html, next) {
     console.log(to, subject, text);
     var transporter = nodemailer.createTransport({
       host: "ssl0.ovh.net",
@@ -155,7 +155,8 @@ let Mail = {
       from: 'test-dev@petitesaffiches.fr',
       to: to,
       subject: subject,
-      text: text
+      text: text,
+      html: html
     };
     transporter.sendMail(mailOptions, function (err, info) {
       if (err) throw err;
@@ -168,17 +169,21 @@ let Mail = {
 
 router.post('/contact', (req, res, next) => {
   let data = req.body;
-  Mail.sendMail(data.to, data.subject, data.text, (info) => {
+  Mail.sendMail(data.to, data.subject, data.text, "", (info) => {
     res.status(200).send("ok");
   });
 });
 
-// router.post('/account', (req, res, next) => {
-//   let data = req.body;
-//   Mail.sendMail(data.to, "Jurisgo, your account", "", (info) => {
-//     res.status(200).send("ok")
-//   });
-// });
+router.post('/account', (req, res, next) => {
+  let data = req.body;
+  Mail.sendMail(data.to, 'Jurisgo, your account', '',
+  '<h3>Welcome '+ data.firstname + ' '  + data.lastname + '</h3>\
+  <p>Thanks for trusting us. bla bla bla</p>\
+  <p>The Juris\'Go team</p>\
+  <img src="https://jurisgo.fr/images/fond2-bordeaux.png" style="display: block;">', (info) => {
+    res.status(200).send("ok")
+  });
+});
 
 router.get('/callback_facebook', (req, res, next) => {
   request.get({

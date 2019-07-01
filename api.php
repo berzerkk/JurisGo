@@ -1794,7 +1794,7 @@
 			$job = $result->fetch_assoc();
 			$job["skills"] = explode("///", $job["skills"]);
 			// Liste des candidats
-			$sql_candidate = "SELECT C.user, U.lastname, U.firstname, C.email_alias, C.photo, C.disponibility, C.city, C.departement, C.longitude, C.latitude FROM candidates C 
+			$sql_candidate = "SELECT C.user, U.lastname, U.firstname, C.email_alias, C.photo, C.disponibility, C.contrat, C.city, C.departement, C.longitude, C.latitude FROM candidates C 
 			LEFT JOIN users U ON U.id=C.user WHERE status='active'";
 			$result = $this->db->query($sql_candidate);
 			//$this->response($this->json($data),200);
@@ -1846,9 +1846,11 @@
 			
 			 	// On affecte enfin les variables au tableau
 				 $candidate["matching"] = $matching;
+				 if ($matching < 10 || is_nan($matching))
+				 	continue;
 				 $sqlunlock = "SELECT * FROM unlocked_candidate WHERE candidate='".$candidate["user"]."' AND recruiter='".$user_id."'";
 				$resultunlock = $this->db->query($sqlunlock);
-				if ($resultunlock->num_rows == 0) {
+				if ($resultunlock->num_rows == 0 && $candidate["contrat"] != "Stage") {
 				 	$candidate["lastname"] = preg_replace('/(?!^)\S/', '*', $candidate["lastname"]);
 				 	$candidate["unlocked"] = "false";
 				 	$candidate["city"] = "******";
