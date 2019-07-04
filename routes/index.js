@@ -3,6 +3,7 @@ var router = express.Router();
 var stripe = require('stripe')('sk_test_o4FCQrr4N0Wts0Al7nTvWyej000rH70DsM');
 const nodemailer = require("nodemailer");
 var request = require('request');
+var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -174,16 +175,27 @@ router.post('/contact', (req, res, next) => {
   });
 });
 
-router.post('/account', (req, res, next) => {
+router.post('/mail_recruiter', (req, res, next) => {
   let data = req.body;
-  Mail.sendMail(data.to, 'Jurisgo, your account', '',
-  '<h3>Welcome '+ data.firstname + ' '  + data.lastname + '</h3>\
-  <p>Thanks for trusting us. bla bla bla</p>\
-  <p>The Juris\'Go team</p>\
-  <img src="https://jurisgo.fr/images/fond2-bordeaux.png" style="display: block;">', (info) => {
-    res.status(200).send("ok")
+  fs.readFile('templates/recruiter.html', 'utf8', (err, contents) => {
+    if (err) throw err;
+    console.log(contents);
+    Mail.sendMail(data.to, 'Jurisgo, your account', '', contents, (info) => {
+      res.status(200).send("ok")
+    });
   });
 });
+
+router.post('/mail_candidate', (req, res, next) => {
+  let data = req.body;
+  fs.readFile('templates/candidate.html', 'utf8', (err, contents) => {
+    if (err) throw err;
+    Mail.sendMail(data.to, 'Jurisgo, your account', '', contents, (info) => {
+      res.status(200).send("ok")
+    });
+  });
+});
+
 
 router.get('/callback_facebook', (req, res, next) => {
   request.get({

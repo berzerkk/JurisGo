@@ -149,8 +149,16 @@ function submitButtonRegister(exist) {
                                 success: function (result) {
                                         console.log(result);
                                         if (result.status) {
-                                                setCookie("user_token", result.token, 250);
-                                                window.location.pathname = '/candidate_profile'
+                                                $.ajax({
+                                                        type: 'POST',
+                                                        url: 'https://jurisgo.fr/mail_' + data.type,
+                                                        data: { to: data.email },
+                                                        dataType: 'json',
+                                                        success: function (res) {
+                                                                setCookie("user_token", result.token, 250);
+                                                                window.location.pathname = '/candidate_profile'
+                                                        }
+                                                });
                                         } else {
                                                 $('#error_connexion').show();
                                         }
@@ -167,8 +175,16 @@ function submitButtonRegister(exist) {
                                 success: function (result) {
                                         console.log(result);
                                         if (result.status) {
-                                                setCookie("user_token", result.token, 250);
-                                                window.location.pathname = '/candidate_profile'
+                                                $.ajax({
+                                                        type: 'POST',
+                                                        url: 'https://jurisgo.fr/mail_' + data.type,
+                                                        data: { to: data.email },
+                                                        dataType: 'json',
+                                                        success: function (res) {
+                                                                setCookie("user_token", result.token, 250);
+                                                                window.location.pathname = '/candidate_profile'
+                                                        }
+                                                })
                                         } else {
                                                 $('#error_connexion').show();
                                         }
@@ -183,7 +199,15 @@ function submitButtonRegister(exist) {
                                 success: function (result) {
                                         console.log(result);
                                         if (result.status) {
-                                                window.location.pathname = '/login'
+                                                $.ajax({
+                                                        type: 'POST',
+                                                        url: 'https://jurisgo.fr/mail_' + data.type,
+                                                        data: { to: data.email },
+                                                        dataType: 'json',
+                                                        success: function (res) {
+                                                                window.location.pathname = '/login';
+                                                        }
+                                                })
                                         } else {
                                                 $('#error_connexion').show();
                                         }
