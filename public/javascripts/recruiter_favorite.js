@@ -3,8 +3,20 @@ $(document).on('ready', function () {
     getTypeUser();
     logOut();
     getFavorite();
+    getCurrentPoints();
 });
 
+function getCurrentPoints() {
+    $.ajax({
+            type: 'POST',
+            url: 'https://api.jurisgo.fr/recruiter',
+            data: { datas: { "user_token": getCookie("user_token") } },
+            dataType: 'json',
+            success: function (result) {
+                    $('#pricing-recruiter').append(result.data.profile_point >= 10000 ? ' (illimités)' : ' (' + result.data.profile_point + ')');
+            }
+    });
+}
 
 function logOut() {
     $("#sidebar-logout").on("click", (e) => {
@@ -21,26 +33,29 @@ function getFavorite() {
         data: { datas: { "user_token": getCookie("user_token") } },
         dataType: 'json',
         success: function (favorite) {
-            favorite.datas.forEach((elem) => {
-                $.ajax({
-                    type: 'POST',
-                    url: 'https://api.jurisgo.fr/candidate/id',
-                    data: { datas: { "user_token": getCookie("user_token"), id: elem.candidate } },
-                    dataType: 'json',
-                    success: function (candidate) {
-                        $.ajax({
-                            type: 'POST',
-                            url: 'https://api.jurisgo.fr/user/id',
-                            data: { datas: { "user_token": getCookie("user_token"), id: candidate.data.user } },
-                            dataType: 'json',
-                            success: function (user) {
-                                $.ajax({
-                                    type: 'POST',
-                                    url: 'https://api.jurisgo.fr/job',
-                                    data: { datas: { "user_token": getCookie("user_token"), id: elem.job } },
-                                    dataType: 'json',
-                                    success: function (job) {                                        
-                                        $("#recruiter-favorite-list").append('<div class="emply-resume-list">\
+            if (favorite.count === 0) {
+                $('.manage-favorite-sec').append('<h3 style="padding-bottom:200px;padding-top:150px;width:50%;margin:0 auto;float:none;">Aucun candidat n\'est enregistré en favori.</h3>');
+            } else {
+                favorite.datas.forEach((elem) => {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://api.jurisgo.fr/candidate/id',
+                        data: { datas: { "user_token": getCookie("user_token"), id: elem.candidate } },
+                        dataType: 'json',
+                        success: function (candidate) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'https://api.jurisgo.fr/user/id',
+                                data: { datas: { "user_token": getCookie("user_token"), id: candidate.data.user } },
+                                dataType: 'json',
+                                success: function (user) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'https://api.jurisgo.fr/job',
+                                        data: { datas: { "user_token": getCookie("user_token"), id: elem.job } },
+                                        dataType: 'json',
+                                        success: function (job) {
+                                            $("#recruiter-favorite-list").append('<div class="emply-resume-list">\
                 <div class="emply-resume-thumb">\
                     <img src="'+ candidate.data.photo + '" alt="" />\
                 </div>\
@@ -53,13 +68,14 @@ function getFavorite() {
                     <a onclick="goDetail('+ elem.candidate + ', ' + elem.job + ')">Détails<i class="la la-plus"></i></a>\
                 </div>\
             </div>');
-                                    }
-                                });
-                            }
-                        });
-                    }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
                 });
-            });
+            }
         }
     });
 }
@@ -71,8 +87,8 @@ function goDetail(id, job) {
 
 function addUserView(user, recruiter) {
     $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-    if (recruiter.photo !== "") 
-            $("#image-user-sidebar").attr('src', recruiter.photo);
+    if (recruiter.photo !== "")
+        $("#image-user-sidebar").attr('src', recruiter.photo);
     $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));

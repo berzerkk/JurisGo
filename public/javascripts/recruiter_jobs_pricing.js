@@ -3,12 +3,38 @@ $(document).on('ready', function () {
     getTypeUser();
     logOut();
     confirmPurchase();
-    window.addEventListener('popstate', function() {
+    window.addEventListener('popstate', function () {
         console.log('jej');
-        
-      });
+    });
+    getPoints();
+    getCurrentPoints();
 });
 
+function getCurrentPoints() {
+    $.ajax({
+        type: 'POST',
+        url: 'https://api.jurisgo.fr/recruiter',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (result) {
+            $('#pricing-recruiter').append(result.data.profile_point >= 10000 ? ' (illimités)' : ' (' + result.data.profile_point + ')');
+        }
+    });
+}
+
+function getPoints() {
+    $.ajax({
+        type: 'POST',
+        url: 'https://api.jurisgo.fr/recruiter',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (result) {
+            $('#heading-offers').append('<div style:padding-top:20px;> Vous avez actuellement un solde de ' +
+                (result.data.profile_point >= 10000 ? 'crédits illimités.' : result.data.profile_point + 'crédits.') +
+                '</div>');
+        }
+    });
+}
 
 function saveToken(token, next) {
     $.ajax({
@@ -57,7 +83,7 @@ function stripeOne() {
                 success: function (res) {
                     if (res.status === "succeeded") {
                         $("#purchase-load").attr('src', 'images/curved-check.png');
-                        setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
+                        setTimeout(() => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                     }
                 }
             });
@@ -79,12 +105,12 @@ function stripeOne() {
                             if (res.status === "succeeded") {
                                 saveToken(res.customer, (result) => {
                                     $("#purchase-load").attr('src', 'images/curved-check.png');
-                                    setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
+                                    setTimeout(() => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                                 });
                             }
                         }
                     });
-                }, closed: () => {$("#overlay-confirm-purchase").css("visibility", "hidden");}
+                }, closed: () => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }
             });
         }
     });
@@ -112,7 +138,7 @@ function stripeFive() {
                 success: function (res) {
                     if (res.status === "succeeded") {
                         $("#purchase-load").attr('src', 'images/curved-check.png');
-                        setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
+                        setTimeout(() => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                     }
                 }
             });
@@ -134,7 +160,7 @@ function stripeFive() {
                             if (res.status === "succeeded") {
                                 saveToken(res.customer, (result) => {
                                     $("#purchase-load").attr('src', 'images/curved-check.png');
-                                    setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
+                                    setTimeout(() => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                                 });
                             }
                         }
@@ -167,7 +193,7 @@ function stripeTen() {
                 success: function (res) {
                     if (res.status === "succeeded") {
                         $("#purchase-load").attr('src', 'images/curved-check.png');
-                        setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
+                        setTimeout(() => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                     }
                 }
             });
@@ -189,7 +215,7 @@ function stripeTen() {
                             if (res.status === "succeeded") {
                                 saveToken(res.customer, (result) => {
                                     $("#purchase-load").attr('src', 'images/curved-check.png');
-                                    setTimeout(() => {$("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
+                                    setTimeout(() => { $("#overlay-confirm-purchase").css("visibility", "hidden"); }, 1000);
                                 });
                             }
                         }
@@ -286,8 +312,8 @@ function confirmPurchase() {
 
 function addUserView(user, recruiter) {
     $("#sidebar-user-name").text(capitalize(user.firstname) + " " + capitalize(user.lastname));
-    if (recruiter.photo !== "") 
-            $("#image-user-sidebar").attr('src', recruiter.photo);
+    if (recruiter.photo !== "")
+        $("#image-user-sidebar").attr('src', recruiter.photo);
     $("#welcome-user").text("Bonjour " + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));
     $("#header-user-name-responsive").html('<img src="' + (recruiter.photo === "" ? "images/default_avatar.png" : recruiter.photo) + '" alt="" /><i class="la la-bars"></i>' + capitalize(user.firstname) + " " + capitalize(user.lastname));

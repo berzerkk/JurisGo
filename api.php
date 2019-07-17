@@ -885,7 +885,9 @@
 			address='".$datas["address"]."'
 			WHERE user='".$user_id."'";
 			$result = $this->db->query($sql);
-			$sql = "UPDATE users SET phone='".$datas["phone"]."'";
+			$sql = "UPDATE users SET phone='".$datas["phone"]."',
+			firstname='".$datas["firstname"]."',
+			lastname='".$datas["lastname"]."'";
 			$result = $this->db->query($sql);
 			$data["status"] = $result;
 			$data["sql"] = $sql;

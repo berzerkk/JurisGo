@@ -3,7 +3,20 @@ $(document).on('ready', function () {
         getTypeUser();
         logOut();
         getJobs();
+        getCurrentPoints();
 });
+
+function getCurrentPoints() {
+    $.ajax({
+        type: 'POST',
+        url: 'https://api.jurisgo.fr/recruiter',
+        data: { datas: { "user_token": getCookie("user_token") } },
+        dataType: 'json',
+        success: function (result) {
+            $('#pricing-recruiter').append(result.data.profile_point >= 10000 ? ' (illimités)' : ' (' + result.data.profile_point + ')');
+        }
+    });
+}
 
 function getJobs() {
         $.ajax({

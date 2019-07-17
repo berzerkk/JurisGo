@@ -12,7 +12,27 @@ $(document).on('ready', function () {
         takeAppointment();
         autocomplete();
         GoEvaluate();
+        minDatePicker();
+        getCurrentPoints();
 });
+
+function getCurrentPoints() {
+        $.ajax({
+                type: 'POST',
+                url: 'https://api.jurisgo.fr/recruiter',
+                data: { datas: { "user_token": getCookie("user_token") } },
+                dataType: 'json',
+                success: function (result) {
+                        $('#pricing-recruiter').append(result.data.profile_point >= 10000 ? ' (illimités)' : ' (' + result.data.profile_point + ')');
+                }
+        });
+}
+
+function minDatePicker() {
+        var today = new Date().toISOString().split('T')[0];
+        console.log(today);
+        $("#job-candidate-date-appointment").attr('min', today);
+}
 
 function autocomplete() {
         $("#job-candidate-address-appointment").autocomplete({
@@ -174,8 +194,6 @@ function getDisponibility(dispo) {
 }
 
 function appendData(user, candidate) {
-        console.log(user);
-
         $('#jobs-view-candidate-profil').html('<div class="cst"><img src="' + candidate.photo + '" alt="" /></div>\
         <h3>'+ user.firstname + ' ' + user.lastname + '</h3>\
         <span><i>'+ (candidate.status === "active" ? "Actif" : "Inactif") + '</i> Disponibilité: ' + getDisponibility(candidate.disponibility) + '</span>\

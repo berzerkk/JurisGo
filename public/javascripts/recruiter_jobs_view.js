@@ -3,7 +3,20 @@ $(document).on('ready', function () {
         getTypeUser();
         logOut();
         getMatching();
+        getCurrentPoints();
 });
+
+function getCurrentPoints() {
+        $.ajax({
+                type: 'POST',
+                url: 'https://api.jurisgo.fr/recruiter',
+                data: { datas: { "user_token": getCookie("user_token") } },
+                dataType: 'json',
+                success: function (result) {
+                        $('#pricing-recruiter').append(result.data.profile_point >= 10000 ? ' (illimités)' : ' (' + result.data.profile_point + ')');
+                }
+        });
+}
 
 var map;
 
@@ -34,9 +47,7 @@ function getMatching() {
                         dataType: 'json',
                         success: function (result) {
                                 var data = result.datas;
-
                                 for (i in result.datas) {
-                                        console.log(data[i]);
                                         var container = document.createElement('div');
                                         $("#jobs-view-list").append('<div class="emply-resume-list round">\
                         <div class="emply-resume-thumb">\
@@ -96,8 +107,17 @@ function getMatching() {
         });
 }
 
+//"Vous allez utilisez xx crédit(s) sur xx que vous avez. Votre nouveau solde sera de xx après déblocage"
 function unlockCandidate(id) {
-        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous débloquer ce profil ?</h3>\
+        $.ajax({
+                type: 'POST',
+                url: 'https://api.jurisgo.fr/recruiter',
+                data: { datas: { "user_token": getCookie("user_token") } },
+                dataType: 'json',
+                success: function (result) {
+                        // $('#pricing-recruiter').append(result.data.profile_point >= 10000 ? ' (illimités)' : ' (' + result.data.profile_point + ')');
+                        $("#popup-purchase").html('<h3 style="line-height:40px;">Voulez-vous débloquer ce profil ?<br>'+(result.data.profile_point >= 10000 ? 
+                                 'Ce profil est compris dans votre abonnement illimité' :'Vous allez utiliser 1 crédit sur '+result.data.profile_point+' que vous avez.<br>Votre nouveau solde sera de '+ String(parseInt(result.data.profile_point)-1) +' après déblocage.') + '</h3>\
         <div class="resumeadd-form">\
         <div class="row align-items-end">\
             <div class="container">\
@@ -108,24 +128,25 @@ function unlockCandidate(id) {
             </div>\
         </div>\
     </div>');
-        $("#overlay-confirm-purchase").css("visibility", "visible");
-        $("#popup-confirm-purchase").unbind().on("click", (e) => {
-                e.preventDefault();
-                $.ajax({
-                        type: 'POST',
-                        url: 'https://api.jurisgo.fr/candidate/unlocked/add',
-                        data: { datas: { "user_token": getCookie("user_token"), candidate: id } },
-                        dataType: 'json',
-                        success: function (result) {
-                                location.reload();
-                        }
-                });
+                        $("#overlay-confirm-purchase").css("visibility", "visible");
+                        $("#popup-confirm-purchase").unbind().on("click", (e) => {
+                                e.preventDefault();
+                                $.ajax({
+                                        type: 'POST',
+                                        url: 'https://api.jurisgo.fr/candidate/unlocked/add',
+                                        data: { datas: { "user_token": getCookie("user_token"), candidate: id } },
+                                        dataType: 'json',
+                                        success: function (result) {
+                                                location.reload();
+                                        }
+                                });
+                        });
+                        $("#popup-cancel-purchase").unbind().on("click", (e) => {
+                                e.preventDefault();
+                                $("#overlay-confirm-purchase").css("visibility", "hidden");
+                        });
+                }
         });
-        $("#popup-cancel-purchase").unbind().on("click", (e) => {
-                e.preventDefault();
-                $("#overlay-confirm-purchase").css("visibility", "hidden");
-        });
-
 }
 
 function focusOnMap(lon, lat, firstname, lastname) {
